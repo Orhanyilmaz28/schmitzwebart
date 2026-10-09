@@ -1,6 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import { site } from '../data/site';
+import { cities } from '../data/cities';
 const year = new Date().getFullYear();
 ---
 <footer class="ftr">
@@ -19,15 +20,13 @@ const year = new Date().getFullYear();
         <li><a href="/software">Software</a></li>
         <li><a href="/pakete">Pakete & Preise</a></li>
         <li><a href="/ueber-mich">Über mich</a></li>
+        <li><a href="/ratgeber">Ratgeber</a></li>
       </ul>
     </div>
     <div>
       <h2 class="ftr-h">Webdesign in Ihrer Nähe</h2>
-      <ul>
-        <li><a href="/webdesign-hilden">Webdesign Hilden</a></li>
-        <li><a href="/webdesign-duesseldorf">Webdesign Düsseldorf</a></li>
-        <li><a href="/webdesign-solingen">Webdesign Solingen</a></li>
-        <li><a href="/webdesign-langenfeld">Webdesign Langenfeld</a></li>
+      <ul class="ftr-cities">
+        {cities.map((c) => <li><a href={`/webdesign-${c.slug}`}>{c.name}</a></li>)}
       </ul>
     </div>
     <div>
@@ -42,9 +41,10 @@ const year = new Date().getFullYear();
       <a class="btn btn--ghost btn--sm" href="/seo-check">Kostenloser Website-Check</a>
     </div>
   </div>
+  <p class="container ftr-b2b">Alle Preise netto zzgl. gesetzlicher MwSt. Meine Angebote richten sich an Unternehmen, Selbstständige, Vereine und Institutionen.</p>
   <div class="container ftr-bottom">
     <span>© {year} {site.name} · Inhaber {site.owner}</span>
-    <span class="ftr-legal"><a href="/impressum">Impressum</a><a href="/datenschutz">Datenschutz</a><button type="button" data-cookie-settings hidden>Cookie-Einstellungen</button></span>
+    <span class="ftr-legal"><a href="/impressum">Impressum</a><a href="/datenschutz">Datenschutz</a><a href="/agb">AGB</a><button type="button" data-cookie-settings hidden>Cookie-Einstellungen</button></span>
   </div>
 </footer>
 <style>
@@ -53,9 +53,11 @@ const year = new Date().getFullYear();
   .ftr-about { margin-top: 1rem; font-size: .95rem; max-width: 34ch; }
   .ftr .ftr-h { font-size: .85rem; letter-spacing: .12em; text-transform: uppercase; color: var(--text); margin-bottom: 1rem; }
   .ftr li { margin-bottom: .5rem; }
+  .ftr-cities { display: grid; grid-template-columns: 1fr 1fr; column-gap: 1rem; }
   .ftr li a, .ftr address a { color: var(--muted); transition: color .2s; }
   .ftr li a:hover, .ftr address a:hover { color: #fff; }
   address { font-style: normal; color: var(--muted); margin-bottom: 1rem; line-height: 1.7; }
+  .ftr-b2b { font-size: .82rem; color: var(--muted); margin: 0 auto 1rem; }
   .ftr-bottom { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; padding: 1.5rem 0 2rem; border-top: 1px solid var(--line); font-size: .88rem; color: var(--muted); }
   .ftr-legal { display: flex; gap: 1.4rem; }
   .ftr-legal a:hover, .ftr-legal button:hover { color: #fff; }

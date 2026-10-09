@@ -1,0 +1,18 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { getArticles } from '../../lib/ratgeber';
+const articles = await getArticles();
+---
+<Base title="Ratgeber: Websites, SEO & Software" description="Praxiswissen von der Webmanufaktur Schmitz: Website-Kosten, Website-Abo, Google-Unternehmensprofil, Vereinssoftware und Arbeitszeiterfassung verständlich erklärt.">
+  <PageHero eyebrow="Ratgeber" title="Wissen, das Ihnen Geld und Zeit spart." text="Verständliche Antworten auf die Fragen, die mir Kunden am häufigsten stellen: zu Websites, Google, Software und Organisation." />
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">{articles.length} Artikel</span><h2>Alle Artikel</h2></div>
+      <div class="grid grid--3">{articles.map((a) => <ArticleCard a={a} />)}</div>
+    </div>
+  </section>
+  <CtaBand title="Ihre Frage ist nicht dabei?" text="Schreiben Sie mir oder buchen Sie ein kostenloses Erstgespräch. Ich antworte persönlich." />
+</Base>

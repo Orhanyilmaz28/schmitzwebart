@@ -1,0 +1,43 @@
+---
+import { contactLinks } from '../data/site';
+const ext = contactLinks.bookingExternal ? { target: '_blank', rel: 'noopener' } : {};
+const icon = {
+  phone: '<path d="M5 3h4l2 5-2.5 1.5a11 11 0 005 5L15 12l5 2v4a2 2 0 01-2 2A16 16 0 013 5a2 2 0 012-2z"/>',
+  wa: '<path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1112 20.5a8.4 8.4 0 01-4.1-1.1z"/><path d="M9 8.6c0 3 2.4 5.9 5.6 6.4.5 0 1.3-.7 1.3-1.3l-1.6-.8-.9.9c-1-.4-2.1-1.4-2.5-2.5l.9-.9-.8-1.6c-.6 0-1.3.7-1.3 1.3z"/>',
+  cal: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+};
+---
+<div class="cbar" aria-label="Schnellkontakt">
+  <a href={contactLinks.call} class="cbar-btn"><svg viewBox="0 0 24 24" set:html={icon.phone} aria-hidden="true" /><span>Anrufen</span></a>
+  <a href={contactLinks.whatsapp()} class="cbar-btn cbar-wa" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" set:html={icon.wa} aria-hidden="true" /><span>WhatsApp</span></a>
+  <a href={contactLinks.booking} class="cbar-btn cbar-main" {...ext}><svg viewBox="0 0 24 24" set:html={icon.cal} aria-hidden="true" /><span>Erstgespräch</span></a>
+</div>
+<div class="cfloat" aria-label="Schnellkontakt">
+  <a href={contactLinks.whatsapp()} class="cfloat-wa" target="_blank" rel="noopener" aria-label="Per WhatsApp schreiben"><svg viewBox="0 0 24 24" set:html={icon.wa} aria-hidden="true" /></a>
+  <a href={contactLinks.booking} class="btn btn--primary cfloat-book" {...ext}><svg viewBox="0 0 24 24" set:html={icon.cal} aria-hidden="true" />Kostenloses Erstgespräch</a>
+</div>
+<style>
+  .cbar svg, .cfloat svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+  .cbar { display: none; }
+  .cfloat { position: fixed; right: 1.4rem; bottom: 1.4rem; z-index: 60; display: flex; gap: .7rem; align-items: center; opacity: 0; transform: translateY(20px); pointer-events: none; transition: opacity .3s, transform .3s; }
+  .cfloat.show { opacity: 1; transform: none; pointer-events: auto; }
+  .cfloat-wa { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: #25d366; color: #fff; box-shadow: 0 12px 30px -8px rgba(37, 211, 102, .6); transition: transform .2s; }
+  .cfloat-wa:hover { transform: scale(1.08); }
+  .cfloat-wa svg { width: 26px; height: 26px; }
+  .cfloat-book { box-shadow: 0 14px 34px -10px rgba(110, 100, 255, .8); }
+  @media (max-width: 760px) {
+    .cfloat { display: none; }
+    .cbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; display: grid; grid-template-columns: 1fr 1fr 1.3fr; gap: .4rem; padding: .5rem .6rem calc(.5rem + env(safe-area-inset-bottom)); background: rgba(9, 10, 20, .94); backdrop-filter: blur(12px); border-top: 1px solid var(--line); }
+    .cbar-btn { display: flex; align-items: center; justify-content: center; gap: .4rem; height: 46px; border-radius: 12px; font-weight: 600; font-size: .9rem; color: var(--text); background: var(--surface); border: 1px solid var(--line); }
+    .cbar-wa { color: #4ae38a; }
+    .cbar-main { background: var(--grad); border-color: transparent; color: #fff; }
+    :global(body) { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+  }
+  @media print { .cbar, .cfloat { display: none !important; } }
+</style>
+<script>
+  const f = document.querySelector('.cfloat');
+  const onScroll = () => f?.classList.toggle('show', scrollY > 500);
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>

@@ -5,6 +5,10 @@ export const site = {
   owner: 'Phillip Schmitz',
   email: 'info@schmitzwebart.de',
   phone: '+49 176 42903444',
+  whatsapp: '4917642903444', // internationale Nummer ohne + und ohne Leerzeichen
+  // Link zu Cal.com, Calendly o. Ä. (z. B. 'https://cal.com/schmitzwebart/erstgespraech').
+  // Leer = Button führt zum Kontaktformular mit vorausgefüllter Terminanfrage.
+  bookingUrl: '',
   address: {
     street: 'Richrather Straße 69',
     zip: '40723',
@@ -26,4 +30,11 @@ export const site = {
     { href: '/portfolio', label: 'Portfolio' },
     { href: '/ueber-mich', label: 'Über mich' },
   ],
+};
+
+export const contactLinks = {
+  call: `tel:${site.phone.replace(/\s/g, '')}`,
+  whatsapp: (text = 'Hallo, ich komme von schmitzwebart.de und habe eine Frage:') => `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`,
+  booking: site.bookingUrl || `/kontakt?paket=beratung&nachricht=${encodeURIComponent('Ich möchte ein kostenloses 15-Minuten-Erstgespräch vereinbaren. Gut passen mir folgende Zeiten: ')}`,
+  bookingExternal: Boolean(site.bookingUrl),
 };

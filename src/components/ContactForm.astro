@@ -70,9 +70,9 @@ const subject = variant === 'check' ? 'Anfrage: Kostenloser Website-Check' : 'An
           const res = await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
           if (!res.ok) throw new Error(String(res.status));
           form.reset();
-          show('ok', 'Vielen Dank! Ihre Nachricht ist bei uns angekommen. Wir melden uns in der Regel innerhalb eines Werktags.');
+          show('ok', 'Vielen Dank! Ihre Nachricht ist bei mir angekommen. Ich melde mich in der Regel innerhalb eines Werktags.');
         } catch {
-          show('err', `Das Senden hat leider nicht geklappt. Bitte schreiben Sie uns direkt an ${mailto}.`);
+          show('err', `Das Senden hat leider nicht geklappt. Bitte schreiben Sie mir direkt an ${mailto}.`);
         } finally { btn.disabled = false; }
         return;
       }

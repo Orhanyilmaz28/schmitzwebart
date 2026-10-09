@@ -2,6 +2,8 @@
 import { products, productExtras } from '../data/products';
 import { euro } from '../data/packages';
 import { icons } from '../data/services';
+import ProductMock from './ProductMock.astro';
+import ProductTiers from './ProductTiers.astro';
 interface Props { compact?: boolean }
 const { compact = false } = Astro.props;
 ---
@@ -24,34 +26,15 @@ const { compact = false } = Astro.props;
           <p class="ps-aud"><strong>Für:</strong> {p.audience}</p>
           <ul class="check-list">{p.features.map((f) => <li>{f}</li>)}</ul>
           <p class="ps-usp">{p.usp}</p>
+          {!compact && <p class="ps-more"><a href={`/software/${p.slug}`}>Alle Details zu {p.name} →</a></p>}
         </div>
-        <div class="ps-mock" aria-hidden="true">
-          <div class="ps-bar"><i></i><i></i><i></i><span>{p.name}</span></div>
-          <div class="ps-app">
-            <nav>{p.nav.map((n, j) => <span class:list={{ on: j === 1 }}>{n}</span>)}</nav>
-            <div class="ps-main">
-              <div class="ps-kpis"><b></b><b></b><b></b></div>
-              <div class="ps-rows">{Array.from({ length: 7 }).map((_, j) => <div class="ps-row"><i style={`width:${38 + ((j * 23) % 40)}%`}></i><i></i><em class:list={{ ok: j % 3 !== 1 }}></em></div>)}</div>
-            </div>
-          </div>
-        </div>
+        <ProductMock p={p} />
       </div>
 
       {!compact && (
-        <div class="ps-tiers">
-          {p.tiers.map((t) => (
-            <div class:list={['ps-tier card', { hl: t.highlight }]}>
-              {t.highlight && <span class="ps-tier-badge">Empfehlung</span>}
-              <h4>{p.name} {t.name}</h4>
-              <p class="ps-tier-desc">{t.desc}</p>
-              <p class="ps-tier-price"><strong>{euro(t.price)}</strong> <span>{t.interval === 'monat' ? '/ Monat' : 'einmalig'} zzgl. MwSt.</span></p>
-              <ul class="check-list">{t.features.map((f) => <li>{f}</li>)}</ul>
-              <a class:list={['btn btn--block', t.highlight ? 'btn--primary' : 'btn--ghost']} href={`/kontakt?paket=beratung&nachricht=${encodeURIComponent(`Ich interessiere mich für ${p.name} ${t.name} und hätte gern eine kostenlose Demo.`)}`}>Demo anfragen</a>
-            </div>
-          ))}
-        </div>
+        <ProductTiers p={p} />
       )}
-      {compact && <p class="ps-from">Lizenz ab <strong>{euro(Math.min(...p.tiers.map((t) => t.price)))}</strong> einmalig · <a href={`/software#${p.slug}`}>Details & Preise →</a></p>}
+      {compact && <p class="ps-from">Lizenz ab <strong>{euro(Math.min(...p.tiers.map((t) => t.price)))}</strong> einmalig · <a href={`/software/${p.slug}`}>Details & Preise →</a></p>}
     </section>
   ))}
 
@@ -81,44 +64,16 @@ const { compact = false } = Astro.props;
   .ps-aud strong { color: var(--text); }
   .ps-info .check-list { margin: 1rem 0; }
   .ps-usp { font-size: .92rem; border-left: 3px solid hsl(var(--h) 80% 60%); padding-left: .9rem; }
-  .ps-mock { border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,.14); background: #0e1120; box-shadow: 0 40px 90px -30px hsl(var(--h) 80% 50% / .55); transform: perspective(1200px) rotateY(-6deg) rotateX(2deg); transition: transform .5s; }
-  .ps-mock:hover { transform: none; }
-  .ps-bar { display: flex; align-items: center; gap: 6px; padding: .55rem .8rem; background: hsl(var(--h) 60% 30% / .5); }
-  .ps-bar i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.3); }
-  .ps-bar span { margin-left: .6rem; font-size: .78rem; font-weight: 700; color: #fff; }
-  .ps-app { display: grid; grid-template-columns: 130px 1fr; min-height: 300px; }
-  .ps-app nav { background: rgba(255,255,255,.03); border-right: 1px solid var(--line); padding: .7rem .5rem; display: grid; align-content: start; gap: .2rem; }
-  .ps-app nav span { font-size: .74rem; color: var(--muted); padding: .42rem .55rem; border-radius: 7px; }
-  .ps-app nav span.on { background: hsl(var(--h) 70% 50% / .25); color: #fff; }
-  .ps-main { padding: .9rem; }
-  .ps-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin-bottom: .8rem; }
-  .ps-kpis b { height: 46px; border-radius: 9px; background: linear-gradient(140deg, hsl(var(--h) 70% 50% / .35), rgba(255,255,255,.04)); border: 1px solid var(--line); }
-  .ps-rows { display: grid; gap: .38rem; }
-  .ps-row { display: grid; grid-template-columns: 1fr 70px 14px; gap: .6rem; align-items: center; padding: .48rem .6rem; border-radius: 7px; background: rgba(255,255,255,.03); }
-  .ps-row i { display: block; height: 7px; border-radius: 4px; background: rgba(255,255,255,.18); }
-  .ps-row i + i { width: 100%; background: rgba(255,255,255,.1); }
-  .ps-row em { width: 10px; height: 10px; border-radius: 50%; background: #ffb547; }
-  .ps-row em.ok { background: #3ecf8e; }
-  .ps-tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-top: 2.5rem; }
-  .ps-tier { position: relative; display: flex; flex-direction: column; }
-  .ps-tier.hl { border-color: hsl(var(--h) 80% 60% / .7); box-shadow: 0 0 50px -20px hsl(var(--h) 80% 55% / .7); }
-  .ps-tier h4 { font-size: 1.2rem; margin: 0; }
-  .ps-tier-desc { font-size: .9rem; margin: .2rem 0 .6rem; }
-  .ps-tier-price strong { font-family: var(--font-display); font-size: 1.9rem; color: var(--text); }
-  .ps-tier-price span { font-size: .82rem; }
-  .ps-tier .check-list { flex: 1; margin: .6rem 0 1.2rem; }
-  .ps-tier-badge { position: absolute; top: -11px; right: 1rem; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; padding: .25rem .7rem; border-radius: 999px; background: hsl(var(--h) 75% 50%); color: #fff; }
   .ps-extras { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-top: 2.5rem; }
   .ps-extras h4 { margin: 0 0 .3rem; font-size: 1.05rem; }
   .ps-extra-p { font-family: var(--font-display); font-weight: 700; color: var(--text); margin-bottom: .4rem; }
   .ps-extras p:last-child { font-size: .9rem; margin: 0; }
+  .ps-more a { color: var(--blue); font-weight: 600; }
   .ps-from { margin-top: 1.5rem; }
   .ps-from strong { color: var(--text); }
   .ps-from a { color: var(--blue); font-weight: 600; }
   @media (max-width: 900px) {
-    .ps-grid, .ps-tiers, .ps-extras { grid-template-columns: 1fr; }
-    .ps-mock { transform: none; }
-    .ps-app { grid-template-columns: 100px 1fr; }
+    .ps-grid, .ps-extras { grid-template-columns: 1fr; }
   }
 </style>
 

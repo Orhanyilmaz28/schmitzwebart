@@ -10,7 +10,7 @@ export function getStaticPaths() {
   return cities.map((c) => ({ params: { city: `webdesign-${c.slug}` }, props: { c } }));
 }
 const { c } = Astro.props;
-const pkgs = packages.filter((p) => ['one-pager', 'business-website', 'start-bundle'].includes(p.slug));
+const pkgs = ['visitenkarte', 'business-website', 'abo-business'].map((slug) => packages.find((p) => p.slug === slug)!);
 const schema = { '@context': 'https://schema.org', '@type': 'Service', name: `Webdesign ${c.name}`, provider: { '@id': `${site.url}/#business` }, areaServed: { '@type': 'City', name: c.name } };
 ---
 <Base title={`Webdesign ${c.name}: Websites vom Profi`} description={`Webdesign in ${c.name}: Individuelle, schnelle Websites mit SEO-Grundlage zum Festpreis von der Webmanufaktur Schmitz (Hilden).`} schema={schema}>
@@ -22,7 +22,7 @@ const schema = { '@context': 'https://schema.org', '@type': 'Service', name: `We
       <div>
         <span class="eyebrow">Ihr Vorteil</span>
         <h2>Ihr Partner für Websites in {c.name}</h2>
-        <p class="lead">Wir verbinden Design, Technik und Suchmaschinenoptimierung. Ihre Seite sieht nicht nur gut aus, sie wird auch gefunden.</p>
+        <p class="lead">Ich verbinde Design, Technik und Suchmaschinenoptimierung. Ihre Seite sieht nicht nur gut aus, sie wird auch gefunden.</p>
       </div>
       <ul class="check-list card">{c.points.map((p) => <li>{p}</li>)}</ul>
     </div>

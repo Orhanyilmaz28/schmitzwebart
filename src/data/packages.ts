@@ -90,7 +90,7 @@ export const packages: Pkg[] = [
   },
   {
     slug: 'individuell-web', category: 'webdesign', name: 'Portal & Individuell', from: true,
-    teaser: 'Mitgliederbereich, Buchungssystem, Konfigurator? Wir bauen es.',
+    teaser: 'Mitgliederbereich, Buchungssystem, Konfigurator? Ich baue es.',
     price: 9900, interval: 'einmalig', stripeLink: null,
     features: ['Individuelle Web-Anwendung', 'Login- & Kundenbereiche', 'Anbindung an Ihre Systeme', 'Konzept-Workshop inklusive', 'Festpreis nach Workshop'],
   },

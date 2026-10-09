@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CookieBanner from '../components/CookieBanner.astro';
 import Motion from '../components/Motion.astro';
+import ContactBar from '../components/ContactBar.astro';
 import { site } from '../data/site';
 import ownerPhoto from '../assets/phillip-schmitz.jpg';
 
@@ -74,6 +75,7 @@ const graphs = [business, ...(schema ? (Array.isArray(schema) ? schema : [schema
     <main id="main"><slot /></main>
     <Footer />
     {gtm && <CookieBanner />}
+    <ContactBar />
     <Motion />
   </body>
 </html>

@@ -5,11 +5,11 @@ export const faqGeneral = [
   },
   {
     q: 'Wie lange dauert es bis zur fertigen Website?',
-    a: 'Eine Visitenkarte ist in rund 5 Werktagen online, ein One-Pager in 1–2 Wochen, eine Business-Website in 3–5 Wochen. Entscheidend ist, wie schnell Texte und Bilder vorliegen. Auf Wunsch unterstützen wir bei beidem.',
+    a: 'Eine Visitenkarte ist in rund 5 Werktagen online, ein One-Pager in 1–2 Wochen, eine Business-Website in 3–5 Wochen. Entscheidend ist, wie schnell Texte und Bilder vorliegen. Auf Wunsch unterstütze ich Sie bei beidem.',
   },
   {
     q: 'Bekomme ich auch Texte und Bilder von Ihnen?',
-    a: 'Ja. Wir schreiben suchmaschinenfreundliche Texte und beraten zu Bildern. Haben Sie bereits Material, bauen wir darauf auf.',
+    a: 'Ja. Ich schreibe suchmaschinenfreundliche Texte und berate zu Bildern. Haben Sie bereits Material, baue ich darauf auf.',
   },
   {
     q: 'Wie schnell sehe ich Ergebnisse bei SEO und Google Ads?',
@@ -17,7 +17,7 @@ export const faqGeneral = [
   },
   {
     q: 'Muss ich mich selbst um Hosting und Technik kümmern?',
-    a: 'Nein. Auf Wunsch übernehmen wir Domain, Hosting, Updates und Sicherheit. Unsere Seiten sind statisch gebaut und deshalb besonders schnell und sicher.',
+    a: 'Nein. Auf Wunsch übernehme ich Domain, Hosting, Updates und Sicherheit. Meine Seiten sind statisch gebaut und deshalb besonders schnell und sicher.',
   },
   {
     q: 'Gehört mir das Logo nach dem Kauf?',

@@ -1,0 +1,117 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProductMock from '../../components/ProductMock.astro';
+import ProductTiers from '../../components/ProductTiers.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { products, productExtras } from '../../data/products';
+import { euro } from '../../data/packages';
+import { site } from '../../data/site';
+export function getStaticPaths() {
+  return products.map((p) => ({ params: { slug: p.slug }, props: { p } }));
+}
+const { p } = Astro.props;
+const prices = p.tiers.map((t) => t.price);
+const others = products.filter((x) => x.slug !== p.slug);
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: p.name,
+  description: p.metaDescription,
+  operatingSystem: 'Windows 10, Windows 11',
+  applicationCategory: 'BusinessApplication',
+  offers: { '@type': 'AggregateOffer', priceCurrency: 'EUR', lowPrice: Math.min(...prices), highPrice: Math.max(...prices), offerCount: p.tiers.length },
+  publisher: { '@id': `${site.url}/#business` },
+};
+const demo = `/kontakt?paket=beratung&nachricht=${encodeURIComponent(`Ich hätte gern eine kostenlose Demo von ${p.name}.`)}`;
+const yearsCost = (m: number) => euro(m * 36);
+---
+<Base title={p.metaTitle} description={p.metaDescription} schema={schema}>
+  <section class="phero" style={`--h:${p.hue}`}>
+    <div class="glow"></div>
+    <div class="container relative ph-grid">
+      <div>
+        <nav class="crumbs" aria-label="Brotkrumen"><a href="/software">Software</a> / <span>{p.name}</span></nav>
+        <span class="ps-status">{p.status === 'demo' ? 'Kostenlose Demo auf Anfrage' : 'Sofort verfügbar'}</span>
+        <h1>{p.name}</h1>
+        <p class="ph-tag">{p.tagline}</p>
+        <p class="lead">{p.intro}</p>
+        <div class="acts"><a class="btn btn--primary" href={demo}>Kostenlose Demo anfragen</a><a class="btn btn--ghost" href="#preise">Preise ab {euro(Math.min(...prices))}</a></div>
+      </div>
+      <ProductMock p={p} />
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">Funktionen</span><h2>Was {p.name} für Sie erledigt</h2></div>
+      <div class="grid grid--3">
+        {p.details.map((d) => <div class="card"><h3>{d.t}</h3><p>{d.d}</p></div>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container two">
+      <div>
+        <span class="eyebrow">Für wen?</span>
+        <h2>Gemacht für</h2>
+        <ul class="check-list">{p.useCases.map((u) => <li>{u}</li>)}</ul>
+      </div>
+      <div class="card calc-card">
+        <span class="eyebrow">Einmal kaufen statt Abo</span>
+        <h3>Die Rechnung über 3 Jahre</h3>
+        <table>
+          <tr><td>Abo-Software für 15 € / Monat</td><td>{yearsCost(15)}</td></tr>
+          <tr><td>Abo-Software für 30 € / Monat</td><td>{yearsCost(30)}</td></tr>
+          <tr class="hl"><td>{p.name} {p.tiers.find((t) => t.highlight)?.name ?? p.tiers[0].name}, einmalig</td><td>{euro((p.tiers.find((t) => t.highlight) ?? p.tiers[0]).price)}</td></tr>
+        </table>
+        <p class="small">Beispielrechnung, netto. Optionale Updates & Support: 49 € pro Jahr.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="preise">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">Lizenzen</span><h2>{p.name}: Preise</h2><p class="lead">Einmalige Lizenz, zeitlich unbegrenzt nutzbar. Alle Preise netto zzgl. MwSt.</p></div>
+      <ProductTiers p={p} />
+      <div class="grid grid--3 extras">
+        {productExtras.map((e) => <div class="card"><h3>{e.t}</h3><p class="ep">{e.p}</p><p>{e.d}</p></div>)}
+      </div>
+    </div>
+  </section>
+
+  <Faq items={p.faq} title={`Fragen zu ${p.name}`} />
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">Weitere Lösungen</span><h2>Auch interessant</h2></div>
+      <div class="grid grid--3">
+        {others.map((o) => <a class="card" href={`/software/${o.slug}`} style={`--h:${o.hue}`}><h3>{o.name}</h3><p>{o.tagline}</p><span class="more">Ansehen →</span></a>)}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand title={`${p.name} live erleben?`} text="In einer kostenlosen Demo zeige ich Ihnen das Programm per Bildschirmfreigabe, gern mit Ihren eigenen Beispieldaten." label="Demo anfragen" href={demo} />
+</Base>
+<style>
+  .phero { position: relative; overflow: hidden; padding: clamp(3rem, 7vw, 5rem) 0; }
+  .ph-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  .crumbs { font-size: .85rem; color: var(--muted); margin-bottom: 1rem; } .crumbs a { color: var(--blue); }
+  .ps-status { display: inline-block; font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: hsl(var(--h) 85% 70%); background: hsl(var(--h) 70% 50% / .15); border: 1px solid hsl(var(--h) 70% 60% / .4); padding: .25rem .7rem; border-radius: 999px; }
+  h1 { margin: .8rem 0 .3rem; background: linear-gradient(120deg, #fff, hsl(var(--h) 90% 72%)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .ph-tag { font-size: 1.25rem; color: var(--text); }
+  .acts { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.6rem; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: center; }
+  .calc-card table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+  .calc-card td { padding: .65rem 0; border-bottom: 1px solid var(--line); color: var(--muted); }
+  .calc-card td:last-child { text-align: right; font-family: var(--font-display); color: var(--text); font-weight: 700; }
+  .calc-card tr.hl td { color: var(--text); border-bottom: 0; }
+  .calc-card tr.hl td:last-child { color: #5fe3a4; font-size: 1.3rem; }
+  .small { font-size: .8rem; margin: 0; }
+  .extras { margin-top: 2rem; }
+  .extras h3 { font-size: 1.05rem; margin: 0 0 .3rem; font-weight: 500; }
+  .ep { font-family: var(--font-display); font-weight: 700; color: var(--text); margin-bottom: .4rem; }
+  .more { color: var(--blue); font-weight: 600; }
+  @media (max-width: 900px) { .ph-grid, .two { grid-template-columns: 1fr; } }
+</style>

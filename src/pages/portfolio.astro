@@ -3,41 +3,31 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import CtaBand from '../components/CtaBand.astro';
 import References from '../components/References.astro';
-// Echte Projekte hier ergänzen. concept: true = als „Konzeptentwurf“ gekennzeichnet.
-const items = [
-  { title: 'Handwerksbetrieb – Website', type: 'Webdesign', tags: ['Business-Website', 'Lokales SEO'], hue: 215, concept: true, text: 'Klare Struktur, Leistungsseiten und Anfrage-Formular für einen regionalen Betrieb.' },
-  { title: 'Café & Bistro – Branding', type: 'Logodesign', tags: ['Logo Pro', 'Styleguide'], hue: 275, concept: true, text: 'Logo, Farbwelt und Social-Media-Profile mit hohem Wiedererkennungswert.' },
-  { title: 'Online-Shop für Tee', type: 'Website + Shop', tags: ['Shop', 'Stripe'], hue: 160, concept: true, text: 'Schlanker Shop mit schnellem Checkout und Produktseiten, die ranken.' },
-  { title: 'Kanzlei – SEO-Relaunch', type: 'SEO', tags: ['SEO Wachstum', 'Content'], hue: 235, concept: true, text: 'Neue Struktur und Inhalte für bessere Sichtbarkeit bei lokalen Suchanfragen.' },
-  { title: 'Physiotherapie – Google Ads', type: 'Google Ads', tags: ['Ads Pro', 'Tracking'], hue: 25, concept: true, text: 'Suchkampagnen mit Conversion-Tracking für planbare Terminanfragen.' },
-  { title: 'Fitnessstudio – One-Pager', type: 'Webdesign', tags: ['One-Pager', 'Mobile First'], hue: 300, concept: true, text: 'Eine schnelle Seite mit Probetraining-Formular und starken Bildern.' },
+import Testimonials from '../components/Testimonials.astro';
+import { references } from '../data/references';
+const count = (s: string) => references.filter((r) => r.services.includes(s as never)).length;
+const stats = [
+  { n: references.length, l: 'Kundenprojekte live' },
+  { n: count('logodesign'), l: 'Logos gestaltet' },
+  { n: count('shop'), l: 'Online-Shops' },
+  { n: 100, l: '% persönlich betreut' },
 ];
 ---
-<Base title="Portfolio & Referenzen" description="Projekte und Konzepte der Webmanufaktur Schmitz: Webdesign, Logodesign, SEO und Google Ads – ein Einblick in unsere Arbeitsweise.">
-  <PageHero eyebrow="Portfolio" title="Einblick in unsere Arbeit" text="Ausgewählte Kundenprojekte, von Logo und Website bis zum Online-Shop. Darunter finden Sie Konzeptentwürfe, die zeigen, wie wir an Projekte herangehen." />
-  <References title="Kundenprojekte" eyebrow="Live online" showAll={false} />
+<Base title="Portfolio & Referenzen" description="Kundenprojekte der Webmanufaktur Schmitz aus Hilden: Logos, Websites und Online-Shops für Marken wie Cevdet Honig, Tragetraum und EXSTASE Energy.">
+  <PageHero eyebrow="Portfolio" title="Projekte, die online sind." text="Von der Honigmarke bis zum Energy-Drink-Shop: Hier sehen Sie echte Kundenprojekte mit Logo, Website und Online-Shop. Fahren Sie mit der Maus über die Vorschau, um die ganze Seite zu sehen." />
   <section class="section section--alt">
-    <div class="container"><div class="section-head"><span class="eyebrow">Konzeptentwürfe</span><h2>So gehen wir an Projekte heran</h2></div></div>
-    <div class="container grid grid--3">
-      {items.map((i) => (
-        <article class="card card--hover work">
-          <div class="work-thumb" style={`--h:${i.hue}`} aria-hidden="true">
-            <img src="/logo-mark.svg" width="56" height="56" alt="" />
-            {i.concept && <span class="work-badge">Konzeptentwurf</span>}
-          </div>
-          <span class="eyebrow">{i.type}</span>
-          <h3>{i.title}</h3>
-          <p>{i.text}</p>
-          <div>{i.tags.map((t) => <span class="tag">{t}</span>)}</div>
-        </article>
-      ))}
+    <div class="container stats">
+      {stats.map((s) => <div class="stat"><b data-count={s.n}>{s.n}</b><span>{s.l}</span></div>)}
     </div>
   </section>
-  <CtaBand title="Ihr Projekt als nächste Referenz?" text="Erzählen Sie uns von Ihrem Vorhaben. Wir melden uns mit einer ehrlichen Einschätzung und einem Festpreis-Vorschlag." />
+  <References title="Kundenprojekte" eyebrow="Referenzen" showAll={false} />
+  <Testimonials />
+  <CtaBand title="Ihr Projekt als nächste Referenz?" text="Erzählen Sie mir von Ihrem Vorhaben. Ich melde mich mit einer ehrlichen Einschätzung und einem Festpreis-Vorschlag." />
 </Base>
 <style>
-  .work { padding: 1rem 1rem 1.5rem; }
-  .work > :not(.work-thumb) { margin-inline: .6rem; }
-  .work-thumb { position: relative; aspect-ratio: 16 / 10; border-radius: 12px; margin-bottom: 1.2rem; display: grid; place-items: center; background: radial-gradient(circle at 30% 20%, hsl(var(--h) 90% 60% / .45), transparent 60%), linear-gradient(160deg, hsl(var(--h) 60% 18%), #0b0d1d); border: 1px solid var(--line); }
-  .work-badge { position: absolute; left: .7rem; top: .7rem; font-size: .68rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; background: rgba(0,0,0,.45); border: 1px solid var(--line); padding: .22rem .6rem; border-radius: 999px; color: var(--muted); }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
+  .stat { text-align: center; padding: 1.4rem 1rem; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface); }
+  .stat b { display: block; font-family: var(--font-display); font-size: 2.6rem; line-height: 1; background: linear-gradient(120deg, #ffc24d, #ff4f8b 50%, #a45bff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .stat span { display: block; margin-top: .4rem; color: var(--muted); font-size: .92rem; }
+  @media (max-width: 760px) { .stats { grid-template-columns: 1fr 1fr; } }
 </style>

@@ -1,6 +1,7 @@
 ---
+import { contactLinks } from '../data/site';
 interface Props { title?: string; text?: string; label?: string; href?: string }
-const { title = 'Bereit für den nächsten Schritt?', text = 'Schreiben Sie uns kurz, worum es geht. Sie erhalten innerhalb eines Werktags eine Antwort mit einem klaren Vorschlag.', label = 'Unverbindlich anfragen', href = '/kontakt' } = Astro.props;
+const { title = 'Bereit für den nächsten Schritt?', text = 'Schreiben Sie mir kurz, worum es geht. Sie erhalten innerhalb eines Werktags eine Antwort mit einem klaren Vorschlag.', label = 'Unverbindlich anfragen', href = '/kontakt' } = Astro.props;
 ---
 <section class="section">
   <div class="container">
@@ -10,7 +11,7 @@ const { title = 'Bereit für den nächsten Schritt?', text = 'Schreiben Sie uns 
         <img class="cta-icon" src="/logo-mark.svg" width="110" height="110" alt="" aria-hidden="true" />
         <h2>{title}</h2>
         <p class="lead">{text}</p>
-        <a class="btn btn--primary" href={href}>{label}</a>
+        <div class="cta-actions"><a class="btn btn--primary" href={href}>{label}</a><a class="btn btn--ghost" href={contactLinks.booking} {...(contactLinks.bookingExternal ? { target: '_blank', rel: 'noopener' } : {})}>Erstgespräch vereinbaren</a><a class="btn btn--ghost" href={contactLinks.whatsapp()} target="_blank" rel="noopener">WhatsApp</a></div>
       </div>
     </div>
   </div>
@@ -18,6 +19,7 @@ const { title = 'Bereit für den nächsten Schritt?', text = 'Schreiben Sie uns 
 <style>
   .cta { position: relative; overflow: hidden; border: 1px solid var(--line); border-radius: 28px; padding: clamp(2.2rem, 6vw, 4.5rem); text-align: center; background: var(--surface); }
   .cta-icon { margin: 0 auto 1rem; width: 110px; height: 110px; }
+  .cta-actions { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: center; }
   .cta .lead { margin: 0 auto 1.8rem; }
   .cta :global(.glow::before), .cta :global(.glow::after) { opacity: .22; width: 380px; height: 380px; }
 </style>

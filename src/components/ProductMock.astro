@@ -1,0 +1,38 @@
+---
+import type { Product } from '../data/products';
+interface Props { p: Product }
+const { p } = Astro.props;
+---
+<div class="ps-mock" aria-hidden="true" style={`--h:${p.hue}`}>
+  <div class="ps-bar"><i></i><i></i><i></i><span>{p.name}</span></div>
+  <div class="ps-app">
+    <nav>{p.nav.map((n, j) => <span class:list={{ on: j === 1 }}>{n}</span>)}</nav>
+    <div class="ps-main">
+      <div class="ps-kpis"><b></b><b></b><b></b></div>
+      <div class="ps-rows">{Array.from({ length: 7 }).map((_, j) => <div class="ps-row"><i style={`width:${38 + ((j * 23) % 40)}%`}></i><i></i><em class:list={{ ok: j % 3 !== 1 }}></em></div>)}</div>
+    </div>
+  </div>
+</div>
+<style>
+  .ps-mock { border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,.14); background: #0e1120; box-shadow: 0 40px 90px -30px hsl(var(--h) 80% 50% / .55); transform: perspective(1200px) rotateY(-6deg) rotateX(2deg); transition: transform .5s; }
+  .ps-mock:hover { transform: none; }
+  .ps-bar { display: flex; align-items: center; gap: 6px; padding: .55rem .8rem; background: hsl(var(--h) 60% 30% / .5); }
+  .ps-bar i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.3); }
+  .ps-bar span { margin-left: .6rem; font-size: .78rem; font-weight: 700; color: #fff; }
+  .ps-app { display: grid; grid-template-columns: 130px 1fr; min-height: 300px; }
+  .ps-app nav { background: rgba(255,255,255,.03); border-right: 1px solid var(--line); padding: .7rem .5rem; display: grid; align-content: start; gap: .2rem; }
+  .ps-app nav span { font-size: .74rem; color: var(--muted); padding: .42rem .55rem; border-radius: 7px; }
+  .ps-app nav span.on { background: hsl(var(--h) 70% 50% / .25); color: #fff; }
+  .ps-main { padding: .9rem; }
+  .ps-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin-bottom: .8rem; }
+  .ps-kpis b { height: 46px; border-radius: 9px; background: linear-gradient(140deg, hsl(var(--h) 70% 50% / .35), rgba(255,255,255,.04)); border: 1px solid var(--line); }
+  .ps-rows { display: grid; gap: .38rem; }
+  .ps-row { display: grid; grid-template-columns: 1fr 70px 14px; gap: .6rem; align-items: center; padding: .48rem .6rem; border-radius: 7px; background: rgba(255,255,255,.03); }
+  .ps-row i { display: block; height: 7px; border-radius: 4px; background: rgba(255,255,255,.18); }
+  .ps-row i + i { width: 100%; background: rgba(255,255,255,.1); }
+  .ps-row em { width: 10px; height: 10px; border-radius: 50%; background: #ffb547; }
+  .ps-row em.ok { background: #3ecf8e; }
+    .ps-mock { transform: none; }
+    .ps-app { grid-template-columns: 100px 1fr; }
+  @media (max-width: 900px) { .ps-mock { transform: none; } .ps-app { grid-template-columns: 100px 1fr; } }
+</style>

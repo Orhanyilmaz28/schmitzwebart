@@ -14,7 +14,11 @@ npm run build    # Ausgabe in dist/
 |---|---|
 | Firmendaten, Telefon, USt-IdNr., Navigation | `src/data/site.ts` |
 | Pakete, **Preise**, **Stripe-Links** (auch Grundlage für den Preisrechner) | `src/data/packages.ts` |
-| Eigene Software-Produkte (VereinsKopf, CallKopf, KundenKopf, ZeitKopf) | `src/data/products.ts` |
+| Eigene Software-Produkte inkl. Produktseiten `/software/<name>` | `src/data/products.ts` |
+| Ratgeber-Artikel (neue Datei = neuer Artikel) | `src/content/ratgeber/*.md` |
+| Kundenstimmen (erscheinen erst, wenn eingetragen) | `src/data/testimonials.ts` |
+| WhatsApp-Nummer, Terminbuchungs-Link (Cal.com o. Ä.) | `src/data/site.ts` (`whatsapp`, `bookingUrl`) |
+| AGB | `src/pages/agb.astro` |
 | Leistungstexte (Webdesign/Logo/SEO/SEA) | `src/data/services.ts` |
 | Städte-Seiten (`/webdesign-<stadt>`) | `src/data/cities.ts` |
 | FAQ | `src/data/faq.ts` |
@@ -48,6 +52,11 @@ Die vier Produkte in `src/data/products.ts` stehen auf `status: 'demo'` („Kost
 Erst auf `'verfuegbar'` stellen, wenn das Programm wirklich auslieferbar ist.
 
 ## Vor dem Livegang prüfen
+- [ ] **AGB anwaltlich prüfen lassen** (`/agb`, Entwurf für Geschäftskunden)
+- [ ] Datenschutz: Angaben zu Vercel (Adresse, Data Privacy Framework) prüfen
+- [ ] Software-Demos bereitstellen, bevor Demo-Anfragen kommen
+- [ ] Terminbuchung: Cal.com/Calendly-Link in `site.ts` → `bookingUrl` eintragen
+- [ ] Kundenstimmen einholen und in `testimonials.ts` eintragen
 - [ ] USt-IdNr. oder Kleinunternehmer-Hinweis (§ 19 UStG) im Impressum
 - [ ] Datenschutzerklärung: Hosting-Anbieter und Formular-Dienst ergänzen, rechtlich prüfen lassen
 - [ ] Portfolio-Konzeptentwürfe durch echte Projekte ersetzen

@@ -1,0 +1,31 @@
+---
+import type { Product } from '../data/products';
+import { euro } from '../data/packages';
+interface Props { p: Product }
+const { p } = Astro.props;
+---
+<div class="ps-tiers" style={`--h:${p.hue}`}>
+  {p.tiers.map((t) => (
+    <div class:list={['ps-tier card', { hl: t.highlight }]}>
+      {t.highlight && <span class="ps-tier-badge">Empfehlung</span>}
+      <h3 class="ps-tier-h">{p.name} {t.name}</h3>
+      <p class="ps-tier-desc">{t.desc}</p>
+      <p class="ps-tier-price"><strong>{euro(t.price)}</strong> <span>{t.interval === 'monat' ? '/ Monat' : 'einmalig'} zzgl. MwSt.</span></p>
+      <ul class="check-list">{t.features.map((f) => <li>{f}</li>)}</ul>
+      <a class:list={['btn btn--block', t.highlight ? 'btn--primary' : 'btn--ghost']} href={`/kontakt?paket=beratung&nachricht=${encodeURIComponent(`Ich interessiere mich für ${p.name} ${t.name} und hätte gern eine kostenlose Demo.`)}`}>Demo anfragen</a>
+    </div>
+  ))}
+</div>
+<style>
+  .ps-tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-top: 2.5rem; }
+  .ps-tier { position: relative; display: flex; flex-direction: column; }
+  .ps-tier.hl { border-color: hsl(var(--h) 80% 60% / .7); box-shadow: 0 0 50px -20px hsl(var(--h) 80% 55% / .7); }
+  .ps-tier-h { font-size: 1.2rem; margin: 0; }
+  .ps-tier-desc { font-size: .9rem; margin: .2rem 0 .6rem; }
+  .ps-tier-price strong { font-family: var(--font-display); font-size: 1.9rem; color: var(--text); }
+  .ps-tier-price span { font-size: .82rem; }
+  .ps-tier .check-list { flex: 1; margin: .6rem 0 1.2rem; }
+  .ps-tier-badge { position: absolute; top: -11px; right: 1rem; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; padding: .25rem .7rem; border-radius: 999px; background: hsl(var(--h) 75% 50%); color: #fff; }
+  .ps-tier-h { font-size: 1.2rem; margin: 0; font-weight: 500; }
+  @media (max-width: 900px) { .ps-tiers { grid-template-columns: 1fr; } }
+</style>

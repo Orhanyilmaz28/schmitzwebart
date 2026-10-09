@@ -140,3 +140,6 @@ a.card:hover, .card--hover:hover { transform: translateY(-4px); border-color: rg
   @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+
+/* Links im Fließtext nicht nur über Farbe erkennbar */
+.crumbs a, .byline a { text-decoration: underline; text-underline-offset: 3px; }

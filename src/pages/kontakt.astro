@@ -2,19 +2,19 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import ContactForm from '../components/ContactForm.astro';
-import { site } from '../data/site';
+import { site, contactLinks } from '../data/site';
 import { Image } from 'astro:assets';
 import photo from '../assets/phillip-schmitz.jpg';
 ---
 <Base title="Kontakt & Anfrage" description="Kontakt zur Webmanufaktur Schmitz in Hilden: Anfrage für Webdesign, Logodesign, SEO oder Google Ads. Antwort innerhalb eines Werktags.">
-  <PageHero eyebrow="Kontakt" title="Erzählen Sie uns von Ihrem Projekt." text="Je mehr wir wissen, desto besser können wir Ihnen helfen. Sie erhalten innerhalb eines Werktags eine persönliche Antwort." />
+  <PageHero eyebrow="Kontakt" title="Erzählen Sie mir von Ihrem Projekt." text="Je mehr ich weiß, desto besser kann ich Ihnen helfen. Sie erhalten innerhalb eines Werktags eine persönliche Antwort." />
   <section class="section">
     <div class="container contact-grid">
       <div class="card"><ContactForm variant="kontakt" /></div>
       <aside>
         <div class="card">
           <div class="person"><Image src={photo} alt="Phillip Schmitz" width={144} height={144} class="person-img" /><div><strong>Phillip Schmitz</strong><span>Inhaber · Ihr Ansprechpartner</span></div></div>
-          <h2 class="aside-h">So erreichen Sie uns</h2>
+          <h2 class="aside-h">So erreichen Sie mich</h2>
           <address>
             <strong>{site.name}</strong><br />
             {site.owner}<br />
@@ -22,12 +22,17 @@ import photo from '../assets/phillip-schmitz.jpg';
             {site.address.zip} {site.address.city}
           </address>
           <p><a href={`mailto:${site.email}`}>{site.email}</a>{site.phone && (<><br /><a href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a></>)}</p>
+          <div class="direct">
+            <a class="btn btn--primary btn--block" href={contactLinks.booking} {...(contactLinks.bookingExternal ? { target: '_blank', rel: 'noopener' } : {})}>Kostenloses 15-Min-Erstgespräch</a>
+            <a class="btn btn--ghost btn--block" href={contactLinks.whatsapp()} target="_blank" rel="noopener">Per WhatsApp schreiben</a>
+            <a class="btn btn--ghost btn--block" href={contactLinks.call}>Anrufen: {site.phone}</a>
+          </div>
           <p>Gern auch Termine vor Ort oder per Video-Call im Raum Hilden, Düsseldorf, Solingen und Umgebung.</p>
         </div>
         <div class="card" style="margin-top:1.25rem">
           <h2 class="aside-h">Was passiert nach Ihrer Anfrage?</h2>
           <ol class="steps-mini">
-            <li>Wir melden uns innerhalb eines Werktags.</li>
+            <li>Ich melde mich innerhalb eines Werktags.</li>
             <li>Kurzes Gespräch zu Ziel, Umfang und Zeitplan.</li>
             <li>Sie erhalten ein Festpreis-Angebot.</li>
           </ol>
@@ -42,6 +47,7 @@ import photo from '../assets/phillip-schmitz.jpg';
   .person :global(.person-img) { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; object-position: 50% 15%; border: 2px solid rgba(164, 91, 255, .6); }
   .person strong { display: block; font-family: var(--font-display); font-size: 1.15rem; }
   .person span { color: var(--muted); font-size: .9rem; }
+  .direct { display: grid; gap: .6rem; margin: 1.2rem 0; }
   .aside-h { font-size: 1.25rem; font-weight: 500; }
   address { font-style: normal; color: var(--muted); margin-bottom: 1rem; }
   aside a { color: var(--blue); }

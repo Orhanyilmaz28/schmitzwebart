@@ -1,0 +1,19 @@
+---
+import type { Article } from '../lib/ratgeber';
+import { readingTime, fmtDate } from '../lib/ratgeber';
+interface Props { a: Article }
+const { a } = Astro.props;
+---
+<a class="card art" href={`/ratgeber/${a.id}`}>
+  <span class="art-cat">{a.data.category}</span>
+  <h3>{a.data.title}</h3>
+  <p>{a.data.description}</p>
+  <span class="art-meta">{fmtDate(a.data.date)} · {readingTime(a.body)} Min. Lesezeit</span>
+</a>
+<style>
+  .art { display: flex; flex-direction: column; gap: .5rem; }
+  .art h3 { font-size: 1.2rem; font-weight: 700; margin: 0; }
+  .art p { flex: 1; font-size: .95rem; margin: 0; }
+  .art-cat { align-self: flex-start; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #ffb27a; background: rgba(255, 140, 80, .12); border: 1px solid rgba(255, 140, 80, .35); padding: .2rem .65rem; border-radius: 999px; }
+  .art-meta { font-size: .82rem; color: var(--muted); }
+</style>

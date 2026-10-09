@@ -6,8 +6,12 @@ import PackageCard from '../components/PackageCard.astro';
 import { services, icons } from '../data/services';
 import { packages } from '../data/packages';
 import { faqGeneral } from '../data/faq';
-import { site } from '../data/site';
+import { site, contactLinks } from '../data/site';
 import Founder from '../components/Founder.astro';
+import Testimonials from '../components/Testimonials.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { getArticles } from '../lib/ratgeber';
+const latest = (await getArticles()).slice(0, 3);
 import References from '../components/References.astro';
 import Marquee from '../components/Marquee.astro';
 import ProductShowcase from '../components/ProductShowcase.astro';
@@ -34,14 +38,14 @@ const why = [
       <div>
         <span class="eyebrow reveal">Webmanufaktur Schmitz · Hilden</span>
         <h1 class="reveal">Websites, Logos und <span class="grad-text">Sichtbarkeit</span>, die Kunden bringen.</h1>
-        <p class="lead reveal">Wir gestalten Ihren kompletten Online-Auftritt aus einer Hand: Webdesign, Logodesign, SEO und Google Ads. Dazu individuelle Windows-Software. Für jedes Budget, vom Logo für 149 € bis zur Software nach Maß.</p>
+        <p class="lead reveal">Ich gestalte Ihren kompletten Online-Auftritt aus einer Hand: Webdesign, Logodesign, SEO und Google Ads. Dazu individuelle Windows-Software. Für jedes Budget, vom Logo für 149 € bis zur Software nach Maß.</p>
         <div class="hero-actions reveal">
-          <a class="btn btn--primary" href="/kontakt">Kostenlos anfragen</a>
+          <a class="btn btn--primary" href={contactLinks.booking} {...(contactLinks.bookingExternal ? { target: '_blank', rel: 'noopener' } : {})}>Kostenloses Erstgespräch</a>
           <a class="btn btn--ghost" href="/pakete">Pakete ansehen</a>
         </div>
         <p class="hero-for reveal">Für <span class="hero-rot" data-rotate="Handwerker|Praxen|Vereine|Online-Shops|Gastronomie|Startups|Dienstleister|Callcenter">Handwerker</span> in Hilden und ganz Deutschland.</p>
         <ul class="hero-trust reveal">
-          <li>✓ Festpreis-Pakete</li><li>✓ Antwort in 1 Werktag</li><li>✓ Volle Nutzungsrechte</li>
+          <li>✓ 15 Minuten, unverbindlich</li><li>✓ Festpreis-Pakete</li><li>✓ Antwort in 1 Werktag</li>
         </ul>
       </div>
       <div class="hero-visual reveal" aria-hidden="true">
@@ -91,6 +95,7 @@ const why = [
   </section>
 
   <References />
+  <Testimonials alt={false} />
 
   <section class="section section--alt">
     <div class="container">
@@ -143,6 +148,14 @@ const why = [
         <li>Rechtliches: Impressum & Datenschutz</li>
         <li>Konkrete Verbesserungsvorschläge</li>
       </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">Ratgeber</span><h2>Wissen, das Ihnen Geld und Zeit spart</h2></div>
+      <div class="grid grid--3">{latest.map((a) => <ArticleCard a={a} />)}</div>
+      <p style="margin-top:1.8rem"><a class="btn btn--ghost" href="/ratgeber">Alle Artikel</a></p>
     </div>
   </section>
 

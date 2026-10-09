@@ -41,7 +41,7 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
       <div class="sc-full-inner" aria-hidden="true"></div>
       <div class="sc-gate card">
         <h3>Vollständigen Bericht freischalten</h3>
-        <p>Alle Prüfpunkte mit Erklärungen, Google-Messwerte zur Ladezeit und konkrete Empfehlungen, kostenlos. Auf Wunsch besprechen wir die Ergebnisse mit Ihnen.</p>
+        <p>Alle Prüfpunkte mit Erklärungen, Google-Messwerte zur Ladezeit und konkrete Empfehlungen, kostenlos. Auf Wunsch bespreche ich die Ergebnisse mit Ihnen.</p>
         <form class="form sc-lead" novalidate>
           <label class="hp" aria-hidden="true">Nicht ausfüllen<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
           <div class="grid grid--2">
@@ -193,7 +193,7 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
     }
     $('.sc-issues').innerHTML = problems.length
       ? problems.slice(0, 3).map(item).join('')
-      : '<p>Stark! Bei den Grundlagen haben wir keine Baustellen gefunden. Spannend wird es jetzt bei Inhalten, Rankings und Anzeigen. Sprechen Sie uns an.</p>';
+      : '<p>Stark! Bei den Grundlagen habe ich keine Baustellen gefunden. Spannend wird es jetzt bei Inhalten, Rankings und Anzeigen. Sprechen Sie mich an.</p>';
 
     renderFull();
   }
@@ -218,7 +218,7 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
         ${metric('lcp', 'Größtes Element sichtbar (LCP)')}${metric('fcp', 'Erster Inhalt sichtbar')}${metric('cls', 'Layout-Verschiebung (CLS)')}${metric('tbt', 'Blockierzeit')}
       </div></div>`;
     } else if (psiState === 'failed') {
-      html += '<div class="sc-group"><h4 class="g">Google-Messwerte</h4><p>Die Geschwindigkeitsmessung bei Google war gerade nicht möglich. Wir holen sie im persönlichen Gespräch nach.</p></div>';
+      html += '<div class="sc-group"><h4 class="g">Google-Messwerte</h4><p>Die Geschwindigkeitsmessung bei Google war gerade nicht möglich. Ich hole sie im persönlichen Gespräch nach.</p></div>';
     }
     for (const g of ['seo', 'technik', 'vertrauen']) {
       const list = audit.checks.filter((c) => c.group === g);

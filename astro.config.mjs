@@ -4,10 +4,9 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://schmitzwebart.de',
   trailingSlash: 'never',
-  build: { format: 'file' },
   integrations: [
     sitemap({
-      filter: (page) => !/\/(danke|impressum|datenschutz|404)/.test(page),
+      filter: (page) => !/\/(danke|impressum|datenschutz|agb|404)/.test(page),
     }),
   ],
 });
