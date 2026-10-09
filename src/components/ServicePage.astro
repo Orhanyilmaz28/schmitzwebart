@@ -1,0 +1,66 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from './PageHero.astro';
+import Faq from './Faq.astro';
+import CtaBand from './CtaBand.astro';
+import PackageCard from './PackageCard.astro';
+import { services, icons, type ServiceKey } from '../data/services';
+import { packages } from '../data/packages';
+interface Props { slug: ServiceKey }
+const s = services[Astro.props.slug];
+const pkgs = packages.filter((p) => p.category === s.packageCategory);
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: s.name,
+  provider: { '@id': 'https://schmitzwebart.de/#business' },
+  areaServed: ['Hilden', 'Düsseldorf', 'Deutschland'],
+  description: s.metaDescription,
+};
+---
+<Base title={s.metaTitle} description={s.metaDescription} schema={schema}>
+  <PageHero eyebrow={s.name} title={s.heroTitle} text={s.heroText}>
+    <div class="hero-actions"><a class="btn btn--primary" href="/kontakt">Unverbindlich anfragen</a><a class="btn btn--ghost" href="#pakete">Pakete ansehen</a></div>
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">Ihre Vorteile</span><h2>Darum {s.name} von der Webmanufaktur</h2></div>
+      <div class="grid grid--4">
+        {s.benefits.map((b) => (
+          <div class="card card--hover">
+            <div class="icon-badge"><svg viewBox="0 0 24 24" set:html={icons[b.icon]} /></div>
+            <h3>{b.t}</h3>
+            <p>{b.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">Ablauf</span><h2>So arbeiten wir zusammen</h2></div>
+      <ol class="steps">
+        {s.steps.map(([t, d], i) => (
+          <li class="card"><span class="step-n">{String(i + 1).padStart(2, '0')}</span><h3>{t}</h3><p>{d}</p></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="pakete">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">Pakete</span><h2>Feste Pakete statt Überraschungen</h2><p class="lead">Wählen Sie ein Paket oder fragen Sie ein individuelles Angebot an. Alle Preise netto.</p></div>
+      <div class="grid grid--3">{pkgs.map((p) => <PackageCard pkg={p} />)}</div>
+    </div>
+  </section>
+
+  <Faq items={s.faq} />
+  <CtaBand />
+</Base>
+<style>
+  .hero-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.8rem; }
+  .steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+  .step-n { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; display: block; margin-bottom: .4rem; }
+</style>

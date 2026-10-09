@@ -1,0 +1,40 @@
+---
+// Wird nur gerendert, wenn PUBLIC_GTM_ID gesetzt ist (siehe Base.astro).
+---
+<div id="cookie-banner" class="cb" role="dialog" aria-label="Cookie-Einstellungen" hidden>
+  <p>Wir möchten Google Tag Manager nutzen, um Besuche und Anzeigen-Erfolge zu messen. Das geschieht nur mit Ihrer Einwilligung. Mehr in der <a href="/datenschutz">Datenschutzerklärung</a>.</p>
+  <div class="cb-actions">
+    <button class="btn btn--ghost btn--sm" data-choice="no">Ablehnen</button>
+    <button class="btn btn--primary btn--sm" data-choice="yes">Akzeptieren</button>
+  </div>
+</div>
+<style>
+  .cb { position: fixed; z-index: 100; left: 1rem; right: 1rem; bottom: 1rem; max-width: 720px; margin-inline: auto; background: var(--surface-2); border: 1px solid var(--line); border-radius: 16px; padding: 1.1rem 1.25rem; display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+  .cb[hidden] { display: none; }
+  .cb p { margin: 0; flex: 1 1 320px; font-size: .9rem; }
+  .cb a { color: var(--blue); text-decoration: underline; }
+  .cb-actions { display: flex; gap: .6rem; }
+</style>
+<script>
+  const KEY = 'sw-consent';
+  const gtmId = document.documentElement.dataset.gtm;
+  const banner = document.getElementById('cookie-banner')!;
+  const read = () => { try { return localStorage.getItem(KEY); } catch { return null; } };
+  const write = (v: string) => { try { localStorage.setItem(KEY, v); } catch {} };
+  function loadGtm() {
+    if (!gtmId || (window as any).__gtmLoaded) return;
+    (window as any).__gtmLoaded = true;
+    const w = window as any; w.dataLayer = w.dataLayer || [];
+    w.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
+    const s = document.createElement('script'); s.async = true;
+    s.src = `https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(gtmId)}`;
+    document.head.appendChild(s);
+  }
+  const saved = read();
+  if (saved === 'yes') loadGtm(); else if (!saved) banner.hidden = false;
+  banner.addEventListener('click', (e) => {
+    const c = (e.target as HTMLElement).dataset.choice; if (!c) return;
+    write(c); banner.hidden = true; if (c === 'yes') loadGtm();
+  });
+  document.querySelectorAll<HTMLElement>('[data-cookie-settings]').forEach((b) => { b.hidden = false; b.addEventListener('click', () => (banner.hidden = false)); });
+</script>

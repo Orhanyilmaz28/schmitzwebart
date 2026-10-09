@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import PackageCard from '../components/PackageCard.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { packages, categories } from '../data/packages';
+import { faqGeneral } from '../data/faq';
+---
+<Base title="Pakete & Preise: Webdesign, Logo, SEO, Google Ads" description="Festpreis-Pakete für Webdesign, Logodesign, SEO und Google Ads von der Webmanufaktur Schmitz in Hilden. Klare Leistungen, transparente Preise.">
+  <PageHero eyebrow="Pakete & Preise" title="Klare Pakete. Feste Leistungen. Keine Überraschungen." text="Wählen Sie Ihr Paket und buchen Sie direkt oder fragen Sie unverbindlich an. Alle Preise verstehen sich netto zuzüglich Mehrwertsteuer." />
+  <nav class="container cat-nav" aria-label="Kategorien">
+    {categories.map((c) => <a href={`#${c.id}`} class="tag">{c.label}</a>)}
+  </nav>
+  {categories.map((c) => (
+    <section class="section" id={c.id}>
+      <div class="container">
+        <div class="section-head"><h2>{c.label}</h2></div>
+        <div class="grid grid--3">{packages.filter((p) => p.category === c.id).map((p) => <PackageCard pkg={p} />)}</div>
+      </div>
+    </section>
+  ))}
+  <section class="section section--alt">
+    <div class="container prose">
+      <h2>Individuelles Angebot gewünscht?</h2>
+      <p>Ihr Projekt passt in kein Paket? Kein Problem: Wir erstellen ein maßgeschneidertes Festpreis-Angebot. Werbebudget für Google Ads ist nicht in den Paketpreisen enthalten und wird direkt an Google gezahlt.</p>
+    </div>
+  </section>
+  <Faq items={faqGeneral} />
+  <CtaBand />
+</Base>
+<style>
+  .cat-nav { display: flex; flex-wrap: wrap; gap: .4rem; padding-bottom: 1rem; }
+  .cat-nav .tag { font-size: .9rem; padding: .45rem 1rem; transition: border-color .2s, color .2s; }
+  .cat-nav .tag:hover { border-color: var(--blue); color: #fff; }
+  .section[id] { scroll-margin-top: 80px; }
+</style>

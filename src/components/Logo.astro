@@ -1,0 +1,19 @@
+---
+interface Props { size?: number; wordmark?: boolean }
+const { size = 40, wordmark = true } = Astro.props;
+---
+<span class="logo">
+  <img src="/logo-mark.svg" width={size} height={size} alt="" aria-hidden="true" />
+  {wordmark && (
+    <span class="logo-text">
+      <span class="logo-name">schmitz<span class="grad-text">webart</span></span>
+      <span class="logo-sub">Webmanufaktur</span>
+    </span>
+  )}
+</span>
+<style>
+  .logo { display: inline-flex; align-items: center; gap: .7rem; }
+  .logo-text { display: grid; line-height: 1.05; }
+  .logo-name { font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; letter-spacing: -0.03em; color: #fff; }
+  .logo-sub { font-size: .62rem; letter-spacing: .32em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-top: 3px; }
+</style>

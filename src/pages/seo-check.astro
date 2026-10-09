@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactForm from '../components/ContactForm.astro';
+---
+<Base title="Kostenloser Website-Check" description="Kostenloser Website-Check: Wir prüfen Ladezeit, Mobilansicht, SEO und Vertrauen Ihrer Website und zeigen konkrete Verbesserungen.">
+  <PageHero eyebrow="Kostenlos & unverbindlich" title="Der Website-Check für mehr Anfragen." text="Tragen Sie Ihre Website ein. Wir prüfen sie und senden Ihnen eine verständliche Auswertung mit den wichtigsten Verbesserungen." />
+  <section class="section">
+    <div class="container check-grid">
+      <div class="card"><ContactForm variant="check" /></div>
+      <div class="card">
+        <h3>Das prüfen wir für Sie</h3>
+        <ul class="check-list">
+          <li>Ladezeit und Core Web Vitals</li>
+          <li>Darstellung auf dem Smartphone</li>
+          <li>SEO: Titel, Beschreibungen, Struktur, Indexierung</li>
+          <li>Lokale Sichtbarkeit bei Google</li>
+          <li>Vertrauenssignale, Impressum & Datenschutz</li>
+        </ul>
+        <p style="margin-top:1rem">Sie erhalten die Auswertung per E-Mail. Ohne Verpflichtung und ohne Newsletter-Anmeldung.</p>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .check-grid { display: grid; gap: 1.5rem; grid-template-columns: 1.3fr 1fr; align-items: start; }
+  @media (max-width: 860px) { .check-grid { grid-template-columns: 1fr; } }
+</style>

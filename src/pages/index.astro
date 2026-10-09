@@ -1,0 +1,138 @@
+---
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import PackageCard from '../components/PackageCard.astro';
+import { services, icons } from '../data/services';
+import { packages } from '../data/packages';
+import { faqGeneral } from '../data/faq';
+import { site } from '../data/site';
+const featured = packages.filter((p) => ['logo-pro', 'business-website', 'start-bundle'].includes(p.slug));
+featured.sort((a, b) => ['logo-pro', 'start-bundle', 'business-website'].indexOf(a.slug) - ['logo-pro', 'start-bundle', 'business-website'].indexOf(b.slug));
+const why = [
+  { icon: 'chat', t: 'Persönlich', d: 'Sie sprechen direkt mit dem Inhaber, ohne Callcenter und ohne Weitergabe.' },
+  { icon: 'tag', t: 'Feste Preise', d: 'Klare Pakete mit Leistungsumfang. Sie wissen vorher, was es kostet.' },
+  { icon: 'speed', t: 'Schnell & modern', d: 'Statische Websites mit Top-Ladezeiten, die Google und Besucher lieben.' },
+  { icon: 'pin', t: 'Aus der Region', d: 'Sitz in Hilden, aktiv in Düsseldorf, im Kreis Mettmann und bundesweit.' },
+];
+---
+<Base title="Webdesign, Logodesign, SEO & Google Ads aus Hilden | schmitzwebart" description={site.description}>
+  <section class="hero">
+    <div class="glow"></div>
+    <div class="container relative hero-grid">
+      <div>
+        <span class="eyebrow reveal">Webmanufaktur Schmitz · Hilden</span>
+        <h1 class="reveal">Websites, Logos und <span class="grad-text">Sichtbarkeit</span>, die Kunden bringen.</h1>
+        <p class="lead reveal">Wir gestalten Ihren kompletten Online-Auftritt aus einer Hand: Webdesign, Logodesign, SEO und Google Ads. Schnell, persönlich und zum Festpreis.</p>
+        <div class="hero-actions reveal">
+          <a class="btn btn--primary" href="/kontakt">Kostenlos anfragen</a>
+          <a class="btn btn--ghost" href="/pakete">Pakete ansehen</a>
+        </div>
+        <ul class="hero-trust reveal">
+          <li>✓ Festpreis-Pakete</li><li>✓ Antwort in 1 Werktag</li><li>✓ Volle Nutzungsrechte</li>
+        </ul>
+      </div>
+      <div class="hero-visual reveal" aria-hidden="true">
+        <div class="mock">
+          <div class="mock-bar"><i></i><i></i><i></i></div>
+          <div class="mock-body">
+            <img src="/logo-mark.svg" width="72" height="72" alt="" />
+            <div class="mock-line w80"></div><div class="mock-line w60"></div>
+            <div class="mock-cards"><b></b><b></b><b></b></div>
+            <div class="mock-btn"></div>
+          </div>
+        </div>
+        <div class="badge b1"><strong>✓</strong><span>DSGVO-<br/>konform</span></div>
+        <div class="badge b2"><strong>⚡</strong><span>Schnell &amp;<br/>SEO-ready</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">Leistungen</span><h2>Alles, was Ihr Auftritt braucht</h2><p class="lead">Vier Leistungen, die ineinandergreifen: für eine Marke, die auffällt, eine Seite, die überzeugt, und Kunden, die Sie finden.</p></div>
+      <div class="grid grid--4">
+        {Object.values(services).map((s) => (
+          <a class="card" href={s.path}>
+            <div class="icon-badge"><svg viewBox="0 0 24 24" set:html={icons[s.icon]} /></div>
+            <h3>{s.name}</h3>
+            <p>{s.short}</p>
+            <span class="more">Mehr erfahren →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head center"><span class="eyebrow">Warum Webmanufaktur Schmitz</span><h2>Handwerk statt Massenware</h2></div>
+      <div class="grid grid--4">
+        {why.map((w) => (
+          <div class="card">
+            <div class="icon-badge"><svg viewBox="0 0 24 24" set:html={icons[w.icon]} /></div>
+            <h3>{w.t}</h3><p>{w.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">Pakete</span><h2>Beliebte Pakete mit festem Leistungsumfang</h2><p class="lead">Preise legen wir gemeinsam nach Ihrem Bedarf fest. Fragen Sie unverbindlich an.</p></div>
+      <div class="grid grid--3">{featured.map((p) => <PackageCard pkg={p} />)}</div>
+      <p class="center" style="margin-top:2rem"><a class="btn btn--ghost" href="/pakete">Alle Pakete ansehen</a></p>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container check-box">
+      <div>
+        <span class="eyebrow">Kostenloser Website-Check</span>
+        <h2>Wie gut ist Ihre Website wirklich?</h2>
+        <p class="lead">Wir prüfen Ihre Seite auf Ladezeit, mobile Darstellung, SEO und Vertrauen. Sie erhalten eine verständliche Auswertung mit den wichtigsten Verbesserungen. Kostenlos und unverbindlich.</p>
+        <a class="btn btn--primary" href="/seo-check">Jetzt Check anfordern</a>
+      </div>
+      <ul class="check-list">
+        <li>Ladezeit und Core Web Vitals</li>
+        <li>Darstellung auf Smartphone & Tablet</li>
+        <li>Grundlagen für Google (SEO)</li>
+        <li>Vertrauenssignale & Rechtliches</li>
+        <li>Konkrete Verbesserungsvorschläge</li>
+      </ul>
+    </div>
+  </section>
+
+  <Faq items={faqGeneral} />
+  <CtaBand title="Lassen Sie uns über Ihr Projekt sprechen" />
+</Base>
+<style>
+  .hero { position: relative; padding: clamp(3.5rem, 9vw, 7rem) 0 clamp(3rem, 7vw, 5rem); overflow: hidden; }
+  .hero-grid { display: grid; gap: 3rem; grid-template-columns: 1.15fr .85fr; align-items: center; }
+  .hero h1 { margin-bottom: 1.2rem; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin: 2rem 0 1.5rem; }
+  .hero-trust { display: flex; flex-wrap: wrap; gap: .4rem 1.4rem; color: var(--muted); font-size: .92rem; }
+  .hero-visual { position: relative; }
+  .mock { border: 1px solid var(--line); border-radius: 20px; background: var(--surface); box-shadow: 0 30px 80px -20px rgba(100, 90, 255, .5); overflow: hidden; }
+  .mock-bar { display: flex; gap: 6px; padding: .8rem 1rem; border-bottom: 1px solid var(--line); background: var(--bg-2); }
+  .mock-bar i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.18); }
+  .mock-body { padding: 2rem; display: grid; gap: .8rem; }
+  .mock-line { height: 12px; border-radius: 6px; background: rgba(255,255,255,.12); }
+  .mock-line.w80 { width: 80%; } .mock-line.w60 { width: 60%; }
+  .mock-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; margin: .6rem 0; }
+  .mock-cards b { height: 64px; border-radius: 10px; background: linear-gradient(160deg, rgba(79,140,255,.28), rgba(155,92,255,.18)); border: 1px solid var(--line); }
+  .mock-btn { width: 120px; height: 36px; border-radius: 999px; background: var(--grad); }
+  .badge { position: absolute; display: flex; align-items: center; gap: .6rem; background: rgba(17, 20, 42, .92); border: 1px solid var(--line); border-radius: 14px; padding: .6rem .9rem; backdrop-filter: blur(8px); }
+  .badge strong { font-family: var(--font-display); font-size: 1.5rem; }
+  .badge span { font-size: .7rem; color: var(--muted); line-height: 1.2; }
+  .b1 { left: -1.5rem; bottom: 2.5rem; } .b2 { right: -1rem; top: -1.2rem; }
+  .more { color: var(--blue); font-weight: 600; font-size: .95rem; }
+  .check-box { display: grid; gap: 2.5rem; grid-template-columns: 1.2fr 1fr; align-items: center; }
+  .check-box .check-list { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.8rem; }
+  @media (max-width: 900px) {
+    .hero-grid, .check-box { grid-template-columns: 1fr; }
+    .hero-visual { max-width: 420px; }
+    .b1 { left: .5rem; }
+  }
+</style>

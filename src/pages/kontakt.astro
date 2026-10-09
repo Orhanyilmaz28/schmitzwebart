@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { site } from '../data/site';
+---
+<Base title="Kontakt & Anfrage" description="Kontakt zur Webmanufaktur Schmitz in Hilden: Anfrage für Webdesign, Logodesign, SEO oder Google Ads. Antwort innerhalb eines Werktags.">
+  <PageHero eyebrow="Kontakt" title="Erzählen Sie uns von Ihrem Projekt." text="Je mehr wir wissen, desto besser können wir Ihnen helfen. Sie erhalten innerhalb eines Werktags eine persönliche Antwort." />
+  <section class="section">
+    <div class="container contact-grid">
+      <div class="card"><ContactForm variant="kontakt" /></div>
+      <aside>
+        <div class="card">
+          <h3>So erreichen Sie uns</h3>
+          <address>
+            <strong>{site.name}</strong><br />
+            {site.owner}<br />
+            {site.address.street}<br />
+            {site.address.zip} {site.address.city}
+          </address>
+          <p><a href={`mailto:${site.email}`}>{site.email}</a>{site.phone && (<><br /><a href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a></>)}</p>
+          <p>Gern auch Termine vor Ort oder per Video-Call im Raum Hilden, Düsseldorf, Solingen und Umgebung.</p>
+        </div>
+        <div class="card" style="margin-top:1.25rem">
+          <h3>Was passiert nach Ihrer Anfrage?</h3>
+          <ol class="steps-mini">
+            <li>Wir melden uns innerhalb eines Werktags.</li>
+            <li>Kurzes Gespräch zu Ziel, Umfang und Zeitplan.</li>
+            <li>Sie erhalten ein Festpreis-Angebot.</li>
+          </ol>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Base>
+<style>
+  .contact-grid { display: grid; gap: 1.5rem; grid-template-columns: 1.4fr 1fr; align-items: start; }
+  address { font-style: normal; color: var(--muted); margin-bottom: 1rem; }
+  aside a { color: var(--blue); }
+  .steps-mini { margin: 0; padding-left: 1.2rem; color: var(--muted); } .steps-mini li { margin-bottom: .4rem; }
+  @media (max-width: 860px) { .contact-grid { grid-template-columns: 1fr; } }
+</style>

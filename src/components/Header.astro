@@ -1,0 +1,42 @@
+---
+import Logo from './Logo.astro';
+import { site } from '../data/site';
+const path = Astro.url.pathname.replace(/\.html$/, '');
+---
+<header class="hdr">
+  <div class="container hdr-in">
+    <a href="/" class="hdr-logo" aria-label="schmitzwebart – Startseite"><Logo /></a>
+    <button class="burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+    <nav id="nav" class="nav" aria-label="Hauptnavigation">
+      {site.nav.map((n) => (
+        <a href={n.href} aria-current={path === n.href ? 'page' : undefined}>{n.label}</a>
+      ))}
+      <a href="/kontakt" class="btn btn--primary btn--sm nav-cta">Anfrage senden</a>
+    </nav>
+  </div>
+</header>
+<style>
+  .hdr { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px); background: rgba(7, 8, 15, .78); border-bottom: 1px solid var(--line); }
+  .hdr-in { display: flex; align-items: center; justify-content: space-between; min-height: 72px; gap: 1rem; }
+  .nav { display: flex; align-items: center; gap: 1.6rem; }
+  .nav a:not(.btn) { color: var(--muted); font-size: .96rem; font-weight: 500; transition: color .2s; }
+  .nav a:not(.btn):hover, .nav a[aria-current='page'] { color: #fff; }
+  .burger { display: none; background: none; border: 0; padding: .6rem; cursor: pointer; }
+  .burger span { display: block; width: 24px; height: 2px; background: #fff; margin: 5px 0; transition: transform .25s, opacity .25s; }
+  @media (max-width: 980px) {
+    .burger { display: block; }
+    .nav { position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 0; background: rgba(7, 8, 15, .97); border-bottom: 1px solid var(--line); padding: .5rem 1.25rem 1.25rem; display: none; }
+    .nav.open { display: flex; }
+    .nav a:not(.btn) { padding: .9rem 0; border-bottom: 1px solid var(--line); }
+    .nav-cta { margin-top: 1rem; }
+  }
+</style>
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.burger');
+  const nav = document.getElementById('nav');
+  btn?.addEventListener('click', () => {
+    const open = nav!.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+  });
+</script>

@@ -1,0 +1,78 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CookieBanner from '../components/CookieBanner.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title: string;
+  description?: string;
+  noindex?: boolean;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+  ogImage?: string;
+}
+const { title, description = site.description, noindex = false, schema, ogImage = '/og-image.png' } = Astro.props;
+const fullTitle = title.includes('schmitzwebart') ? title : `${title} | schmitzwebart`;
+const canonical = new URL(Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '') || '/', site.url).toString();
+const gtm = import.meta.env.PUBLIC_GTM_ID;
+
+const business = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  '@id': `${site.url}/#business`,
+  name: site.name,
+  alternateName: 'schmitzwebart',
+  url: site.url,
+  image: `${site.url}/og-image.png`,
+  logo: `${site.url}/logo-mark.svg`,
+  email: site.email,
+  ...(site.phone ? { telephone: site.phone } : {}),
+  founder: { '@type': 'Person', name: site.owner },
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.street,
+    postalCode: site.address.zip,
+    addressLocality: site.address.city,
+    addressRegion: site.address.region,
+    addressCountry: site.address.country,
+  },
+  areaServed: [{ '@type': 'City', name: 'Hilden' }, { '@type': 'City', name: 'Düsseldorf' }, { '@type': 'Country', name: 'Deutschland' }],
+  description: site.description,
+  priceRange: '€€',
+};
+const graphs = [business, ...(schema ? (Array.isArray(schema) ? schema : [schema]) : [])];
+---
+<!doctype html>
+<html lang="de" data-gtm={gtm || undefined}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="theme-color" content="#07080f" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:site_name" content="schmitzwebart" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(ogImage, site.url).toString()} />
+    <meta name="twitter:card" content="summary_large_image" />
+    {graphs.map((g) => <script type="application/ld+json" set:html={JSON.stringify(g)} />)}
+  </head>
+  <body>
+    <a class="skip" href="#main">Zum Inhalt springen</a>
+    <Header />
+    <main id="main"><slot /></main>
+    <Footer />
+    {gtm && <CookieBanner />}
+  </body>
+</html>
+<style is:global>
+  .skip { position: absolute; left: -999px; top: 0; background: #fff; color: #000; padding: .6rem 1rem; z-index: 200; }
+  .skip:focus { left: 0; }
+</style>

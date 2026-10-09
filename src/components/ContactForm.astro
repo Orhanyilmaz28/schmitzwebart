@@ -1,0 +1,84 @@
+---
+import { packages } from '../data/packages';
+import { site } from '../data/site';
+interface Props { variant?: 'kontakt' | 'check' }
+const { variant = 'kontakt' } = Astro.props;
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
+const subject = variant === 'check' ? 'Anfrage: Kostenloser Website-Check' : 'Anfrage über schmitzwebart.de';
+---
+<form class="form" data-form data-endpoint={endpoint} data-mailto={site.email} data-subject={subject} novalidate>
+  <input type="hidden" name="_subject" value={subject} />
+  <input type="hidden" name="formular" value={variant} />
+  <label class="hp" aria-hidden="true">Nicht ausfüllen<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
+
+  <div class="grid grid--2">
+    <label>Name *<input type="text" name="name" required autocomplete="name" /></label>
+    <label>E-Mail *<input type="email" name="email" required autocomplete="email" /></label>
+  </div>
+  <div class="grid grid--2">
+    <label>Unternehmen<input type="text" name="firma" autocomplete="organization" /></label>
+    {variant === 'check' ? (
+      <label>Ihre Website *<input type="url" name="website" required placeholder="https://" /></label>
+    ) : (
+      <label>Interesse an
+        <select name="paket" id="paket-select">
+          <option value="">Bitte wählen</option>
+          {packages.map((p) => <option value={p.slug}>{p.name}</option>)}
+          <option value="beratung">Ich brauche zuerst eine Beratung</option>
+        </select>
+      </label>
+    )}
+  </div>
+  <label>{variant === 'check' ? 'Was möchten Sie verbessern? (optional)' : 'Ihre Nachricht *'}
+    <textarea name="nachricht" required={variant !== 'check'}></textarea>
+  </label>
+  <label class="check">
+    <input type="checkbox" name="datenschutz" required />
+    <span>Ich habe die <a href="/datenschutz" target="_blank">Datenschutzerklärung</a> gelesen und bin damit einverstanden, dass meine Angaben zur Bearbeitung der Anfrage verwendet werden. *</span>
+  </label>
+  <button class="btn btn--primary" type="submit">{variant === 'check' ? 'Kostenlosen Check anfordern' : 'Anfrage absenden'}</button>
+  <div class="form-status" role="status" aria-live="polite"></div>
+</form>
+<style>
+  .check a { color: var(--blue); text-decoration: underline; }
+</style>
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-form]');
+  if (form) {
+    const status = form.querySelector<HTMLElement>('.form-status')!;
+    const sel = form.querySelector<HTMLSelectElement>('#paket-select');
+    const wanted = new URLSearchParams(location.search).get('paket');
+    if (sel && wanted) sel.value = wanted;
+
+    const show = (cls: string, msg: string) => { status.className = `form-status ${cls}`; status.textContent = msg; };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const data = new FormData(form);
+      if (data.get('_gotcha')) return; // Spam
+      const { endpoint, mailto, subject } = form.dataset;
+      const btn = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+
+      if (endpoint) {
+        btn.disabled = true;
+        try {
+          const res = await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+          if (!res.ok) throw new Error(String(res.status));
+          form.reset();
+          show('ok', 'Vielen Dank! Ihre Nachricht ist bei uns angekommen. Wir melden uns in der Regel innerhalb eines Werktags.');
+        } catch {
+          show('err', `Das Senden hat leider nicht geklappt. Bitte schreiben Sie uns direkt an ${mailto}.`);
+        } finally { btn.disabled = false; }
+        return;
+      }
+
+      // Fallback ohne Formular-Dienst: E-Mail-Programm öffnen
+      const lines = ['name', 'email', 'firma', 'website', 'paket', 'nachricht']
+        .filter((k) => data.get(k))
+        .map((k) => `${k.charAt(0).toUpperCase() + k.slice(1)}: ${data.get(k)}`);
+      location.href = `mailto:${mailto}?subject=${encodeURIComponent(subject!)}&body=${encodeURIComponent(lines.join('\n'))}`;
+      show('ok', 'Ihr E-Mail-Programm wurde geöffnet. Bitte senden Sie die vorbereitete Nachricht ab.');
+    });
+  }
+</script>

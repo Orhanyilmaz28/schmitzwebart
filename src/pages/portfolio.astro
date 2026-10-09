@@ -1,0 +1,40 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+// Echte Projekte hier ergänzen. concept: true = als „Konzeptentwurf“ gekennzeichnet.
+const items = [
+  { title: 'Handwerksbetrieb – Website', type: 'Webdesign', tags: ['Business-Website', 'Lokales SEO'], hue: 215, concept: true, text: 'Klare Struktur, Leistungsseiten und Anfrage-Formular für einen regionalen Betrieb.' },
+  { title: 'Café & Bistro – Branding', type: 'Logodesign', tags: ['Logo Pro', 'Styleguide'], hue: 275, concept: true, text: 'Logo, Farbwelt und Social-Media-Profile mit hohem Wiedererkennungswert.' },
+  { title: 'Online-Shop für Tee', type: 'Website + Shop', tags: ['Shop', 'Stripe'], hue: 160, concept: true, text: 'Schlanker Shop mit schnellem Checkout und Produktseiten, die ranken.' },
+  { title: 'Kanzlei – SEO-Relaunch', type: 'SEO', tags: ['SEO Wachstum', 'Content'], hue: 235, concept: true, text: 'Neue Struktur und Inhalte für bessere Sichtbarkeit bei lokalen Suchanfragen.' },
+  { title: 'Physiotherapie – Google Ads', type: 'Google Ads', tags: ['Ads Pro', 'Tracking'], hue: 25, concept: true, text: 'Suchkampagnen mit Conversion-Tracking für planbare Terminanfragen.' },
+  { title: 'Fitnessstudio – One-Pager', type: 'Webdesign', tags: ['One-Pager', 'Mobile First'], hue: 300, concept: true, text: 'Eine schnelle Seite mit Probetraining-Formular und starken Bildern.' },
+];
+---
+<Base title="Portfolio & Referenzen" description="Projekte und Konzepte der Webmanufaktur Schmitz: Webdesign, Logodesign, SEO und Google Ads – ein Einblick in unsere Arbeitsweise.">
+  <PageHero eyebrow="Portfolio" title="Einblick in unsere Arbeit" text="Hier sehen Sie, wie wir Marken, Websites und Kampagnen gestalten. Die gezeigten Beispiele sind Konzeptentwürfe. Echte Kundenprojekte folgen laufend." />
+  <section class="section">
+    <div class="container grid grid--3">
+      {items.map((i) => (
+        <article class="card card--hover work">
+          <div class="work-thumb" style={`--h:${i.hue}`} aria-hidden="true">
+            <img src="/logo-mark.svg" width="56" height="56" alt="" />
+            {i.concept && <span class="work-badge">Konzeptentwurf</span>}
+          </div>
+          <span class="eyebrow">{i.type}</span>
+          <h3>{i.title}</h3>
+          <p>{i.text}</p>
+          <div>{i.tags.map((t) => <span class="tag">{t}</span>)}</div>
+        </article>
+      ))}
+    </div>
+  </section>
+  <CtaBand title="Ihr Projekt als nächste Referenz?" text="Erzählen Sie uns von Ihrem Vorhaben. Wir melden uns mit einer ehrlichen Einschätzung und einem Festpreis-Vorschlag." />
+</Base>
+<style>
+  .work { padding: 1rem 1rem 1.5rem; }
+  .work > :not(.work-thumb) { margin-inline: .6rem; }
+  .work-thumb { position: relative; aspect-ratio: 16 / 10; border-radius: 12px; margin-bottom: 1.2rem; display: grid; place-items: center; background: radial-gradient(circle at 30% 20%, hsl(var(--h) 90% 60% / .45), transparent 60%), linear-gradient(160deg, hsl(var(--h) 60% 18%), #0b0d1d); border: 1px solid var(--line); }
+  .work-badge { position: absolute; left: .7rem; top: .7rem; font-size: .68rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; background: rgba(0,0,0,.45); border: 1px solid var(--line); padding: .22rem .6rem; border-radius: 999px; color: var(--muted); }
+</style>
