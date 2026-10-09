@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import CtaBand from '../components/CtaBand.astro';
+import References from '../components/References.astro';
 // Echte Projekte hier ergänzen. concept: true = als „Konzeptentwurf“ gekennzeichnet.
 const items = [
   { title: 'Handwerksbetrieb – Website', type: 'Webdesign', tags: ['Business-Website', 'Lokales SEO'], hue: 215, concept: true, text: 'Klare Struktur, Leistungsseiten und Anfrage-Formular für einen regionalen Betrieb.' },
@@ -13,8 +14,10 @@ const items = [
 ];
 ---
 <Base title="Portfolio & Referenzen" description="Projekte und Konzepte der Webmanufaktur Schmitz: Webdesign, Logodesign, SEO und Google Ads – ein Einblick in unsere Arbeitsweise.">
-  <PageHero eyebrow="Portfolio" title="Einblick in unsere Arbeit" text="Hier sehen Sie, wie wir Marken, Websites und Kampagnen gestalten. Die gezeigten Beispiele sind Konzeptentwürfe. Echte Kundenprojekte folgen laufend." />
-  <section class="section">
+  <PageHero eyebrow="Portfolio" title="Einblick in unsere Arbeit" text="Ausgewählte Kundenprojekte, von Logo und Website bis zum Online-Shop. Darunter finden Sie Konzeptentwürfe, die zeigen, wie wir an Projekte herangehen." />
+  <References title="Kundenprojekte" eyebrow="Live online" showAll={false} />
+  <section class="section section--alt">
+    <div class="container"><div class="section-head"><span class="eyebrow">Konzeptentwürfe</span><h2>So gehen wir an Projekte heran</h2></div></div>
     <div class="container grid grid--3">
       {items.map((i) => (
         <article class="card card--hover work">

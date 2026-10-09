@@ -4,11 +4,13 @@ import PageHero from './PageHero.astro';
 import Faq from './Faq.astro';
 import CtaBand from './CtaBand.astro';
 import PackageCard from './PackageCard.astro';
+import References from './References.astro';
 import { services, icons, type ServiceKey } from '../data/services';
 import { packages } from '../data/packages';
 interface Props { slug: ServiceKey }
 const s = services[Astro.props.slug];
 const pkgs = packages.filter((p) => p.category === s.packageCategory);
+const refFilter = ({ webdesign: ['webdesign', 'shop'], logodesign: ['logodesign'], seo: ['seo'], sea: ['sea'] } as const)[Astro.props.slug];
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
@@ -49,7 +51,9 @@ const schema = {
     </div>
   </section>
 
-  <section class="section" id="pakete">
+  <References filter={[...refFilter]} title={`${s.name}: Referenzen`} />
+
+  <section class="section section--alt" id="pakete">
     <div class="container">
       <div class="section-head"><span class="eyebrow">Pakete</span><h2>Feste Pakete statt Überraschungen</h2><p class="lead">Wählen Sie ein Paket oder fragen Sie ein individuelles Angebot an. Alle Preise netto.</p></div>
       <div class="grid grid--3">{pkgs.map((p) => <PackageCard pkg={p} />)}</div>

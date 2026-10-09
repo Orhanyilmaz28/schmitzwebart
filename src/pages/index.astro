@@ -8,6 +8,7 @@ import { packages } from '../data/packages';
 import { faqGeneral } from '../data/faq';
 import { site } from '../data/site';
 import Founder from '../components/Founder.astro';
+import References from '../components/References.astro';
 import { Image } from 'astro:assets';
 import photo from '../assets/phillip-schmitz.jpg';
 const featured = packages.filter((p) => ['logo-pro', 'business-website', 'start-bundle'].includes(p.slug));
@@ -61,7 +62,9 @@ const why = [
     </div>
   </section>
 
-  <section class="section section--alt">
+  <References alt />
+
+  <section class="section">
     <div class="container">
       <div class="section-head center"><span class="eyebrow">Warum Webmanufaktur Schmitz</span><h2>Handwerk statt Massenware</h2></div>
       <div class="grid grid--4">
@@ -75,9 +78,9 @@ const why = [
     </div>
   </section>
 
-  <Founder alt={false} />
+  <Founder />
 
-  <section class="section section--alt">
+  <section class="section">
     <div class="container">
       <div class="section-head"><span class="eyebrow">Pakete</span><h2>Beliebte Pakete mit festem Leistungsumfang</h2><p class="lead">Transparente Festpreise, alle Angaben netto zzgl. MwSt. Fragen Sie unverbindlich an.</p></div>
       <div class="grid grid--3">{featured.map((p) => <PackageCard pkg={p} />)}</div>
@@ -85,7 +88,7 @@ const why = [
     </div>
   </section>
 
-  <section class="section">
+  <section class="section section--alt">
     <div class="container check-box">
       <div>
         <span class="eyebrow">Kostenloser Website-Check</span>
