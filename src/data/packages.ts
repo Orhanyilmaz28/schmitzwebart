@@ -4,13 +4,14 @@
 //  stripeLink   -> sobald gesetzt, wird der Button zu "Jetzt buchen" (Stripe Payment Link)
 export type Pkg = {
   slug: string;
-  category: 'logodesign' | 'webdesign' | 'seo' | 'sea' | 'bundle';
+  category: 'logodesign' | 'webdesign' | 'seo' | 'sea' | 'software' | 'bundle';
   name: string;
   teaser: string;
   price: number | null;
   interval: 'einmalig' | 'monat';
   stripeLink: string | null;
   highlight?: boolean;
+  from?: boolean; // Preis als „ab …“ anzeigen
   features: string[];
 };
 
@@ -20,6 +21,7 @@ export const categories = [
   { id: 'logodesign', label: 'Logodesign' },
   { id: 'seo', label: 'SEO' },
   { id: 'sea', label: 'Google Ads' },
+  { id: 'software', label: 'Software' },
 ] as const;
 
 export const packages: Pkg[] = [
@@ -198,9 +200,77 @@ export const packages: Pkg[] = [
       'Werbebudget zahlen Sie direkt an Google',
     ],
   },
+  {
+    slug: 'software-start',
+    category: 'software',
+    name: 'Software Start',
+    teaser: 'Ein kleines Windows-Programm für genau einen Zweck.',
+    price: 1490,
+    from: true,
+    interval: 'einmalig',
+    stripeLink: null,
+    features: [
+      'z. B. Kunden- oder Adressverwaltung statt Excel',
+      '1 Arbeitsplatz, Daten bleiben lokal bei Ihnen',
+      'Suche, Filter, Export nach Excel & PDF',
+      'Installationsprogramm & Einweisung',
+      '3 Monate Fehlerbehebung inklusive',
+    ],
+  },
+  {
+    slug: 'vereinssoftware',
+    category: 'software',
+    name: 'Vereinssoftware',
+    teaser: 'Mitglieder, Beiträge und Kommunikation an einem Ort.',
+    price: 2990,
+    from: true,
+    interval: 'einmalig',
+    stripeLink: null,
+    highlight: true,
+    features: [
+      'Mitgliederverwaltung mit Abteilungen & Status',
+      'Beiträge & Export für SEPA-Lastschrift',
+      'Mahnwesen, Geburtstage & Jubiläen',
+      'Serienbriefe, E-Mails & Listen',
+      'Mehrere Arbeitsplätze möglich',
+    ],
+  },
+  {
+    slug: 'callcenter-software',
+    category: 'software',
+    name: 'Callcenter-Software',
+    teaser: 'Adressen abtelefonieren, Termine nachhalten, Erfolge messen.',
+    price: 4490,
+    from: true,
+    interval: 'einmalig',
+    stripeLink: null,
+    features: [
+      'Import von Adresslisten (Excel/CSV)',
+      'Anruflisten mit Wiedervorlage & Status',
+      'Gesprächsnotizen & Ergebnis pro Kontakt',
+      'Dokumentation von Einwilligungen & Sperrliste',
+      'Auswertung pro Mitarbeiter, Mehrbenutzer',
+    ],
+  },
+  {
+    slug: 'software-wartung',
+    category: 'software',
+    name: 'Wartung & Support',
+    teaser: 'Damit Ihre Software zuverlässig weiterläuft.',
+    price: 49,
+    interval: 'monat',
+    stripeLink: null,
+    features: [
+      'Updates für neue Windows-Versionen',
+      'Fehlerbehebung mit Vorrang',
+      'Hilfe per Telefon & Fernwartung',
+      'Kleine Anpassungen nach Absprache',
+    ],
+  },
 ];
 
 export function priceLabel(p: Pkg) {
   if (p.price === null) return null;
-  return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(p.price);
+  const v = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(p.price);
+  return p.from ? `ab ${v}` : v;
 }

@@ -8,6 +8,9 @@ export const icons: Record<string, string> = {
   shield: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
   chat: '<path d="M4 5h16v11H9l-5 4z"/>',
   tag: '<path d="M3 12V3h9l9 9-9 9z"/><circle cx="7.5" cy="7.5" r="1.2"/>',
+  software: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 8h18M9.5 12l-2 2 2 2M14.5 12l2 2-2 2"/>',
+  users: '<circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 4.5a3.2 3.2 0 010 6.3M18 14.3c1.8.8 3 2.6 3 4.7"/>',
+  phone: '<path d="M5 3h4l2 5-2.5 1.5a11 11 0 005 5L15 12l5 2v4a2 2 0 01-2 2A16 16 0 013 5a2 2 0 012-2z"/>',
   pin: '<path d="M12 22s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/>',
 };
 
@@ -122,6 +125,37 @@ export const services = {
       { q: 'Wie hoch sollte mein Werbebudget sein?', a: 'Das hängt von Branche und Wettbewerb ab. Wir empfehlen im Gespräch ein Startbudget, das aussagekräftige Daten liefert, und passen es nach den ersten Wochen an.' },
       { q: 'Wer zahlt das Werbebudget?', a: 'Sie zahlen es direkt an Google. Unser Honorar kommt separat dazu, so bleibt alles transparent.' },
       { q: 'Wie schnell kommen Anfragen?', a: 'Oft schon in den ersten Tagen. Die Kampagne wird danach über Wochen weiter optimiert, damit die Kosten pro Anfrage sinken.' },
+    ],
+  },
+  software: {
+    path: '/software',
+    icon: 'software',
+    name: 'Software',
+    metaTitle: 'Individuelle Windows-Software zum Festpreis – Vereins- & Callcenter-Software',
+    metaDescription: 'Individuelle Windows-Programme zum Festpreis: Vereinssoftware, Mitgliederverwaltung, Callcenter- und Adress-Software. Persönlich entwickelt von der Webmanufaktur Schmitz in Hilden.',
+    heroTitle: 'Software, die genau zu Ihrem Ablauf passt. Zum Festpreis.',
+    heroText: 'Statt Excel-Chaos oder teurer Standardlösung: Ich entwickle Windows-Programme, die exakt das tun, was Sie brauchen. Vereinssoftware, Mitgliederverwaltung, Callcenter- oder Adress-Software, persönlich und mit festem Preis.',
+    short: 'Individuelle Windows-Programme zum Festpreis, z. B. für Vereine oder Callcenter.',
+    benefits: [
+      { icon: 'tag', t: 'Festpreis', d: 'Sie wissen vorher, was es kostet. Moderne, KI-gestützte Entwicklung macht Preise möglich, die bei Individualsoftware sonst kaum machbar sind.' },
+      { icon: 'software', t: 'Passgenau', d: 'Keine Funktion zu viel, keine zu wenig. Die Software bildet Ihren Ablauf ab, nicht umgekehrt.' },
+      { icon: 'shield', t: 'Ihre Daten bleiben bei Ihnen', d: 'Läuft lokal auf Ihren Windows-Rechnern oder im eigenen Netzwerk. Es gibt kein Abo und keine fremde Cloud.' },
+      { icon: 'chat', t: 'Persönlicher Support', d: 'Sie haben einen festen Ansprechpartner, der Ihre Software kennt. Jede Funktion wird von mir geprüft und getestet.' },
+    ],
+    steps: [
+      ['Anforderungen klären', 'Wir besprechen Ihren Ablauf und legen fest, was die Software können muss.'],
+      ['Festpreis-Angebot', 'Sie erhalten ein klares Angebot mit Funktionsliste und Termin.'],
+      ['Entwicklung & Test', 'Sie sehen früh erste Versionen und geben Feedback, bevor alles fertig ist.'],
+      ['Installation & Einweisung', 'Ich installiere die Software, übernehme auf Wunsch Altdaten und weise Sie ein.'],
+    ],
+    packageCategory: 'software',
+    faq: [
+      { q: 'Auf welchen Rechnern läuft die Software?', a: 'Auf Windows 10 und 11. Für mehrere Arbeitsplätze liegt die Datenbank zentral im Netzwerk oder auf einem Server, alle greifen gleichzeitig darauf zu.' },
+      { q: 'Können meine bisherigen Daten übernommen werden?', a: 'Ja. Daten aus Excel, CSV oder älteren Programmen übernehmen wir in der Regel problemlos. Das klären wir vorab im Angebot.' },
+      { q: 'Wem gehört die Software?', a: 'Sie erhalten die zeitlich unbegrenzten Nutzungsrechte für Ihr Unternehmen bzw. Ihren Verein. Den Quellcode können Sie auf Wunsch zusätzlich erwerben.' },
+      { q: 'Darf ich mit der Callcenter-Software Kaltakquise machen?', a: 'Die Software unterstützt Sie dabei, Einwilligungen zu dokumentieren und Sperrlisten zu führen. Werbeanrufe bei Privatpersonen sind in Deutschland nur mit vorheriger Einwilligung erlaubt (§ 7 UWG), bei Unternehmen gelten eigene Regeln. Die rechtliche Verantwortung für die Anrufe liegt beim Nutzer.' },
+      { q: 'Was passiert, wenn später etwas fehlt oder nicht funktioniert?', a: 'Fehler in den ersten drei Monaten behebe ich kostenlos. Danach sichert Sie das Wartungspaket ab. Neue Funktionen biete ich Ihnen jeweils zum Festpreis an.' },
+      { q: 'Wie werden die Daten gesichert?', a: 'Eine Sicherungsfunktion ist immer eingebaut. Auf Wunsch richten wir eine automatische tägliche Sicherung ein, z. B. auf ein Netzlaufwerk.' },
     ],
   },
 } as const;

@@ -1,0 +1,25 @@
+---
+import ServicePage from '../components/ServicePage.astro';
+import { icons } from '../data/services';
+const solutions = [
+  { icon: 'users', t: 'Vereins- & Mitgliedersoftware', d: 'Für Sport-, Kultur- und Fördervereine, Verbände und Clubs.', f: ['Mitglieder, Abteilungen, Eintritte & Austritte', 'Beiträge, Export für SEPA-Lastschrift, Mahnungen', 'Geburtstage, Jubiläen, Ehrungen', 'Serienbriefe, E-Mail-Verteiler, Listen'] },
+  { icon: 'phone', t: 'Callcenter- & Telefonie-Software', d: 'Für Vertriebsteams, Telefonmarketing und Kundenservice.', f: ['Adresslisten importieren & verteilen', 'Wiedervorlagen, Termine, Gesprächsnotizen', 'Einwilligungen & Sperrliste dokumentieren', 'Auswertungen pro Mitarbeiter & Kampagne'] },
+  { icon: 'software', t: 'Adress- & Kundenverwaltung', d: 'Für Betriebe, die mit Excel-Listen an ihre Grenzen kommen.', f: ['Kunden, Ansprechpartner, Historie', 'Schnelle Suche & Filter', 'Export nach Excel, PDF & Serienbrief', 'Mehrbenutzer im Netzwerk'] },
+];
+---
+<ServicePage slug="software">
+  <section class="section">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">Beispiele</span><h2>Typische Lösungen</h2><p class="lead">Jede Software wird individuell gebaut. Diese drei Beispiele zeigen, was möglich ist, und lassen sich beliebig anpassen.</p></div>
+      <div class="grid grid--3">
+        {solutions.map((s) => (
+          <div class="card">
+            <div class="icon-badge"><svg viewBox="0 0 24 24" set:html={icons[s.icon]} /></div>
+            <h3>{s.t}</h3><p>{s.d}</p>
+            <ul class="check-list">{s.f.map((x) => <li>{x}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</ServicePage>

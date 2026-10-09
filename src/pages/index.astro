@@ -27,7 +27,7 @@ const why = [
       <div>
         <span class="eyebrow reveal">Webmanufaktur Schmitz · Hilden</span>
         <h1 class="reveal">Websites, Logos und <span class="grad-text">Sichtbarkeit</span>, die Kunden bringen.</h1>
-        <p class="lead reveal">Wir gestalten Ihren kompletten Online-Auftritt aus einer Hand: Webdesign, Logodesign, SEO und Google Ads. Schnell, persönlich und zum Festpreis.</p>
+        <p class="lead reveal">Wir gestalten Ihren kompletten Online-Auftritt aus einer Hand: Webdesign, Logodesign, SEO und Google Ads. Dazu individuelle Windows-Software. Schnell, persönlich und zum Festpreis.</p>
         <div class="hero-actions reveal">
           <a class="btn btn--primary" href="/kontakt">Kostenlos anfragen</a>
           <a class="btn btn--ghost" href="/pakete">Pakete ansehen</a>
@@ -48,8 +48,8 @@ const why = [
 
   <section class="section">
     <div class="container">
-      <div class="section-head"><span class="eyebrow">Leistungen</span><h2>Alles, was Ihr Auftritt braucht</h2><p class="lead">Vier Leistungen, die ineinandergreifen: für eine Marke, die auffällt, eine Seite, die überzeugt, und Kunden, die Sie finden.</p></div>
-      <div class="grid grid--4">
+      <div class="section-head"><span class="eyebrow">Leistungen</span><h2>Alles, was Ihr Auftritt braucht</h2><p class="lead">Leistungen, die ineinandergreifen: eine Marke, die auffällt, eine Seite, die überzeugt, Kunden, die Sie finden, und Software, die Ihnen Arbeit abnimmt.</p></div>
+      <div class="grid services-grid">
         {Object.values(services).map((s) => (
           <a class="card" href={s.path}>
             <div class="icon-badge"><svg viewBox="0 0 24 24" set:html={icons[s.icon]} /></div>
@@ -131,6 +131,7 @@ const why = [
   .b3 { right: 4%; bottom: 2%; padding: .5rem .9rem .5rem .5rem; }
   .b3 :global(.b3-img) { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: 50% 15%; border: 2px solid rgba(255,255,255,.2); }
   .b3 span { font-size: .75rem; } .b3 b { color: var(--text); font-size: .85rem; }
+  .services-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); }
   .more { color: var(--blue); font-weight: 600; font-size: .95rem; }
   .quick-check { display: flex; gap: .5rem; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: .4rem; max-width: 520px; margin-top: 1.5rem; }
   .quick-check input { flex: 1; min-width: 0; background: transparent; border: 0; color: var(--text); font: inherit; padding: .5rem 1rem; }

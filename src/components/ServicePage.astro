@@ -10,7 +10,7 @@ import { packages } from '../data/packages';
 interface Props { slug: ServiceKey }
 const s = services[Astro.props.slug];
 const pkgs = packages.filter((p) => p.category === s.packageCategory);
-const refFilter = ({ webdesign: ['webdesign', 'shop'], logodesign: ['logodesign'], seo: ['seo'], sea: ['sea'] } as const)[Astro.props.slug];
+const refFilter = ({ webdesign: ['webdesign', 'shop'], logodesign: ['logodesign'], seo: ['seo'], sea: ['sea'], software: ['software'] } as const)[Astro.props.slug];
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
@@ -39,6 +39,8 @@ const schema = {
       </div>
     </div>
   </section>
+
+  <slot />
 
   <section class="section section--alt">
     <div class="container">

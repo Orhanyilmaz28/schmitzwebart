@@ -10,7 +10,7 @@ import energiezentrale from '../assets/referenzen/energiezentrale.webp';
 export type Ref = {
   name: string;
   url?: string; // ohne url: Karte ohne Verlinkung
-  services: ('webdesign' | 'logodesign' | 'shop' | 'seo' | 'sea')[];
+  services: ('webdesign' | 'logodesign' | 'shop' | 'seo' | 'sea' | 'software')[];
   text: string;
   hue: number; // Farbton der Vorschaukarte
   image?: ImageMetadata; // ganzseitiger Screenshot (scrollt beim Hover durch)
@@ -22,6 +22,7 @@ export const serviceLabels: Record<Ref['services'][number], string> = {
   shop: 'Online-Shop',
   seo: 'SEO',
   sea: 'Google Ads',
+  software: 'Software',
 };
 
 export const references: Ref[] = [
@@ -36,8 +37,8 @@ export const references: Ref[] = [
   {
     name: 'Tragetraum',
     url: 'https://tragetraum.de',
-    services: ['shop', 'webdesign'],
-    text: 'Online-Shop für Periodenunterwäsche mit Produktwelt, Video, Kundenbewertungen, Ersparnisrechner und einem Größenfinder, der in 10 Sekunden zur passenden Größe führt.',
+    services: ['shop', 'webdesign', 'logodesign'],
+    text: 'Logo und Online-Shop für Periodenunterwäsche mit Produktwelt, Video, Kundenbewertungen, Ersparnisrechner und einem Größenfinder, der in 10 Sekunden zur passenden Größe führt.',
     hue: 290,
     image: tragetraum,
   },
@@ -50,8 +51,8 @@ export const references: Ref[] = [
   },
   {
     name: 'Energiezentrale Schmitz',
-    services: ['webdesign'],
-    text: 'Website für eine unabhängige Energieberatung in Hilden: Strom und Gas für Unternehmen und Immobilien, mit Angebotsanfrage und direktem WhatsApp-Kontakt.',
+    services: ['webdesign', 'logodesign'],
+    text: 'Logo und Website für eine unabhängige Energieberatung in Hilden: Strom und Gas für Unternehmen und Immobilien, mit Angebotsanfrage und direktem WhatsApp-Kontakt.',
     hue: 40,
     image: energiezentrale,
   },
