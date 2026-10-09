@@ -4,7 +4,7 @@ export const site = {
   url: 'https://schmitzwebart.de',
   owner: 'Phillip Schmitz',
   email: 'info@schmitzwebart.de',
-  phone: '', // TODO: Telefonnummer eintragen, z. B. '+49 2103 000000'
+  phone: '+49 176 42903444',
   address: {
     street: 'Richrather Straße 69',
     zip: '40723',

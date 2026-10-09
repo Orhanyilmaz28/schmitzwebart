@@ -29,8 +29,12 @@ Ohne Stripe-Link zeigt der Button „Anfragen“, mit Link „Jetzt buchen“.
 - `PUBLIC_GTM_ID` – Google Tag Manager. Erst dann erscheint der Cookie-Banner; GTM lädt nur nach Einwilligung.
 
 ## Vor dem Livegang prüfen
-- [ ] Telefonnummer (`site.ts`), USt-IdNr. oder Kleinunternehmer-Hinweis (§ 19 UStG) im Impressum
+- [ ] USt-IdNr. oder Kleinunternehmer-Hinweis (§ 19 UStG) im Impressum
 - [ ] Datenschutzerklärung: Hosting-Anbieter und Formular-Dienst ergänzen, rechtlich prüfen lassen
 - [ ] Portfolio-Konzeptentwürfe durch echte Projekte ersetzen
-- [ ] Preise und Stripe-Links eintragen
+- [ ] Preise prüfen (Marktpreise netto vorgetragen), Stripe-Links eintragen
 - [ ] Google Search Console + Google-Unternehmensprofil einrichten, Sitemap einreichen (`/sitemap-index.xml`)
+
+## Deployment (Vercel)
+Projekt auf vercel.com importieren: Framework „Astro“ wird erkannt, Build `npm run build`, Output `dist`.
+`vercel.json` setzt saubere URLs ohne `.html` und Sicherheits-Header. Danach Domain `schmitzwebart.de` in den Projekt-Einstellungen verbinden und die Umgebungsvariablen aus `.env.example` setzen.
