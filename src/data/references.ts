@@ -1,13 +1,15 @@
 import type { ImageMetadata } from 'astro';
 import cevdet from '../assets/referenzen/cevdethonig.webp';
 import tragetraum from '../assets/referenzen/tragetraum.webp';
+import exstase from '../assets/referenzen/exstase.webp';
+import energiezentrale from '../assets/referenzen/energiezentrale.webp';
 
 // Echte Kundenprojekte. Neue Referenz = neuer Eintrag.
 //  image: optionaler Screenshot (Datei in src/assets/referenzen/, Import unten ergänzen)
 //  services steuert, auf welchen Leistungsseiten die Referenz erscheint.
 export type Ref = {
   name: string;
-  url: string;
+  url?: string; // ohne url: Karte ohne Verlinkung
   services: ('webdesign' | 'logodesign' | 'shop' | 'seo' | 'sea')[];
   text: string;
   hue: number; // Farbton der Vorschaukarte
@@ -38,5 +40,19 @@ export const references: Ref[] = [
     text: 'Online-Shop für Periodenunterwäsche mit Produktwelt, Video, Kundenbewertungen, Ersparnisrechner und einem Größenfinder, der in 10 Sekunden zur passenden Größe führt.',
     hue: 290,
     image: tragetraum,
+  },
+  {
+    name: 'EXSTASE Energy',
+    services: ['shop', 'webdesign'],
+    text: 'Online-Shop für Energy Drinks, X-Tea, Iced Coffee und Wasser: kräftiges Neon-Design, alle Sorten auf einen Blick, Mixpakete und Mengenstaffel vom Tray bis zur Palette für Händler.',
+    hue: 95,
+    image: exstase,
+  },
+  {
+    name: 'Energiezentrale Schmitz',
+    services: ['webdesign'],
+    text: 'Website für eine unabhängige Energieberatung in Hilden: Strom und Gas für Unternehmen und Immobilien, mit Angebotsanfrage und direktem WhatsApp-Kontakt.',
+    hue: 40,
+    image: energiezentrale,
   },
 ];
