@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { references, serviceLabels, type Ref } from '../data/references';
 interface Props { filter?: Ref['services'][number][]; title?: string; eyebrow?: string; alt?: boolean; showAll?: boolean }
 const { filter, title = 'Projekte, die online sind', eyebrow = 'Referenzen', alt = false, showAll = true } = Astro.props;
@@ -14,10 +15,19 @@ const host = (u: string) => new URL(u).hostname.replace(/^www\./, '');
         <a class="card card--hover ref" href={r.url} target="_blank" rel="noopener">
           <div class="ref-thumb" style={`--h:${r.hue}`} aria-hidden="true">
             <div class="ref-bar"><i></i><i></i><i></i><span>{host(r.url)}</span></div>
-            <div class="ref-body">
-              <span class="ref-name">{r.name}</span>
-              <span class="ref-lines"><b></b><b></b></span>
-            </div>
+            {r.image ? (
+              <div class="ref-stage">
+                <div class="ref-window">
+                  <div class="ref-scroll"><Image src={r.image} alt={`Screenshot der Website ${host(r.url)}`} width={r.image.width} loading="lazy" /></div>
+                </div>
+                <span class="ref-hint">Hover zum Durchscrollen</span>
+              </div>
+            ) : (
+              <div class="ref-body">
+                <span class="ref-name">{r.name}</span>
+                <span class="ref-lines"><b></b><b></b></span>
+              </div>
+            )}
           </div>
           <div class="ref-meta">
             <div>{r.services.map((s) => <span class="tag">{serviceLabels[s]}</span>)}</div>
@@ -34,7 +44,7 @@ const host = (u: string) => new URL(u).hostname.replace(/^www\./, '');
 )}
 <style>
   .ref { padding: 1rem; display: flex; flex-direction: column; }
-  .ref-thumb { border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: linear-gradient(160deg, hsl(var(--h) 55% 20%), #0b0d1d 75%); }
+  .ref-thumb { position: relative; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: linear-gradient(160deg, hsl(var(--h) 55% 20%), #0b0d1d 75%); }
   .ref-bar { display: flex; align-items: center; gap: 5px; padding: .55rem .8rem; background: rgba(0,0,0,.35); border-bottom: 1px solid var(--line); }
   .ref-bar i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.2); }
   .ref-bar span { margin-left: .6rem; font-size: .72rem; color: var(--muted); background: rgba(255,255,255,.06); padding: .1rem .7rem; border-radius: 999px; }
@@ -43,6 +53,13 @@ const host = (u: string) => new URL(u).hostname.replace(/^www\./, '');
   .ref-lines { display: grid; gap: .4rem; justify-items: center; }
   .ref-lines b { display: block; height: 7px; width: 160px; border-radius: 4px; background: rgba(255,255,255,.14); }
   .ref-lines b + b { width: 110px; }
+  .ref-stage { position: relative; height: 340px; display: grid; place-items: center; background: radial-gradient(circle at 50% 35%, hsl(var(--h) 90% 60% / .35), transparent 65%); }
+  .ref-window { width: min(78%, 300px); height: 290px; overflow: hidden; border-radius: 10px; border: 1px solid rgba(255,255,255,.15); box-shadow: 0 25px 60px rgba(0,0,0,.55); background: #fff; }
+  .ref-scroll :global(img) { display: block; width: 100%; height: auto; transform: translateY(0); transition: transform 7s cubic-bezier(.45,.05,.4,1); }
+  .ref:hover .ref-scroll :global(img), .ref:focus-visible .ref-scroll :global(img) { transform: translateY(calc(-100% + 290px)); transition-duration: 9s; }
+  .ref-hint { position: absolute; bottom: 10px; right: 12px; font-size: .7rem; color: var(--muted); background: rgba(0,0,0,.45); padding: .15rem .6rem; border-radius: 999px; }
+  @media (hover: none) { .ref-hint { display: none; } }
+  @media (prefers-reduced-motion: reduce) { .ref-scroll :global(img) { transition: none; } }
   .ref-meta { padding: 1.2rem .6rem .4rem; }
   .ref-meta h3 { margin-top: .4rem; font-size: 1.35rem; font-weight: 700; }
   .ref-link { color: var(--blue); font-weight: 600; font-size: .95rem; }
