@@ -1,0 +1,57 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Founder from '../components/Founder.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { icons } from '../data/services';
+const values = [
+  { icon: 'chat', t: 'Erst zuhören', d: 'Bevor ich gestalte, will ich verstehen: Ihr Angebot, Ihre Kunden, Ihr Ziel. Daraus entsteht das Konzept.' },
+  { icon: 'tag', t: 'Klare Absprachen', d: 'Feste Pakete, feste Preise, feste Termine. Sie wissen jederzeit, woran Sie sind.' },
+  { icon: 'logodesign', t: 'Handwerk', d: 'Jedes Logo und jede Seite wird individuell gestaltet. Ich arbeite ohne Baukasten und ohne Schablone.' },
+  { icon: 'sea', t: 'Ergebnis zählt', d: 'Schön ist gut, Anfragen sind besser. Ich messe den Erfolg daran, was Ihre Website für Sie bringt.' },
+];
+---
+<Base title="Über mich – Phillip Schmitz" description="Phillip Schmitz, Inhaber der Webmanufaktur Schmitz in Hilden: persönliche Beratung für Webdesign, Logodesign, SEO und Google Ads.">
+  <PageHero eyebrow="Über mich" title="Der Kopf hinter schmitzwebart." text="Persönlich, direkt und mit einem Faible für gutes Design: Hier erfahren Sie, wer hinter der Webmanufaktur Schmitz steht und wie ich arbeite." />
+  <Founder more={false} alt={false} />
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">Arbeitsweise</span><h2>Worauf Sie sich verlassen können</h2></div>
+      <div class="grid grid--4">
+        {values.map((v) => (
+          <div class="card">
+            <div class="icon-badge"><svg viewBox="0 0 24 24" set:html={icons[v.icon]} /></div>
+            <h3>{v.t}</h3><p>{v.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container story">
+      <div class="story-art"><img src="/logo-mark.svg" width="420" height="420" alt="Das schmitzwebart-Logo: ein Kopf voller Ideen" /></div>
+      <div>
+        <span class="eyebrow">Das Logo</span>
+        <h2>Warum ein Kopf?</h2>
+        <p class="lead">Weil hinter jeder guten Seite ein Kopf steckt. Im Logo entsteht genau das, was ich für Sie baue:</p>
+        <ul class="check-list">
+          <li><strong>Die Zeichenstift-Kurve</strong> steht für Design, also Logos, Layouts und Marken.</li>
+          <li><strong>&lt;/&gt;</strong> steht für Code: schnelle, saubere Websites.</li>
+          <li><strong>Sonne und Formen</strong> stehen für Kreativität und Kunst.</li>
+          <li><strong>Die Farbsträhnen und Funken</strong> sind Ideen, die nach außen gehen, damit Sie gesehen werden.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <CtaBand title="Lassen Sie uns über Ihr Projekt sprechen" />
+</Base>
+<style>
+  .story { display: grid; gap: clamp(2rem, 6vw, 5rem); grid-template-columns: 1fr 1.1fr; align-items: center; }
+  .story-art { position: relative; display: grid; place-items: center; }
+  .story-art::before { content: ''; position: absolute; width: 80%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, rgba(164, 91, 255, .35), rgba(79, 140, 255, .12) 55%, transparent 70%); filter: blur(10px); }
+  .story-art img { position: relative; width: min(100%, 420px); height: auto; }
+  .story strong { color: var(--text); }
+  @media (max-width: 860px) { .story { grid-template-columns: 1fr; } .story-art img { width: min(80%, 320px); } }
+</style>

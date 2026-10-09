@@ -7,6 +7,9 @@ import { services, icons } from '../data/services';
 import { packages } from '../data/packages';
 import { faqGeneral } from '../data/faq';
 import { site } from '../data/site';
+import Founder from '../components/Founder.astro';
+import { Image } from 'astro:assets';
+import photo from '../assets/phillip-schmitz.jpg';
 const featured = packages.filter((p) => ['logo-pro', 'business-website', 'start-bundle'].includes(p.slug));
 featured.sort((a, b) => ['logo-pro', 'start-bundle', 'business-website'].indexOf(a.slug) - ['logo-pro', 'start-bundle', 'business-website'].indexOf(b.slug));
 const why = [
@@ -33,17 +36,11 @@ const why = [
         </ul>
       </div>
       <div class="hero-visual reveal" aria-hidden="true">
-        <div class="mock">
-          <div class="mock-bar"><i></i><i></i><i></i></div>
-          <div class="mock-body">
-            <img src="/logo-mark.svg" width="120" height="120" alt="" />
-            <div class="mock-line w80"></div><div class="mock-line w60"></div>
-            <div class="mock-cards"><b></b><b></b><b></b></div>
-            <div class="mock-btn"></div>
-          </div>
-        </div>
+        <div class="hero-orb"></div>
+        <img class="hero-icon" src="/logo-mark.svg" width="460" height="460" alt="" />
         <div class="badge b1"><strong>✓</strong><span>Datenschutz-<br/>freundlich</span></div>
         <div class="badge b2"><strong>⚡</strong><span>Schnell &amp;<br/>SEO-ready</span></div>
+        <a class="badge b3" href="#inhaber" tabindex="-1"><Image src={photo} alt="" width={88} height={88} class="b3-img" /><span><b>Phillip Schmitz</b><br/>Persönlich vom Inhaber</span></a>
       </div>
     </div>
   </section>
@@ -78,7 +75,9 @@ const why = [
     </div>
   </section>
 
-  <section class="section">
+  <Founder alt={false} />
+
+  <section class="section section--alt">
     <div class="container">
       <div class="section-head"><span class="eyebrow">Pakete</span><h2>Beliebte Pakete mit festem Leistungsumfang</h2><p class="lead">Transparente Festpreise, alle Angaben netto zzgl. MwSt. Fragen Sie unverbindlich an.</p></div>
       <div class="grid grid--3">{featured.map((p) => <PackageCard pkg={p} />)}</div>
@@ -86,7 +85,7 @@ const why = [
     </div>
   </section>
 
-  <section class="section section--alt">
+  <section class="section">
     <div class="container check-box">
       <div>
         <span class="eyebrow">Kostenloser Website-Check</span>
@@ -114,25 +113,21 @@ const why = [
   .hero-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin: 2rem 0 1.5rem; }
   .hero-trust { display: flex; flex-wrap: wrap; gap: .4rem 1.4rem; color: var(--muted); font-size: .92rem; }
   .hero-visual { position: relative; }
-  .mock { border: 1px solid var(--line); border-radius: 20px; background: var(--surface); box-shadow: 0 30px 80px -20px rgba(100, 90, 255, .5); overflow: hidden; }
-  .mock-bar { display: flex; gap: 6px; padding: .8rem 1rem; border-bottom: 1px solid var(--line); background: var(--bg-2); }
-  .mock-bar i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.18); }
-  .mock-body { padding: 2rem; display: grid; gap: .8rem; }
-  .mock-line { height: 12px; border-radius: 6px; background: rgba(255,255,255,.12); }
-  .mock-line.w80 { width: 80%; } .mock-line.w60 { width: 60%; }
-  .mock-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; margin: .6rem 0; }
-  .mock-cards b { height: 64px; border-radius: 10px; background: linear-gradient(160deg, rgba(79,140,255,.28), rgba(155,92,255,.18)); border: 1px solid var(--line); }
-  .mock-btn { width: 120px; height: 36px; border-radius: 999px; background: var(--grad); }
+  .hero-orb { position: absolute; inset: 8% 6%; border-radius: 50%; background: radial-gradient(circle at 45% 40%, rgba(164, 91, 255, .45), rgba(79, 140, 255, .18) 50%, transparent 70%); filter: blur(8px); }
+  .hero-icon { position: relative; width: min(100%, 460px); height: auto; margin-inline: auto; filter: drop-shadow(0 40px 70px rgba(80, 60, 200, .45)); }
+  @media (prefers-reduced-motion: no-preference) { .hero-icon { animation: float 7s ease-in-out infinite; } @keyframes float { 50% { transform: translateY(-12px); } } }
   .badge { position: absolute; display: flex; align-items: center; gap: .6rem; background: rgba(17, 20, 42, .92); border: 1px solid var(--line); border-radius: 14px; padding: .6rem .9rem; backdrop-filter: blur(8px); }
   .badge strong { font-family: var(--font-display); font-size: 1.5rem; }
   .badge span { font-size: .7rem; color: var(--muted); line-height: 1.2; }
-  .b1 { left: -1.5rem; bottom: -1.3rem; } .b2 { right: -1rem; top: -1.2rem; }
+  .b1 { left: 0; top: 18%; } .b2 { right: 0; top: 4%; }
+  .b3 { right: 4%; bottom: 2%; padding: .5rem .9rem .5rem .5rem; }
+  .b3 :global(.b3-img) { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: 50% 15%; border: 2px solid rgba(255,255,255,.2); }
+  .b3 span { font-size: .75rem; } .b3 b { color: var(--text); font-size: .85rem; }
   .more { color: var(--blue); font-weight: 600; font-size: .95rem; }
   .check-box { display: grid; gap: 2.5rem; grid-template-columns: 1.2fr 1fr; align-items: center; }
   .check-box .check-list { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.8rem; }
   @media (max-width: 900px) {
     .hero-grid, .check-box { grid-template-columns: 1fr; }
-    .hero-visual { max-width: 420px; }
-    .b1 { left: .5rem; }
+    .hero-visual { max-width: 420px; margin-inline: auto; }
   }
 </style>

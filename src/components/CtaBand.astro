@@ -7,6 +7,7 @@ const { title = 'Bereit für den nächsten Schritt?', text = 'Schreiben Sie uns 
     <div class="cta">
       <div class="glow"></div>
       <div class="relative">
+        <img class="cta-icon" src="/logo-mark.svg" width="110" height="110" alt="" aria-hidden="true" />
         <h2>{title}</h2>
         <p class="lead">{text}</p>
         <a class="btn btn--primary" href={href}>{label}</a>
@@ -16,6 +17,7 @@ const { title = 'Bereit für den nächsten Schritt?', text = 'Schreiben Sie uns 
 </section>
 <style>
   .cta { position: relative; overflow: hidden; border: 1px solid var(--line); border-radius: 28px; padding: clamp(2.2rem, 6vw, 4.5rem); text-align: center; background: var(--surface); }
+  .cta-icon { margin: 0 auto 1rem; width: 110px; height: 110px; }
   .cta .lead { margin: 0 auto 1.8rem; }
   .cta :global(.glow::before), .cta :global(.glow::after) { opacity: .22; width: 380px; height: 380px; }
 </style>

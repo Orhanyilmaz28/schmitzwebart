@@ -1,0 +1,48 @@
+---
+import { Image } from 'astro:assets';
+import photo from '../assets/phillip-schmitz.jpg';
+interface Props { more?: boolean; alt?: boolean }
+const { more = true, alt = true } = Astro.props;
+---
+<section class:list={['section', { 'section--alt': alt }]} id="inhaber">
+  <div class="container founder-grid">
+    <div class="founder-photo">
+      <div class="frame">
+        <Image src={photo} alt="Phillip Schmitz, Inhaber der Webmanufaktur Schmitz" widths={[360, 540, 683]} sizes="(max-width: 860px) 88vw, 440px" loading="lazy" />
+      </div>
+      <img class="founder-icon" src="/logo-mark.svg" width="132" height="132" alt="" aria-hidden="true" />
+    </div>
+    <div class="founder-text">
+      <span class="eyebrow">Ihr Ansprechpartner</span>
+      <h2>Hallo, ich bin <span class="grad-warm">Phillip Schmitz</span>.</h2>
+      <p class="lead">Websites sind bei mir Handarbeit: durchdacht, schnell und mit einem klaren Ziel. Vom ersten Gespräch bis zum Livegang sprechen Sie mit derselben Person. Sie bekommen kein Agentur-Pingpong und kein Kleingedrucktes.</p>
+      <ul class="check-list">
+        <li>Persönliche Beratung in Hilden, Düsseldorf und Umgebung oder per Video</li>
+        <li>Design, Technik und Sichtbarkeit aus einer Hand</li>
+        <li>Feste Preise und ehrliche Einschätzungen, auch wenn sie unbequem sind</li>
+      </ul>
+      <p class="sig">Phillip Schmitz · Inhaber, Webmanufaktur Schmitz</p>
+      <div class="founder-actions">
+        <a class="btn btn--primary" href="/kontakt">Lernen wir uns kennen</a>
+        {more && <a class="btn btn--ghost" href="/ueber-mich">Mehr über mich</a>}
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .founder-grid { display: grid; gap: clamp(2.5rem, 6vw, 5rem); grid-template-columns: minmax(0, 440px) 1fr; align-items: center; }
+  .founder-photo { position: relative; }
+  .frame { padding: 2px; border-radius: 30px; background: linear-gradient(140deg, #4f8cff, #a45bff 55%, #ff7a52); box-shadow: 0 40px 90px -30px rgba(110, 90, 255, .55); }
+  .frame :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 18%; border-radius: 28px; }
+  .founder-icon { position: absolute; right: -34px; bottom: -34px; width: 132px; height: 132px; padding: 10px; border-radius: 32px; background: rgba(13, 16, 34, .92); border: 1px solid var(--line); backdrop-filter: blur(10px); box-shadow: 0 20px 50px rgba(0, 0, 0, .5); }
+  .founder-text h2 { font-size: clamp(2rem, 4vw, 3rem); }
+  .grad-warm { background: linear-gradient(120deg, #ffc24d, #ff7a52 45%, #ff4f8b); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .founder-text .check-list { margin: 1.5rem 0; }
+  .sig { font-family: var(--font-display); font-size: .95rem; color: var(--text); opacity: .8; }
+  .founder-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.4rem; }
+  @media (max-width: 860px) {
+    .founder-grid { grid-template-columns: 1fr; }
+    .founder-photo { max-width: 400px; margin-inline: auto; width: calc(100% - 30px); }
+    .founder-icon { right: -18px; bottom: -22px; width: 104px; height: 104px; }
+  }
+</style>

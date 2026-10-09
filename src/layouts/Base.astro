@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CookieBanner from '../components/CookieBanner.astro';
 import { site } from '../data/site';
+import ownerPhoto from '../assets/phillip-schmitz.jpg';
 
 interface Props {
   title: string;
@@ -28,7 +29,7 @@ const business = {
   logo: `${site.url}/logo-512.png`,
   email: site.email,
   ...(site.phone ? { telephone: site.phone } : {}),
-  founder: { '@type': 'Person', name: site.owner },
+  founder: { '@type': 'Person', name: site.owner, jobTitle: 'Inhaber', image: new URL(ownerPhoto.src, site.url).toString() },
   address: {
     '@type': 'PostalAddress',
     streetAddress: site.address.street,

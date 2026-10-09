@@ -23,5 +23,6 @@ export const site = {
     { href: '/sea', label: 'Google Ads' },
     { href: '/pakete', label: 'Pakete' },
     { href: '/portfolio', label: 'Portfolio' },
+    { href: '/ueber-mich', label: 'Über mich' },
   ],
 };

@@ -3,6 +3,8 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import ContactForm from '../components/ContactForm.astro';
 import { site } from '../data/site';
+import { Image } from 'astro:assets';
+import photo from '../assets/phillip-schmitz.jpg';
 ---
 <Base title="Kontakt & Anfrage" description="Kontakt zur Webmanufaktur Schmitz in Hilden: Anfrage für Webdesign, Logodesign, SEO oder Google Ads. Antwort innerhalb eines Werktags.">
   <PageHero eyebrow="Kontakt" title="Erzählen Sie uns von Ihrem Projekt." text="Je mehr wir wissen, desto besser können wir Ihnen helfen. Sie erhalten innerhalb eines Werktags eine persönliche Antwort." />
@@ -11,6 +13,7 @@ import { site } from '../data/site';
       <div class="card"><ContactForm variant="kontakt" /></div>
       <aside>
         <div class="card">
+          <div class="person"><Image src={photo} alt="Phillip Schmitz" width={144} height={144} class="person-img" /><div><strong>Phillip Schmitz</strong><span>Inhaber · Ihr Ansprechpartner</span></div></div>
           <h3>So erreichen Sie uns</h3>
           <address>
             <strong>{site.name}</strong><br />
@@ -35,6 +38,10 @@ import { site } from '../data/site';
 </Base>
 <style>
   .contact-grid { display: grid; gap: 1.5rem; grid-template-columns: 1.4fr 1fr; align-items: start; }
+  .person { display: flex; gap: 1rem; align-items: center; margin-bottom: 1.4rem; padding-bottom: 1.4rem; border-bottom: 1px solid var(--line); }
+  .person :global(.person-img) { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; object-position: 50% 15%; border: 2px solid rgba(164, 91, 255, .6); }
+  .person strong { display: block; font-family: var(--font-display); font-size: 1.15rem; }
+  .person span { color: var(--muted); font-size: .9rem; }
   address { font-style: normal; color: var(--muted); margin-bottom: 1rem; }
   aside a { color: var(--blue); }
   .steps-mini { margin: 0; padding-left: 1.2rem; color: var(--muted); } .steps-mini li { margin-bottom: .4rem; }
