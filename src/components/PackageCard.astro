@@ -4,13 +4,17 @@ interface Props { pkg: Pkg }
 const { pkg } = Astro.props;
 const price = priceLabel(pkg);
 const buyable = Boolean(pkg.stripeLink) && pkg.price !== null;
+const badge = pkg.badge ?? (pkg.highlight ? 'Beliebt' : null);
 ---
-<article class:list={['pkg card', { 'pkg--hl': pkg.highlight }]}>
-  {pkg.highlight && <span class="pkg-badge">Beliebt</span>}
+<article class:list={['pkg card', { 'pkg--hl': pkg.highlight }]} data-cat={pkg.category}>
+  {badge && <span class:list={['pkg-badge', { 'pkg-badge--soft': !pkg.highlight }]}>{badge}</span>}
   <h3>{pkg.name}</h3>
   <p class="pkg-teaser">{pkg.teaser}</p>
   <div class="pkg-price">
-    {price ? (<><strong>{price}</strong> <span>{pkg.interval === 'monat' ? '/ Monat zzgl. MwSt.' : 'einmalig zzgl. MwSt.'}</span></>) : (<strong class="pkg-ask">Preis auf Anfrage</strong>)}
+    {price ? (
+      <><strong>{price}</strong> <span>{pkg.interval === 'monat' ? '/ Monat zzgl. MwSt.' : 'einmalig zzgl. MwSt.'}</span></>
+    ) : (<strong class="pkg-ask">Preis auf Anfrage</strong>)}
+    {pkg.note && <small class="pkg-note">{pkg.note}</small>}
   </div>
   <ul class="check-list">{pkg.features.map((f) => <li>{f}</li>)}</ul>
   {buyable ? (
@@ -21,13 +25,16 @@ const buyable = Boolean(pkg.stripeLink) && pkg.price !== null;
 </article>
 <style>
   .pkg { display: flex; flex-direction: column; position: relative; }
+  .pkg:hover { transform: translateY(-6px); border-color: rgba(120, 130, 255, .45); }
   .pkg h3 { font-size: 1.4rem; font-weight: 700; }
   .pkg-teaser { min-height: 3.2em; font-size: .96rem; }
   .pkg-price { margin: .4rem 0 1.2rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--line); }
   .pkg-price strong { font-family: var(--font-display); font-size: 2rem; }
   .pkg-price .pkg-ask { font-size: 1.25rem; color: var(--muted); }
   .pkg-price span { color: var(--muted); font-size: .85rem; }
+  .pkg-note { display: block; margin-top: .35rem; color: var(--muted); font-size: .78rem; }
   .pkg .check-list { flex: 1; margin-bottom: 1.5rem; }
   .pkg--hl { border-color: rgba(120, 130, 255, .55); background: linear-gradient(180deg, #181c3f, rgba(17, 20, 42, .6)); box-shadow: 0 0 60px -20px rgba(110, 100, 255, .55); }
   .pkg-badge { position: absolute; top: -12px; right: 1.2rem; background: var(--grad); color: #fff; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: .28rem .8rem; border-radius: 999px; }
+  .pkg-badge--soft { background: var(--surface-2); color: var(--text); border: 1px solid rgba(255,255,255,.18); }
 </style>

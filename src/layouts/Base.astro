@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CookieBanner from '../components/CookieBanner.astro';
+import Motion from '../components/Motion.astro';
 import { site } from '../data/site';
 import ownerPhoto from '../assets/phillip-schmitz.jpg';
 
@@ -48,6 +49,7 @@ const graphs = [business, ...(schema ? (Array.isArray(schema) ? schema : [schema
 <html lang="de" data-gtm={gtm || undefined}>
   <head>
     <meta charset="utf-8" />
+    <script is:inline>document.documentElement.classList.add('js')</script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
@@ -72,6 +74,7 @@ const graphs = [business, ...(schema ? (Array.isArray(schema) ? schema : [schema
     <main id="main"><slot /></main>
     <Footer />
     {gtm && <CookieBanner />}
+    <Motion />
   </body>
 </html>
 <style is:global>

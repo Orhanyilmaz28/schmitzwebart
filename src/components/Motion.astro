@@ -1,0 +1,73 @@
+---
+// Globale Bewegung: Scroll-Reveal, Spotlight auf Karten, Wortwechsel, Hochzählen.
+---
+<script>
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // --- Scroll-Reveal ---
+  const targets = document.querySelectorAll<HTMLElement>('.section-head, .section .card, .ref, .ps-mock, .story-art, .founder-photo, .faq details, .ladder-step, [data-reveal]');
+  if (!reduce && 'IntersectionObserver' in window) {
+    const groups = new Map<Element, number>();
+    targets.forEach((el) => {
+      const parent = el.parentElement!;
+      const i = groups.get(parent) ?? 0;
+      groups.set(parent, i + 1);
+      el.style.setProperty('--d', `${Math.min(i, 6) * 80}ms`);
+      el.classList.add('rv');
+    });
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const el = e.target as HTMLElement;
+        el.classList.add('in');
+        io.unobserve(el);
+        setTimeout(() => el.classList.remove('rv', 'in'), 1200);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    targets.forEach((el) => io.observe(el));
+  }
+
+  // --- Spotlight auf Karten ---
+  if (!reduce && matchMedia('(hover: hover)').matches) {
+    document.addEventListener('pointermove', (e) => {
+      const card = (e.target as HTMLElement).closest?.('.card') as HTMLElement | null;
+      if (!card) return;
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      card.style.setProperty('--my', `${e.clientY - r.top}px`);
+    }, { passive: true });
+  }
+
+  // --- Wortwechsel ---
+  document.querySelectorAll<HTMLElement>('[data-rotate]').forEach((el) => {
+    const words = (el.dataset.rotate || '').split('|');
+    if (words.length < 2 || reduce) return;
+    let i = 0;
+    setInterval(() => {
+      el.classList.add('out');
+      setTimeout(() => { i = (i + 1) % words.length; el.textContent = words[i]; el.classList.remove('out'); }, 320);
+    }, 2400);
+  });
+
+  // --- Hochzählen ---
+  const fmt = new Intl.NumberFormat('de-DE');
+  const counters = document.querySelectorAll<HTMLElement>('[data-count]');
+  if (!reduce && 'IntersectionObserver' in window) {
+    const co = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const el = e.target as HTMLElement;
+        co.unobserve(el);
+        const to = Number(el.dataset.count);
+        const t0 = performance.now();
+        const step = (t: number) => {
+          const k = Math.min(1, (t - t0) / 1100);
+          el.textContent = fmt.format(Math.round(to * (1 - Math.pow(1 - k, 3))));
+          if (k < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      });
+    }, { threshold: 0.6 });
+    counters.forEach((el) => co.observe(el));
+  }
+</script>

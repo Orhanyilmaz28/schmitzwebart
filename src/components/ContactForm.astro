@@ -47,8 +47,12 @@ const subject = variant === 'check' ? 'Anfrage: Kostenloser Website-Check' : 'An
   if (form) {
     const status = form.querySelector<HTMLElement>('.form-status')!;
     const sel = form.querySelector<HTMLSelectElement>('#paket-select');
-    const wanted = new URLSearchParams(location.search).get('paket');
+    const params = new URLSearchParams(location.search);
+    const wanted = params.get('paket');
     if (sel && wanted) sel.value = wanted;
+    const msg = params.get('nachricht');
+    const ta = form.querySelector<HTMLTextAreaElement>('textarea[name=nachricht]');
+    if (ta && msg) ta.value = msg.slice(0, 2000);
 
     const show = (cls: string, msg: string) => { status.className = `form-status ${cls}`; status.textContent = msg; };
 

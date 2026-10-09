@@ -13,7 +13,8 @@ npm run build    # Ausgabe in dist/
 | Was | Datei |
 |---|---|
 | Firmendaten, Telefon, USt-IdNr., Navigation | `src/data/site.ts` |
-| Pakete, **Preise**, **Stripe-Links** | `src/data/packages.ts` |
+| Pakete, **Preise**, **Stripe-Links** (auch Grundlage für den Preisrechner) | `src/data/packages.ts` |
+| Eigene Software-Produkte (VereinsKopf, CallKopf, KundenKopf, ZeitKopf) | `src/data/products.ts` |
 | Leistungstexte (Webdesign/Logo/SEO/SEA) | `src/data/services.ts` |
 | Städte-Seiten (`/webdesign-<stadt>`) | `src/data/cities.ts` |
 | FAQ | `src/data/faq.ts` |
@@ -41,6 +42,10 @@ Einrichtung in Vercel → Settings → Environment Variables:
 - `PUBLIC_FORM_ENDPOINT` – z. B. Formspree, damit Leads ankommen.
 
 Lokal testen: `CHECK_ALLOW_PRIVATE=1` erlaubt Prüfungen von `127.0.0.1` (nur für Tests, nie in Vercel setzen).
+
+## Eigene Software-Produkte
+Die vier Produkte in `src/data/products.ts` stehen auf `status: 'demo'` („Kostenlose Demo auf Anfrage“).
+Erst auf `'verfuegbar'` stellen, wenn das Programm wirklich auslieferbar ist.
 
 ## Vor dem Livegang prüfen
 - [ ] USt-IdNr. oder Kleinunternehmer-Hinweis (§ 19 UStG) im Impressum

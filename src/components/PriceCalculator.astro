@@ -1,0 +1,174 @@
+---
+// Preisrechner: Preise kommen aus packages.ts, damit es nur eine Quelle gibt.
+import { packages } from '../data/packages';
+const P = (slug: string) => {
+  const p = packages.find((x) => x.slug === slug)!;
+  return { slug, name: p.name, price: p.price ?? 0, monthly: p.interval === 'monat' };
+};
+const groups = [
+  { id: 'web', label: 'Website oder Shop', options: [P('visitenkarte'), P('one-pager'), P('business-website'), P('premium-website'), P('shop-start'), P('shop-pro')] },
+  { id: 'logo', label: 'Logo & Branding', options: [P('logo-express'), P('logo-basic'), P('logo-pro'), P('branding-komplett'), P('corporate-design')] },
+  { id: 'seo', label: 'Bei Google gefunden werden (SEO)', options: [P('seo-audit'), P('seo-start'), P('seo-lokal'), P('seo-wachstum'), P('seo-premium')] },
+  { id: 'ads', label: 'Google-Anzeigen', options: [P('ads-start'), P('ads-basis'), P('ads-pro'), P('ads-performance')] },
+  { id: 'care', label: 'Hosting & Pflege', options: [P('pflege-basic'), P('pflege-plus'), P('pflege-pro')] },
+];
+// Website-Abo als Alternative zum Kauf
+const abo: Record<string, ReturnType<typeof P>> = { 'one-pager': P('abo-start'), 'business-website': P('abo-business'), 'shop-start': P('abo-shop') };
+const extras = [
+  { slug: 'texte', name: 'Texte vom Profi', price: 390, monthly: false },
+  { slug: 'sprache', name: 'Zweite Sprache (z. B. Englisch)', price: 490, monthly: false },
+];
+const data = JSON.stringify({ groups, abo, extras });
+const fmt = (n: number) => new Intl.NumberFormat('de-DE').format(n);
+---
+<div class="calc" data-calc={data}>
+  <form class="calc-form" onsubmit="return false">
+    <div class="calc-pay">
+      <span>Website bezahlen:</span>
+      <label><input type="radio" name="pay" value="kauf" checked /><span>Einmal kaufen</span></label>
+      <label><input type="radio" name="pay" value="abo" /><span>Im Abo, 0 € Anzahlung</span></label>
+    </div>
+    {groups.map((g) => (
+      <fieldset class="calc-group">
+        <legend>{g.label}</legend>
+        <div class="calc-opts">
+          <label class="opt"><input type="radio" name={g.id} value="" checked /><span>Nicht nötig</span></label>
+          {g.options.map((o) => (
+            <label class="opt" data-slug={o.slug}>
+              <input type="radio" name={g.id} value={o.slug} />
+              <span>{o.name}<small>{fmt(o.price)} €{o.monthly ? ' / Monat' : ''}</small></span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+    ))}
+    <fieldset class="calc-group">
+      <legend>Extras</legend>
+      <div class="calc-opts">
+        {extras.map((e) => <label class="opt"><input type="checkbox" name="extra" value={e.slug} /><span>{e.name}<small>+{fmt(e.price)} €</small></span></label>)}
+      </div>
+    </fieldset>
+  </form>
+
+  <aside class="calc-sum" aria-live="polite">
+    <span class="eyebrow">Ihr Richtpreis</span>
+    <div class="calc-totals">
+      <div><small>Einmalig</small><strong class="t-once">0 €</strong></div>
+      <div><small>Monatlich</small><strong class="t-month">0 €</strong></div>
+    </div>
+    <p class="calc-discount" hidden></p>
+    <ul class="calc-lines"><li class="muted">Wählen Sie links aus, was Sie brauchen.</li></ul>
+    <p class="calc-hint" hidden></p>
+    <a class="btn btn--primary btn--block calc-cta" href="/kontakt?paket=beratung">Unverbindlich anfragen</a>
+    <p class="calc-note">Alle Preise netto zzgl. MwSt. Den verbindlichen Festpreis erhalten Sie nach einem kurzen Gespräch.</p>
+  </aside>
+</div>
+
+<style>
+  .calc { display: grid; grid-template-columns: 1fr 360px; gap: 2rem; align-items: start; }
+  .calc-pay { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin-bottom: 1.4rem; color: var(--text); font-weight: 600; }
+  .calc-pay label { cursor: pointer; }
+  .calc-pay input { position: absolute; opacity: 0; pointer-events: none; }
+  .calc-pay label span { display: inline-block; padding: .55rem 1rem; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); font-weight: 600; font-size: .92rem; transition: all .2s; }
+  .calc-pay input:checked + span { background: var(--grad); color: #fff; border-color: transparent; }
+  .calc-pay input:focus-visible + span { outline: 2px solid var(--blue); outline-offset: 2px; }
+  .calc-group { border: 0; padding: 0; margin: 0 0 1.4rem; }
+  .calc-group legend { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; color: var(--text); margin-bottom: .7rem; }
+  .calc-opts { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .opt { cursor: pointer; }
+  .opt input { position: absolute; opacity: 0; pointer-events: none; }
+  .opt > span { display: grid; gap: .1rem; padding: .6rem .95rem; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--text); font-size: .92rem; font-weight: 600; transition: border-color .2s, background .2s, transform .2s; }
+  .opt small { font-weight: 400; color: var(--muted); font-size: .78rem; }
+  .opt:hover > span { border-color: rgba(164, 91, 255, .5); transform: translateY(-2px); }
+  .opt input:checked + span { border-color: transparent; background: linear-gradient(140deg, rgba(79,140,255,.35), rgba(164,91,255,.35)); box-shadow: inset 0 0 0 1.5px rgba(190, 160, 255, .9); }
+  .opt input:focus-visible + span { outline: 2px solid var(--blue); outline-offset: 2px; }
+  .opt.disabled { opacity: .35; pointer-events: none; }
+  .calc-sum { position: sticky; top: 90px; background: linear-gradient(180deg, #181c3f, var(--surface)); border: 1px solid rgba(140, 120, 255, .45); border-radius: var(--radius); padding: 1.6rem; box-shadow: 0 30px 70px -30px rgba(110, 90, 255, .6); }
+  .calc-totals { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: .4rem 0 1rem; }
+  .calc-totals small { display: block; color: var(--muted); font-size: .8rem; }
+  .calc-totals strong { font-family: var(--font-display); font-size: 1.9rem; color: var(--text); }
+  .calc-discount { color: #5fe3a4; font-size: .9rem; font-weight: 600; margin: 0 0 .8rem; }
+  .calc-lines { display: grid; gap: .35rem; margin: 0 0 1rem; padding: .9rem 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: .88rem; }
+  .calc-lines :global(li) { display: flex; justify-content: space-between; gap: 1rem; color: var(--text); }
+  .calc-lines :global(li span:last-child) { color: var(--muted); white-space: nowrap; }
+  .calc-lines :global(li.muted) { color: var(--muted); }
+  .calc-hint { font-size: .85rem; color: #ffcf7a; }
+  .calc-note { font-size: .78rem; margin: .8rem 0 0; }
+  @media (max-width: 980px) {
+    .calc { grid-template-columns: 1fr; }
+    .calc-sum { position: sticky; bottom: 0; top: auto; z-index: 20; border-radius: 18px 18px 0 0; padding: 1rem 1.2rem; }
+    .calc-lines, .calc-note { display: none; }
+    .calc-totals { margin: .2rem 0 .6rem; } .calc-totals strong { font-size: 1.4rem; }
+  }
+</style>
+
+<script>
+  type Opt = { slug: string; name: string; price: number; monthly: boolean };
+  const root = document.querySelector<HTMLElement>('.calc');
+  if (root) {
+    const { groups, abo, extras } = JSON.parse(root.dataset.calc!) as { groups: { id: string; label: string; options: Opt[] }[]; abo: Record<string, Opt>; extras: Opt[] };
+    const form = root.querySelector('form')!;
+    const fmt = (n: number) => new Intl.NumberFormat('de-DE').format(Math.round(n)) + ' €';
+    const $ = (s: string) => root.querySelector<HTMLElement>(s)!;
+
+    function update() {
+      const fd = new FormData(form);
+      const pay = fd.get('pay');
+      const lines: { name: string; price: number; monthly: boolean }[] = [];
+      let hint = '';
+      const web = fd.get('web') as string;
+
+      // Abo nur für Pakete, die es als Abo gibt
+      groups.find((g) => g.id === 'web')!.options.forEach((o) => {
+        const el = root.querySelector(`.opt[data-slug="${o.slug}"]`);
+        el?.classList.toggle('disabled', pay === 'abo' && !abo[o.slug]);
+        const small = el?.querySelector('small');
+        if (small) small.textContent = pay === 'abo' && abo[o.slug] ? `${fmt(abo[o.slug].price)} / Monat` : fmt(o.price);
+      });
+      if (pay === 'abo' && web && !abo[web]) {
+        (form.querySelector('input[name=web][value=""]') as HTMLInputElement).checked = true;
+        hint = 'Im Abo gibt es One-Pager, Business-Website und Online-Shop Start.';
+      }
+      const webNow = new FormData(form).get('web') as string;
+      const careLocked = pay === 'abo' && !!webNow;
+      groups.find((g) => g.id === 'care')!.options.forEach((o) => root.querySelector(`.opt[data-slug="${o.slug}"]`)?.classList.toggle('disabled', careLocked));
+      if (careLocked) (form.querySelector('input[name=care][value=""]') as HTMLInputElement).checked = true;
+
+      const data = new FormData(form);
+      for (const g of groups) {
+        const slug = data.get(g.id) as string;
+        if (!slug) continue;
+        let o = g.options.find((x) => x.slug === slug)!;
+        if (g.id === 'web' && pay === 'abo') o = abo[slug];
+        lines.push(o);
+      }
+      data.getAll('extra').forEach((e) => lines.push(extras.find((x) => x.slug === e)!));
+      if (careLocked) hint = hint || 'Hosting & Pflege sind im Website-Abo bereits enthalten.';
+
+      let once = lines.filter((l) => !l.monthly).reduce((s, l) => s + l.price, 0);
+      const month = lines.filter((l) => l.monthly).reduce((s, l) => s + l.price, 0);
+      // Kombi-Rabatt auf einmalige Leistungen aus mehreren Bereichen
+      const areas = new Set(groups.filter((g) => { const v = data.get(g.id) as string; if (!v) return false; const o = g.id === 'web' && pay === 'abo' ? abo[v] : g.options.find((x) => x.slug === v)!; return !o.monthly; }).map((g) => g.id));
+      const rate = areas.size >= 3 ? 0.1 : areas.size === 2 ? 0.05 : 0;
+      const discount = Math.round(once * rate);
+      once -= discount;
+
+      $('.t-once').textContent = fmt(once);
+      $('.t-month').textContent = fmt(month);
+      const d = $('.calc-discount');
+      d.hidden = !discount;
+      d.textContent = discount ? `Kombi-Rabatt ${rate * 100} %: Sie sparen ${fmt(discount)}` : '';
+      const h = $('.calc-hint'); h.hidden = !hint; h.textContent = hint;
+      $('.calc-lines').innerHTML = lines.length
+        ? lines.map((l) => `<li><span>${l.name}</span><span>${fmt(l.price)}${l.monthly ? ' / Mon.' : ''}</span></li>`).join('')
+        : '<li class="muted">Wählen Sie links aus, was Sie brauchen.</li>';
+
+      const summary = lines.length
+        ? `Preisrechner-Auswahl:\n${lines.map((l) => `- ${l.name} (${fmt(l.price)}${l.monthly ? '/Monat' : ''})`).join('\n')}\nRichtpreis: ${fmt(once)} einmalig${month ? ` + ${fmt(month)} monatlich` : ''}${discount ? ` (inkl. Kombi-Rabatt ${rate * 100} %)` : ''}`
+        : '';
+      $('.calc-cta').setAttribute('href', `/kontakt?paket=beratung${summary ? `&nachricht=${encodeURIComponent(summary)}` : ''}`);
+    }
+    form.addEventListener('change', update);
+    update();
+  }
+</script>

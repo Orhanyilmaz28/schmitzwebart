@@ -2,36 +2,76 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import PackageCard from '../components/PackageCard.astro';
+import PriceCalculator from '../components/PriceCalculator.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { packages, categories } from '../data/packages';
+import { categories, byCategory } from '../data/packages';
 import { faqGeneral } from '../data/faq';
+const payFaq = [
+  { q: 'Einmal kaufen oder Website-Abo: Was ist besser?', a: 'Beim Kauf zahlen Sie einmal und die Website gehört Ihnen. Hosting und Pflege buchen Sie optional dazu. Im Abo zahlen Sie keine Anzahlung, sondern einen festen Monatsbeitrag, und Hosting, Domain und Pflege sind schon enthalten. Ideal, wenn Sie Ihr Budget schonen möchten.' },
+  { q: 'Wie funktioniert der Kombi-Rabatt?', a: 'Buchen Sie einmalige Leistungen aus zwei Bereichen (z. B. Logo und Website), erhalten Sie 5 % Rabatt. Ab drei Bereichen sind es 10 %. Unsere Kombi-Pakete sind bereits rabattiert.' },
+  ...faqGeneral.slice(0, 4),
+];
 ---
-<Base title="Pakete & Preise: Webdesign, Logo, SEO, Google Ads" description="Festpreis-Pakete für Webdesign, Logodesign, SEO und Google Ads von der Webmanufaktur Schmitz in Hilden. Klare Leistungen, transparente Preise.">
-  <PageHero eyebrow="Pakete & Preise" title="Klare Pakete. Feste Leistungen. Keine Überraschungen." text="Wählen Sie Ihr Paket und buchen Sie direkt oder fragen Sie unverbindlich an. Alle Preise verstehen sich netto zuzüglich Mehrwertsteuer." />
-  <nav class="container cat-nav" aria-label="Kategorien">
-    {categories.map((c) => <a href={`#${c.id}`} class="tag">{c.label}</a>)}
-  </nav>
-  {categories.map((c) => (
-    <section class="section" id={c.id}>
-      <div class="container">
-        <div class="section-head"><h2>{c.label}</h2></div>
-        <div class="grid grid--3">{packages.filter((p) => p.category === c.id).map((p) => <PackageCard pkg={p} />)}</div>
-      </div>
-    </section>
-  ))}
-  <section class="section section--alt">
-    <div class="container prose">
-      <h2>Individuelles Angebot gewünscht?</h2>
-      <p>Ihr Projekt passt in kein Paket? Kein Problem: Wir erstellen ein maßgeschneidertes Festpreis-Angebot. Werbebudget für Google Ads ist nicht in den Paketpreisen enthalten und wird direkt an Google gezahlt.</p>
+<Base title="Pakete & Preise: von 149 € bis zur Individuallösung" description="Alle Pakete der Webmanufaktur Schmitz: Websites ab 390 €, Website-Abo ab 49 €/Monat, Logos ab 149 €, SEO, Google Ads, Hosting & Software. Mit Preisrechner.">
+  <PageHero eyebrow="Pakete & Preise" title="Für jedes Budget das passende Paket." text="Klein starten, ohne Anzahlung im Abo oder gleich groß denken: Wählen Sie ein Paket, kombinieren Sie mit dem Preisrechner oder fragen Sie ein individuelles Angebot an. Alle Preise netto zzgl. MwSt.">
+    <div class="hero-jump"><a class="btn btn--primary" href="#rechner">Preis berechnen</a><a class="btn btn--ghost" href="#pakete">Alle Pakete</a></div>
+  </PageHero>
+
+  <section class="section section--alt" id="rechner">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">Preisrechner</span><h2>Stellen Sie Ihr Paket selbst zusammen</h2><p class="lead">Klicken Sie an, was Sie brauchen. Sie sehen sofort Ihren Richtpreis und können ihn mit einem Klick anfragen.</p></div>
+      <PriceCalculator />
     </div>
   </section>
-  <Faq items={faqGeneral} />
-  <CtaBand />
+
+  <section class="section" id="pakete">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">Alle Pakete</span><h2>Feste Leistungen, feste Preise</h2></div>
+      <div class="tabs" role="tablist" aria-label="Paket-Kategorien">
+        <button class="tab" role="tab" aria-selected="true" data-tab="alle">Alle</button>
+        {categories.map((c) => <button class="tab" role="tab" aria-selected="false" data-tab={c.id}>{c.label}</button>)}
+      </div>
+      {categories.map((c) => (
+        <div class="cat" id={c.id} data-cat={c.id}>
+          <div class="cat-head"><h3>{c.label}</h3><p>{c.intro}</p></div>
+          <div class="grid cat-grid">{byCategory(c.id).map((p) => <PackageCard pkg={p} />)}</div>
+        </div>
+      ))}
+      <p class="soft-link">Fertige Software-Lösungen (VereinsKopf, CallKopf, KundenKopf, ZeitKopf) finden Sie auf der Seite <a href="/software#loesungen">Software</a>.</p>
+    </div>
+  </section>
+
+  <Faq items={payFaq} />
+  <CtaBand title="Nichts Passendes dabei?" text="Kein Problem. Beschreiben Sie kurz Ihr Vorhaben, und Sie erhalten ein individuelles Festpreis-Angebot." label="Individuelles Angebot anfragen" />
 </Base>
 <style>
-  .cat-nav { display: flex; flex-wrap: wrap; gap: .4rem; padding-bottom: 1rem; }
-  .cat-nav .tag { font-size: .9rem; padding: .45rem 1rem; transition: border-color .2s, color .2s; }
-  .cat-nav .tag:hover { border-color: var(--blue); color: #fff; }
-  .section[id] { scroll-margin-top: 80px; }
+  .hero-jump { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.8rem; }
+  .tabs { position: sticky; top: 72px; z-index: 10; display: flex; gap: .45rem; overflow-x: auto; padding: .8rem 0; margin-bottom: 1.5rem; background: linear-gradient(180deg, var(--bg) 70%, transparent); scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { flex: none; padding: .55rem 1.05rem; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); font: inherit; font-size: .9rem; font-weight: 600; cursor: pointer; transition: all .2s; }
+  .tab:hover { color: #fff; border-color: rgba(164, 91, 255, .5); }
+  .tab[aria-selected='true'] { background: var(--grad); color: #fff; border-color: transparent; }
+  .cat { scroll-margin-top: 140px; }
+  .cat + .cat { margin-top: 4rem; }
+  .cat[hidden] { display: none; }
+  .cat-head { margin-bottom: 1.8rem; }
+  .cat-head h3 { font-size: 1.6rem; font-weight: 700; margin-bottom: .3rem; }
+  .cat-head p { margin: 0; max-width: 70ch; }
+  .cat-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); }
+  .soft-link { margin-top: 3rem; }
+  .soft-link a { color: var(--blue); font-weight: 600; }
 </style>
+<script>
+  const tabs = [...document.querySelectorAll<HTMLButtonElement>('.tab')];
+  const cats = [...document.querySelectorAll<HTMLElement>('.cat')];
+  function select(id: string, scroll = false) {
+    tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.tab === id)));
+    cats.forEach((c) => (c.hidden = id !== 'alle' && c.dataset.cat !== id));
+    if (scroll) document.getElementById('pakete')?.scrollIntoView({ behavior: 'smooth' });
+  }
+  tabs.forEach((t) => t.addEventListener('click', () => { select(t.dataset.tab!); history.replaceState(null, '', t.dataset.tab === 'alle' ? '#pakete' : `#${t.dataset.tab}`); }));
+  const fromHash = () => { const h = location.hash.slice(1); if (cats.some((c) => c.dataset.cat === h)) select(h, true); };
+  fromHash();
+  window.addEventListener('hashchange', fromHash);
+</script>

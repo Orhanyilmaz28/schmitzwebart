@@ -1,0 +1,147 @@
+---
+import { products, productExtras } from '../data/products';
+import { euro } from '../data/packages';
+import { icons } from '../data/services';
+interface Props { compact?: boolean }
+const { compact = false } = Astro.props;
+---
+<div class:list={['ps', { 'ps--compact': compact }]}>
+  <div class="ps-tabs" role="tablist" aria-label="Software-Lösungen">
+    {products.map((p, i) => (
+      <button class="ps-tab" role="tab" id={`tab-${p.slug}`} aria-controls={`panel-${p.slug}`} aria-selected={i === 0 ? 'true' : 'false'} style={`--h:${p.hue}`}>
+        <svg viewBox="0 0 24 24" set:html={icons[p.icon]} aria-hidden="true" />{p.name}
+      </button>
+    ))}
+  </div>
+
+  {products.map((p, i) => (
+    <section class="ps-panel" role="tabpanel" id={`panel-${p.slug}`} aria-labelledby={`tab-${p.slug}`} data-active={i === 0 ? 'true' : 'false'} style={`--h:${p.hue}`}>
+      <div class="ps-grid">
+        <div class="ps-info">
+          <span class="ps-status">{p.status === 'demo' ? 'Kostenlose Demo auf Anfrage' : 'Sofort verfügbar'}</span>
+          <h3 class="ps-name">{p.name}</h3>
+          <p class="ps-tagline">{p.tagline}</p>
+          <p class="ps-aud"><strong>Für:</strong> {p.audience}</p>
+          <ul class="check-list">{p.features.map((f) => <li>{f}</li>)}</ul>
+          <p class="ps-usp">{p.usp}</p>
+        </div>
+        <div class="ps-mock" aria-hidden="true">
+          <div class="ps-bar"><i></i><i></i><i></i><span>{p.name}</span></div>
+          <div class="ps-app">
+            <nav>{p.nav.map((n, j) => <span class:list={{ on: j === 1 }}>{n}</span>)}</nav>
+            <div class="ps-main">
+              <div class="ps-kpis"><b></b><b></b><b></b></div>
+              <div class="ps-rows">{Array.from({ length: 7 }).map((_, j) => <div class="ps-row"><i style={`width:${38 + ((j * 23) % 40)}%`}></i><i></i><em class:list={{ ok: j % 3 !== 1 }}></em></div>)}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {!compact && (
+        <div class="ps-tiers">
+          {p.tiers.map((t) => (
+            <div class:list={['ps-tier card', { hl: t.highlight }]}>
+              {t.highlight && <span class="ps-tier-badge">Empfehlung</span>}
+              <h4>{p.name} {t.name}</h4>
+              <p class="ps-tier-desc">{t.desc}</p>
+              <p class="ps-tier-price"><strong>{euro(t.price)}</strong> <span>{t.interval === 'monat' ? '/ Monat' : 'einmalig'} zzgl. MwSt.</span></p>
+              <ul class="check-list">{t.features.map((f) => <li>{f}</li>)}</ul>
+              <a class:list={['btn btn--block', t.highlight ? 'btn--primary' : 'btn--ghost']} href={`/kontakt?paket=beratung&nachricht=${encodeURIComponent(`Ich interessiere mich für ${p.name} ${t.name} und hätte gern eine kostenlose Demo.`)}`}>Demo anfragen</a>
+            </div>
+          ))}
+        </div>
+      )}
+      {compact && <p class="ps-from">Lizenz ab <strong>{euro(Math.min(...p.tiers.map((t) => t.price)))}</strong> einmalig · <a href={`/software#${p.slug}`}>Details & Preise →</a></p>}
+    </section>
+  ))}
+
+  {!compact && (
+    <div class="ps-extras">
+      {productExtras.map((e) => <div class="card"><h4>{e.t}</h4><p class="ps-extra-p">{e.p}</p><p>{e.d}</p></div>)}
+    </div>
+  )}
+</div>
+
+<style>
+  .ps-tabs { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.6rem; }
+  .ps-tab { display: inline-flex; align-items: center; gap: .5rem; padding: .7rem 1.15rem; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); font: inherit; font-weight: 600; cursor: pointer; transition: all .25s; }
+  .ps-tab svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+  .ps-tab:hover { color: #fff; border-color: hsl(var(--h) 80% 60% / .6); }
+  .ps-tab[aria-selected='true'] { color: #fff; background: hsl(var(--h) 70% 50% / .22); border-color: hsl(var(--h) 80% 60% / .8); box-shadow: 0 8px 30px -10px hsl(var(--h) 80% 55% / .7); }
+  .ps-panel[data-active='false'] { display: none; }
+  :global(html:not(.js)) .ps-panel { display: block !important; margin-bottom: 3rem; }
+  .ps-panel { animation: psIn .45s ease; }
+  @keyframes psIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  .ps-grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; }
+  .ps-status { display: inline-block; font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: hsl(var(--h) 85% 70%); background: hsl(var(--h) 70% 50% / .15); border: 1px solid hsl(var(--h) 70% 60% / .4); padding: .25rem .7rem; border-radius: 999px; }
+  .ps-name { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 700; margin: .7rem 0 .3rem; background: linear-gradient(120deg, #fff, hsl(var(--h) 90% 72%)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .ps-tagline { font-size: 1.15rem; color: var(--text); }
+  .ps-aud { font-size: .92rem; }
+  .ps-aud strong { color: var(--text); }
+  .ps-info .check-list { margin: 1rem 0; }
+  .ps-usp { font-size: .92rem; border-left: 3px solid hsl(var(--h) 80% 60%); padding-left: .9rem; }
+  .ps-mock { border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,.14); background: #0e1120; box-shadow: 0 40px 90px -30px hsl(var(--h) 80% 50% / .55); transform: perspective(1200px) rotateY(-6deg) rotateX(2deg); transition: transform .5s; }
+  .ps-mock:hover { transform: none; }
+  .ps-bar { display: flex; align-items: center; gap: 6px; padding: .55rem .8rem; background: hsl(var(--h) 60% 30% / .5); }
+  .ps-bar i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.3); }
+  .ps-bar span { margin-left: .6rem; font-size: .78rem; font-weight: 700; color: #fff; }
+  .ps-app { display: grid; grid-template-columns: 130px 1fr; min-height: 300px; }
+  .ps-app nav { background: rgba(255,255,255,.03); border-right: 1px solid var(--line); padding: .7rem .5rem; display: grid; align-content: start; gap: .2rem; }
+  .ps-app nav span { font-size: .74rem; color: var(--muted); padding: .42rem .55rem; border-radius: 7px; }
+  .ps-app nav span.on { background: hsl(var(--h) 70% 50% / .25); color: #fff; }
+  .ps-main { padding: .9rem; }
+  .ps-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin-bottom: .8rem; }
+  .ps-kpis b { height: 46px; border-radius: 9px; background: linear-gradient(140deg, hsl(var(--h) 70% 50% / .35), rgba(255,255,255,.04)); border: 1px solid var(--line); }
+  .ps-rows { display: grid; gap: .38rem; }
+  .ps-row { display: grid; grid-template-columns: 1fr 70px 14px; gap: .6rem; align-items: center; padding: .48rem .6rem; border-radius: 7px; background: rgba(255,255,255,.03); }
+  .ps-row i { display: block; height: 7px; border-radius: 4px; background: rgba(255,255,255,.18); }
+  .ps-row i + i { width: 100%; background: rgba(255,255,255,.1); }
+  .ps-row em { width: 10px; height: 10px; border-radius: 50%; background: #ffb547; }
+  .ps-row em.ok { background: #3ecf8e; }
+  .ps-tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-top: 2.5rem; }
+  .ps-tier { position: relative; display: flex; flex-direction: column; }
+  .ps-tier.hl { border-color: hsl(var(--h) 80% 60% / .7); box-shadow: 0 0 50px -20px hsl(var(--h) 80% 55% / .7); }
+  .ps-tier h4 { font-size: 1.2rem; margin: 0; }
+  .ps-tier-desc { font-size: .9rem; margin: .2rem 0 .6rem; }
+  .ps-tier-price strong { font-family: var(--font-display); font-size: 1.9rem; color: var(--text); }
+  .ps-tier-price span { font-size: .82rem; }
+  .ps-tier .check-list { flex: 1; margin: .6rem 0 1.2rem; }
+  .ps-tier-badge { position: absolute; top: -11px; right: 1rem; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; padding: .25rem .7rem; border-radius: 999px; background: hsl(var(--h) 75% 50%); color: #fff; }
+  .ps-extras { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-top: 2.5rem; }
+  .ps-extras h4 { margin: 0 0 .3rem; font-size: 1.05rem; }
+  .ps-extra-p { font-family: var(--font-display); font-weight: 700; color: var(--text); margin-bottom: .4rem; }
+  .ps-extras p:last-child { font-size: .9rem; margin: 0; }
+  .ps-from { margin-top: 1.5rem; }
+  .ps-from strong { color: var(--text); }
+  .ps-from a { color: var(--blue); font-weight: 600; }
+  @media (max-width: 900px) {
+    .ps-grid, .ps-tiers, .ps-extras { grid-template-columns: 1fr; }
+    .ps-mock { transform: none; }
+    .ps-app { grid-template-columns: 100px 1fr; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.ps').forEach((ps) => {
+    const tabs = [...ps.querySelectorAll<HTMLButtonElement>('.ps-tab')];
+    const show = (slug: string, focus = false) => {
+      tabs.forEach((t) => {
+        const on = t.id === `tab-${slug}`;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        if (on && focus) t.focus();
+      });
+      ps.querySelectorAll<HTMLElement>('.ps-panel').forEach((p) => (p.dataset.active = String(p.id === `panel-${slug}`)));
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => show(t.id.slice(4)));
+      t.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        const n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+        show(n.id.slice(4), true);
+      });
+    });
+    const hash = location.hash.slice(1);
+    if (hash && tabs.some((t) => t.id === `tab-${hash}`)) show(hash);
+  });
+</script>

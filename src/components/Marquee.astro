@@ -1,0 +1,18 @@
+---
+const items = ['Webdesign', 'Logodesign', 'Online-Shops', 'SEO', 'Google Ads', 'Windows-Software', 'Website-Abo', 'Hosting & Pflege', 'Branding', 'Zeiterfassung', 'Vereinsverwaltung'];
+---
+<div class="mq-wrap" aria-hidden="true"><div class="mq">
+  <div class="mq-track">
+    {[0, 1].map(() => <div class="mq-set">{items.map((t) => <span>{t}<i>✦</i></span>)}</div>)}
+  </div>
+</div></div>
+<style>
+  .mq-wrap { overflow: hidden; padding: 1.2rem 0; margin-top: -.5rem; }
+  .mq { position: relative; z-index: 2; overflow: hidden; transform: rotate(-1.5deg); margin: 0 -2rem; background: linear-gradient(90deg, #ff9a4d, #ff4f8b 35%, #a45bff 70%, #4f8cff); padding: .85rem 0; box-shadow: 0 20px 60px -20px rgba(164, 91, 255, .6); }
+  .mq-track { display: flex; width: max-content; animation: mq 38s linear infinite; }
+  .mq-set { display: flex; }
+  .mq span { display: inline-flex; align-items: center; gap: 1.4rem; padding-right: 1.4rem; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; text-transform: uppercase; letter-spacing: .02em; color: #0b0d1d; white-space: nowrap; }
+  .mq i { font-style: normal; color: #fff; }
+  @keyframes mq { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .mq-track { animation: none; } }
+</style>

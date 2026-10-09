@@ -6,10 +6,11 @@ import CtaBand from './CtaBand.astro';
 import PackageCard from './PackageCard.astro';
 import References from './References.astro';
 import { services, icons, type ServiceKey } from '../data/services';
-import { packages } from '../data/packages';
+import { byCategory, categories, type Category } from '../data/packages';
 interface Props { slug: ServiceKey }
 const s = services[Astro.props.slug];
-const pkgs = packages.filter((p) => p.category === s.packageCategory);
+const catMap: Record<string, Category[]> = { webdesign: ['webdesign', 'abo', 'pflege'], logodesign: ['logodesign', 'bundle'], seo: ['seo'], sea: ['sea'], software: ['software'] };
+const pkgGroups = catMap[Astro.props.slug].map((c) => ({ cat: categories.find((x) => x.id === c)!, items: byCategory(c) }));
 const refFilter = ({ webdesign: ['webdesign', 'shop'], logodesign: ['logodesign'], seo: ['seo'], sea: ['sea'], software: ['software'] } as const)[Astro.props.slug];
 const schema = {
   '@context': 'https://schema.org',
@@ -57,8 +58,14 @@ const schema = {
 
   <section class="section section--alt" id="pakete">
     <div class="container">
-      <div class="section-head"><span class="eyebrow">Pakete</span><h2>Feste Pakete statt Überraschungen</h2><p class="lead">Wählen Sie ein Paket oder fragen Sie ein individuelles Angebot an. Alle Preise netto.</p></div>
-      <div class="grid grid--3">{pkgs.map((p) => <PackageCard pkg={p} />)}</div>
+      <div class="section-head"><span class="eyebrow">Pakete</span><h2>Für jedes Budget das passende Paket</h2><p class="lead">Vom günstigen Einstieg bis zur Premium-Lösung, alle Preise netto. Nichts dabei? Wir machen Ihnen ein individuelles Angebot.</p></div>
+      {pkgGroups.map((g, i) => (
+        <div class="pkg-group">
+          {pkgGroups.length > 1 && <div class="pkg-group-head"><h3>{g.cat.label}</h3><p>{g.cat.intro}</p></div>}
+          <div class="grid pkg-grid">{g.items.map((p) => <PackageCard pkg={p} />)}</div>
+        </div>
+      ))}
+      <p class="pkg-more"><a class="btn btn--ghost" href="/pakete#rechner">Preis selbst berechnen</a> <a class="btn btn--ghost" href="/pakete">Alle Pakete vergleichen</a></p>
     </div>
   </section>
 
@@ -68,5 +75,11 @@ const schema = {
 <style>
   .hero-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.8rem; }
   .steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+  .pkg-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); }
+  .pkg-group + .pkg-group { margin-top: 3.5rem; }
+  .pkg-group-head { margin-bottom: 1.8rem; }
+  .pkg-group-head h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: .3rem; }
+  .pkg-group-head p { margin: 0; max-width: 70ch; }
+  .pkg-more { margin-top: 2.2rem; display: flex; flex-wrap: wrap; gap: .8rem; }
   .step-n { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; display: block; margin-bottom: .4rem; }
 </style>
