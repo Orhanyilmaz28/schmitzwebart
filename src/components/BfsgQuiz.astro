@@ -1,0 +1,101 @@
+---
+// Interaktiver Selbsttest: Betrifft mich das BFSG? (erste Orientierung, keine Rechtsberatung)
+const qs = [
+  { id: 'b2c', q: 'Richten sich Ihre Angebote (auch) an Privatpersonen, also Verbraucher?', a: [['ja', 'Ja'], ['nein', 'Nein, nur an Unternehmen']] },
+  { id: 'shop', q: 'Können Kunden über Ihre Website etwas kaufen, buchen oder einen Vertrag abschließen?', a: [['ja', 'Ja, z. B. Shop, Buchung, Termin'], ['nein', 'Nein, reine Information']] },
+  { id: 'staff', q: 'Wie viele Personen beschäftigt Ihr Unternehmen?', a: [['klein', 'Weniger als 10'], ['gross', '10 oder mehr']] },
+  { id: 'umsatz', q: 'Liegt Ihr Jahresumsatz oder Ihre Jahresbilanzsumme bei höchstens 2 Mio. €?', a: [['ja', 'Ja, höchstens 2 Mio. €'], ['nein', 'Nein, darüber']] },
+  { id: 'produkte', q: 'Verkaufen Sie technische Produkte wie Computer, Smartphones, E-Book-Reader oder Router?', a: [['nein', 'Nein'], ['ja', 'Ja']] },
+];
+---
+<div class="quiz card" data-quiz>
+  <div class="quiz-progress" aria-hidden="true"><span></span></div>
+  <form class="quiz-form" onsubmit="return false">
+    {qs.map((q, i) => (
+      <fieldset class="quiz-step" data-step={i} hidden={i > 0}>
+        <legend><span class="quiz-n">Frage {i + 1} von {qs.length}</span>{q.q}</legend>
+        <div class="quiz-opts">
+          {q.a.map(([v, l]) => <label><input type="radio" name={q.id} value={v} /><span>{l}</span></label>)}
+        </div>
+        {i > 0 && <button type="button" class="quiz-back">← Zurück</button>}
+      </fieldset>
+    ))}
+  </form>
+  <div class="quiz-result" hidden aria-live="polite">
+    <span class="quiz-badge"></span>
+    <h3 class="quiz-title"></h3>
+    <p class="quiz-text"></p>
+    <p class="quiz-extra" hidden></p>
+    <div class="quiz-actions">
+      <a class="btn btn--primary quiz-cta" href="/kontakt?paket=bfsg-schnellcheck">BFSG-Schnellcheck anfragen</a>
+      <button type="button" class="btn btn--ghost quiz-restart">Test neu starten</button>
+    </div>
+    <p class="quiz-note">Erste Orientierung nach den Kriterien des BFSG, keine Rechtsberatung. Im Zweifel lassen Sie Ihren Fall rechtlich prüfen.</p>
+  </div>
+</div>
+<style>
+  .quiz { max-width: 760px; padding: clamp(1.4rem, 4vw, 2.2rem); border-color: rgba(164, 91, 255, .45); }
+  .quiz-progress { height: 6px; border-radius: 99px; background: rgba(255,255,255,.08); overflow: hidden; margin-bottom: 1.6rem; }
+  .quiz-progress span { display: block; height: 100%; width: 0; background: var(--grad); transition: width .35s ease; }
+  .quiz-step { border: 0; padding: 0; margin: 0; }
+  .quiz-step legend { font-family: var(--font-display); font-size: clamp(1.2rem, 2.6vw, 1.5rem); font-weight: 700; color: var(--text); margin-bottom: 1.2rem; line-height: 1.3; }
+  .quiz-n { display: block; font-family: var(--font-body); font-size: .8rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--blue); margin-bottom: .5rem; }
+  .quiz-opts { display: grid; gap: .6rem; }
+  .quiz-opts label { cursor: pointer; }
+  .quiz-opts input { position: absolute; opacity: 0; pointer-events: none; }
+  .quiz-opts span { display: block; padding: 1rem 1.2rem; border-radius: 14px; border: 1px solid var(--line); background: var(--bg-2); color: var(--text); font-weight: 600; transition: all .2s; }
+  .quiz-opts label:hover span { border-color: rgba(164, 91, 255, .6); transform: translateX(4px); }
+  .quiz-opts input:focus-visible + span { outline: 2px solid var(--blue); outline-offset: 2px; }
+  .quiz-opts input:checked + span { background: linear-gradient(140deg, rgba(79,140,255,.3), rgba(164,91,255,.3)); border-color: transparent; }
+  .quiz-back { margin-top: 1rem; background: none; border: 0; color: var(--muted); font: inherit; cursor: pointer; padding: .3rem 0; }
+  .quiz-back:hover { color: #fff; }
+  .quiz-badge { display: inline-block; font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: .3rem .8rem; border-radius: 999px; color: #0b0d1d; background: var(--c, #ffb547); }
+  .quiz-title { font-size: 1.6rem; font-weight: 700; margin: .8rem 0 .5rem; }
+  .quiz-extra { color: #ffcf7a; }
+  .quiz-actions { display: flex; flex-wrap: wrap; gap: .7rem; margin: 1.2rem 0; }
+  .quiz-note { font-size: .82rem; margin: 0; }
+</style>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-quiz]').forEach((root) => {
+    const form = root.querySelector('form')!;
+    const steps = [...root.querySelectorAll<HTMLFieldSetElement>('.quiz-step')];
+    const bar = root.querySelector<HTMLElement>('.quiz-progress span')!;
+    const res = root.querySelector<HTMLElement>('.quiz-result')!;
+    let cur = 0;
+    const show = (i: number) => {
+      cur = i;
+      steps.forEach((s, j) => (s.hidden = j !== i));
+      bar.style.width = `${(i / steps.length) * 100}%`;
+      steps[i]?.querySelector<HTMLInputElement>('input:checked, input')?.focus({ preventScroll: true });
+    };
+    const val = (n: string) => (new FormData(form).get(n) as string) || '';
+    const set = (badge: string, color: string, title: string, text: string, extra = '', cta: [string, string] = ['BFSG-Schnellcheck anfragen', '/kontakt?paket=bfsg-schnellcheck']) => {
+      steps.forEach((s) => (s.hidden = true));
+      bar.style.width = '100%';
+      res.hidden = false;
+      const b = res.querySelector<HTMLElement>('.quiz-badge')!; b.textContent = badge; b.style.setProperty('--c', color);
+      res.querySelector('.quiz-title')!.textContent = title;
+      res.querySelector('.quiz-text')!.textContent = text;
+      const ex = res.querySelector<HTMLElement>('.quiz-extra')!; ex.hidden = !extra; ex.textContent = extra;
+      const a = res.querySelector<HTMLAnchorElement>('.quiz-cta')!; a.textContent = cta[0]; a.href = cta[1];
+      res.querySelector<HTMLElement>('.quiz-title')!.focus?.();
+    };
+    function evaluate() {
+      if (val('b2c') === 'nein') return set('Voraussichtlich nicht betroffen', '#3ecf8e', 'Das BFSG zielt auf Angebote für Verbraucher.', 'Wenn Sie ausschließlich an Unternehmen verkaufen, gelten die Pflichten des BFSG in der Regel nicht. Eine barrierearme Website lohnt sich trotzdem, für Ihre Kunden und für Google.', '', ['Website kostenlos prüfen', '/seo-check']);
+      if (val('shop') === 'nein') return set('Voraussichtlich nicht betroffen', '#3ecf8e', 'Reine Informationsseiten fallen in der Regel nicht darunter.', 'Solange über Ihre Website nichts gekauft, gebucht oder abgeschlossen wird, betrifft Sie das BFSG voraussichtlich nicht. Planen Sie einen Shop oder eine Online-Buchung, sollten Sie Barrierefreiheit von Anfang an einplanen.', '', ['Website kostenlos prüfen', '/seo-check']);
+      const micro = val('staff') === 'klein' && val('umsatz') === 'ja';
+      if (micro) return set('Voraussichtlich ausgenommen', '#ffb547', 'Als Kleinstunternehmen sind Sie für Ihren Online-Shop voraussichtlich ausgenommen.', 'Die Ausnahme gilt für Dienstleistungen wie Online-Shops, wenn Sie weniger als 10 Personen beschäftigen und höchstens 2 Mio. € Umsatz oder Bilanzsumme haben. Wächst Ihr Unternehmen über diese Grenzen, gilt die Pflicht.', val('produkte') === 'ja' ? 'Achtung: Für die verkauften technischen Produkte selbst gilt die Ausnahme nicht. Hier gelten eigene Anforderungen.' : '');
+      return set('Voraussichtlich betroffen', '#ff5c6c', 'Ihr Online-Angebot muss voraussichtlich barrierefrei sein.', 'Maßgeblich ist WCAG 2.1 auf Stufe AA (über die Norm EN 301 549). Außerdem brauchen Sie eine Erklärung zur Barrierefreiheit. Der Schnellcheck zeigt in wenigen Tagen, wo Ihr Shop steht.', val('produkte') === 'ja' ? 'Zusätzlich gelten für die verkauften technischen Produkte eigene Anforderungen.' : '');
+    }
+    form.addEventListener('change', (e) => {
+      const name = (e.target as HTMLInputElement).name;
+      const i = steps.findIndex((s) => s.querySelector(`input[name="${name}"]`));
+      if (name === 'b2c' && val('b2c') === 'nein') return evaluate();
+      if (name === 'shop' && val('shop') === 'nein') return evaluate();
+      setTimeout(() => (i + 1 < steps.length ? show(i + 1) : evaluate()), 220);
+    });
+    root.querySelectorAll('.quiz-back').forEach((b) => b.addEventListener('click', () => show(Math.max(0, cur - 1))));
+    root.querySelector('.quiz-restart')!.addEventListener('click', () => { form.reset(); res.hidden = true; show(0); });
+    show(0);
+  });
+</script>

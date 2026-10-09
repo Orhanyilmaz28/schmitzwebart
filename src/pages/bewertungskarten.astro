@@ -1,0 +1,31 @@
+---
+import ServicePage from '../components/ServicePage.astro';
+import ReviewCardDesigner from '../components/ReviewCardDesigner.astro';
+---
+<ServicePage slug="bewertungskarten">
+  <section class="section" id="gestalten">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">Live-Vorschau</span><h2>Gestalten Sie Ihre Karte</h2><p class="lead">Name eingeben, Farbe wählen, Spruch aussuchen: So könnte Ihre Karte aussehen. Klicken Sie auf die Karte, um die Rückseite mit dem QR-Code zu sehen.</p></div>
+      <ReviewCardDesigner />
+    </div>
+  </section>
+  <section class="section section--alt">
+    <div class="container fair">
+      <div>
+        <span class="eyebrow">Fair & regelkonform</span>
+        <h2>So bitten Sie richtig um Bewertungen</h2>
+        <p class="lead">Google erlaubt, Kunden um Bewertungen zu bitten, aber nicht, sie dafür zu belohnen. Die Karten sind deshalb bewusst neutral gestaltet.</p>
+      </div>
+      <ul class="check-list card">
+        <li>Keine Rabatte, Geschenke oder Gewinnspiele für Bewertungen</li>
+        <li>Alle Kunden fragen, nicht nur die zufriedenen</li>
+        <li>Der QR-Code führt direkt zum Google-Formular, ohne vorausgefüllte Sterne</li>
+        <li>Auf jede Bewertung antworten, auch auf kritische</li>
+      </ul>
+    </div>
+  </section>
+</ServicePage>
+<style>
+  .fair { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: center; }
+  @media (max-width: 860px) { .fair { grid-template-columns: 1fr; } }
+</style>

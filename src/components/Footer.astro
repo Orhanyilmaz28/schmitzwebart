@@ -3,6 +3,9 @@ import Logo from './Logo.astro';
 import { site } from '../data/site';
 import { cities } from '../data/cities';
 const year = new Date().getFullYear();
+const group = (label: string) => (site.nav.find((n) => n.label === label && 'children' in n) as { children: { href: string; label: string }[] } | undefined)?.children ?? [];
+const leistungen = group('Leistungen');
+const branchenLinks = group('Branchen');
 ---
 <footer class="ftr">
   <div class="container ftr-grid">
@@ -12,15 +15,17 @@ const year = new Date().getFullYear();
     </div>
     <div>
       <h2 class="ftr-h">Leistungen</h2>
+      <ul>{leistungen.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+    </div>
+    <div>
+      <h2 class="ftr-h">Branchen & mehr</h2>
       <ul>
-        <li><a href="/webdesign">Webdesign</a></li>
-        <li><a href="/logodesign">Logodesign</a></li>
-        <li><a href="/seo">SEO</a></li>
-        <li><a href="/sea">Google Ads (SEA)</a></li>
-        <li><a href="/software">Software</a></li>
+        {branchenLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
         <li><a href="/pakete">Pakete & Preise</a></li>
-        <li><a href="/ueber-mich">Über mich</a></li>
+        <li><a href="/portfolio">Portfolio</a></li>
         <li><a href="/ratgeber">Ratgeber</a></li>
+        <li><a href="/ueber-mich">Über mich</a></li>
+        <li><a href="/empfehlen">Empfehlen & Gutschrift</a></li>
       </ul>
     </div>
     <div>
@@ -44,12 +49,12 @@ const year = new Date().getFullYear();
   <p class="container ftr-b2b">Alle Preise netto zzgl. gesetzlicher MwSt. Meine Angebote richten sich an Unternehmen, Selbstständige, Vereine und Institutionen.</p>
   <div class="container ftr-bottom">
     <span>© {year} {site.name} · Inhaber {site.owner}</span>
-    <span class="ftr-legal"><a href="/impressum">Impressum</a><a href="/datenschutz">Datenschutz</a><a href="/agb">AGB</a><button type="button" data-cookie-settings hidden>Cookie-Einstellungen</button></span>
+    <span class="ftr-legal"><a href="/impressum">Impressum</a><a href="/datenschutz">Datenschutz</a><a href="/agb">AGB</a><a href="/barrierefreiheit-erklaerung">Barrierefreiheit</a><button type="button" data-cookie-settings hidden>Cookie-Einstellungen</button></span>
   </div>
 </footer>
 <style>
   .ftr { border-top: 1px solid var(--line); background: var(--bg-2); padding-top: 4rem; margin-top: 2rem; }
-  .ftr-grid { display: grid; gap: 2.5rem; grid-template-columns: 1.4fr 1fr 1fr 1.2fr; padding-bottom: 3rem; }
+  .ftr-grid { display: grid; gap: 2.5rem; grid-template-columns: 1.3fr 1fr 1fr 1fr 1.2fr; padding-bottom: 3rem; }
   .ftr-about { margin-top: 1rem; font-size: .95rem; max-width: 34ch; }
   .ftr .ftr-h { font-size: .85rem; letter-spacing: .12em; text-transform: uppercase; color: var(--text); margin-bottom: 1rem; }
   .ftr li { margin-bottom: .5rem; }
@@ -59,9 +64,10 @@ const year = new Date().getFullYear();
   address { font-style: normal; color: var(--muted); margin-bottom: 1rem; line-height: 1.7; }
   .ftr-b2b { font-size: .82rem; color: var(--muted); margin: 0 auto 1rem; }
   .ftr-bottom { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; padding: 1.5rem 0 2rem; border-top: 1px solid var(--line); font-size: .88rem; color: var(--muted); }
-  .ftr-legal { display: flex; gap: 1.4rem; }
+  .ftr-legal { display: flex; flex-wrap: wrap; gap: .6rem 1.4rem; }
   .ftr-legal a:hover, .ftr-legal button:hover { color: #fff; }
   .ftr-legal button { background: none; border: 0; color: inherit; font: inherit; cursor: pointer; padding: 0; }
-  @media (max-width: 900px) { .ftr-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 1080px) { .ftr-grid { grid-template-columns: 1fr 1fr 1fr; } }
+  @media (max-width: 760px) { .ftr-grid { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 560px) { .ftr-grid { grid-template-columns: 1fr; } }
 </style>

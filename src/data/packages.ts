@@ -2,7 +2,7 @@
 //  price: null  -> "Preis auf Anfrage" + Button "Anfragen"
 //  from: true   -> Preis wird als "ab …" angezeigt
 //  stripeLink   -> sobald gesetzt (und price != null), wird der Button zu "Jetzt buchen"
-export type Category = 'bundle' | 'webdesign' | 'abo' | 'logodesign' | 'seo' | 'sea' | 'pflege' | 'software';
+export type Category = 'bundle' | 'branche' | 'webdesign' | 'abo' | 'logodesign' | 'seo' | 'sea' | 'bewertung' | 'bfsg' | 'pflege' | 'software';
 
 export type Pkg = {
   slug: string;
@@ -21,11 +21,14 @@ export type Pkg = {
 
 export const categories: { id: Category; label: string; intro: string }[] = [
   { id: 'bundle', label: 'Kombi-Pakete', intro: 'Mehrere Leistungen zusammen buchen und sparen, vom kleinen Start bis zum kompletten Auftritt.' },
+  { id: 'branche', label: 'Branchenpakete', intro: 'Fertig geschnürt für Ihre Branche: alles drin, was Handwerker, Praxen, Gastronomen und Vereine wirklich brauchen.' },
   { id: 'webdesign', label: 'Websites & Shops', intro: 'Von der digitalen Visitenkarte in 5 Werktagen bis zum individuellen Portal. Einmal zahlen, die Website gehört Ihnen.' },
   { id: 'abo', label: 'Website-Abo', intro: 'Keine Anzahlung, keine Technik-Sorgen: Website, Hosting, Domain und Pflege zum festen Monatspreis.' },
   { id: 'logodesign', label: 'Logo & Branding', intro: 'Vom schnellen Express-Logo bis zum kompletten Corporate Design für Ihr Unternehmen.' },
   { id: 'seo', label: 'SEO', intro: 'Einmalige Analyse oder laufende Betreuung, damit Sie bei Google gefunden werden.' },
   { id: 'sea', label: 'Google Ads', intro: 'Anzeigen, die sich rechnen. Das Werbebudget zahlen Sie direkt an Google.' },
+  { id: 'bewertung', label: 'Bewertungskarten', intro: 'Karten und Aufsteller mit QR-Code zur Google-Bewertung, individuell gestaltet, gedruckt und geliefert.' },
+  { id: 'bfsg', label: 'Barrierefreiheit (BFSG)', intro: 'Prüfung nach WCAG 2.1 AA, Mängelbehebung und laufende Kontrolle, damit Ihr Online-Angebot den Anforderungen des BFSG entspricht.' },
   { id: 'pflege', label: 'Hosting & Pflege', intro: 'Updates, Sicherheit, Backups und kleine Änderungen, damit Ihre Website zuverlässig läuft.' },
   { id: 'software', label: 'Individuelle Software', intro: 'Programme nach Maß, vom kleinen Excel-Ersatz bis zur Branchenlösung. Fertige Lösungen finden Sie unter „Software“.' },
 ];
@@ -49,6 +52,32 @@ export const packages: Pkg[] = [
     teaser: 'Marke, Premium-Website und drei Monate SEO: der große Auftritt aus einer Hand.',
     price: 5990, interval: 'einmalig', stripeLink: null,
     features: ['Branding Komplett (Logo, Styleguide, Geschäftsausstattung)', 'Premium-Website (bis 15 Seiten)', 'SEO Start + 3 Monate SEO Wachstum', 'Professionelle Texte für alle Seiten', 'Über 1.500 € günstiger als einzeln'],
+  },
+
+  // ---------- Branchenpakete ----------
+  {
+    slug: 'paket-handwerk', category: 'branche', name: 'Handwerker-Paket', badge: 'Handwerk',
+    teaser: 'Website, Google-Profil und Bewertungskarten für mehr Aufträge.',
+    price: 1490, interval: 'einmalig', stripeLink: null, note: 'Auch als Abo ab 79 € / Monat möglich',
+    features: ['Website bis 5 Seiten mit Leistungen & Referenzgalerie', 'Anfrageformular mit Leistungsauswahl', 'Anruf- & WhatsApp-Button auf jeder Seite', 'Google-Unternehmensprofil eingerichtet', '100 Google-Bewertungskarten inklusive'],
+  },
+  {
+    slug: 'paket-praxis', category: 'branche', name: 'Praxis-Paket', badge: 'Praxen',
+    teaser: 'Die ruhige, gut lesbare Website für Ärzte und Therapeuten.',
+    price: 1990, interval: 'einmalig', stripeLink: null,
+    features: ['Website bis 7 Seiten: Team, Leistungen, Sprechzeiten, Anfahrt', 'Einbindung Ihres Online-Terminsystems', 'Barrierearme Umsetzung (Kontraste, Schriftgrößen)', 'Impressum für Heilberufe vorbereitet', 'Google-Profil mit Sprechzeiten'],
+  },
+  {
+    slug: 'paket-gastro', category: 'branche', name: 'Gastro-Paket', badge: 'Gastronomie',
+    teaser: 'Speisekarte online und am Tisch, Reservierung inklusive.',
+    price: 1290, interval: 'einmalig', stripeLink: null,
+    features: ['Website mit Speisekarte (Seite & PDF)', 'QR-Speisekarte inkl. 10 Tischaufsteller', 'Reservierung per Telefon, WhatsApp oder Formular', 'Google-Profil mit Speisekarte & Fotos', 'Öffnungszeiten & Anfahrt'],
+  },
+  {
+    slug: 'paket-verein', category: 'branche', name: 'Vereins-Paket', badge: 'Vereine',
+    teaser: 'Die Vereins-Website mit Terminen, Mannschaften und Online-Aufnahme.',
+    price: 990, interval: 'einmalig', stripeLink: null, note: 'Mit VereinsKopf „Verein“ zusammen 1.190 €',
+    features: ['Termine, Neuigkeiten & Abteilungen', '„Mitglied werden“-Formular', 'Sponsorenbereich', 'Impressum für Vereine vorbereitet', 'Mobil optimiert & schnell'],
   },
 
   // ---------- Websites & Shops ----------
@@ -203,6 +232,52 @@ export const packages: Pkg[] = [
     teaser: 'Für Unternehmen, die mit Anzeigen richtig wachsen wollen.',
     price: 890, interval: 'monat', stripeLink: null, note: 'Für Werbebudgets ab 3.000 €/Monat',
     features: ['Alles aus Ads Pro', 'Performance Max & Shopping', 'Eigene Landingpages pro Kampagne', 'Strategie-Call jeden Monat', 'Vorrang bei allen Anfragen'],
+  },
+
+  // ---------- Bewertungskarten ----------
+  {
+    slug: 'bewertung-start', category: 'bewertung', name: 'Bewertungskarten Start', badge: 'Einstieg',
+    teaser: '100 Karten mit QR-Code zu Ihrer Google-Bewertung.',
+    price: 49, interval: 'einmalig', stripeLink: null,
+    features: ['100 Karten im Visitenkartenformat', 'Individuelles Design in Ihren Farben', 'QR-Code direkt zu Ihrem Bewertungslink', 'Druck & Versand inklusive'],
+  },
+  {
+    slug: 'bewertung-plus', category: 'bewertung', name: 'Bewertungskarten Plus', badge: 'Beliebt', highlight: true,
+    teaser: 'Karten und Tischaufsteller für Theke, Empfang oder Kasse.',
+    price: 99, interval: 'einmalig', stripeLink: null,
+    features: ['250 Karten im Visitenkartenformat', '2 Aufsteller (A6) für Theke oder Empfang', 'Individuelles Design in Ihren Farben', 'QR-Code zu Ihrem Bewertungslink', 'Druck & Versand inklusive'],
+  },
+  {
+    slug: 'bewertung-pro', category: 'bewertung', name: 'Bewertungskarten Pro',
+    teaser: 'Das Komplettset für Betriebe mit viel Kundenkontakt.',
+    price: 179, interval: 'einmalig', stripeLink: null,
+    features: ['500 Karten im Visitenkartenformat', '5 Aufsteller (A6)', '2 Aufkleber für Tür oder Schaufenster', 'Kurze Anleitung für Ihr Team', 'Druck & Versand inklusive'],
+  },
+
+  // ---------- Barrierefreiheit (BFSG) ----------
+  {
+    slug: 'bfsg-schnellcheck', category: 'bfsg', name: 'BFSG-Schnellcheck', badge: 'Einstieg',
+    teaser: 'Wo steht Ihr Shop? Eine erste Einschätzung mit Ampel.',
+    price: 149, interval: 'einmalig', stripeLink: null,
+    features: ['Startseite, Produktseite & Checkout geprüft', 'Automatische & manuelle Stichproben', 'Ampel-Bericht als PDF', 'Einschätzung zur Betroffenheit (keine Rechtsberatung)', '30 Minuten Besprechung'],
+  },
+  {
+    slug: 'bfsg-audit', category: 'bfsg', name: 'BFSG-Audit', badge: 'Beliebt', highlight: true,
+    teaser: 'Gründliche Prüfung nach WCAG 2.1 AA mit Mängelliste.',
+    price: 690, interval: 'einmalig', stripeLink: null,
+    features: ['Bis 10 Seitentypen inkl. Warenkorb & Checkout', 'Tastatur-, Screenreader- & Kontrastprüfung', 'Mängelliste mit Prioritäten & Lösungen', 'Entwurf der Erklärung zur Barrierefreiheit', 'Dokumentation für Ihre Unterlagen'],
+  },
+  {
+    slug: 'bfsg-umsetzung', category: 'bfsg', name: 'BFSG-Umsetzung', from: true,
+    teaser: 'Ich behebe die gefundenen Barrieren, Sie haben Ruhe.',
+    price: 990, interval: 'einmalig', stripeLink: null,
+    features: ['Kontraste, Fokus & Tastaturbedienung', 'Formulare & Fehlermeldungen', 'Alternativtexte & Überschriften', 'Für gängige Shopsysteme nach Absprache', 'Nachtest mit Abschlussbericht'],
+  },
+  {
+    slug: 'bfsg-monitoring', category: 'bfsg', name: 'BFSG-Monitoring',
+    teaser: 'Damit Ihr Shop auch nach Updates barrierefrei bleibt.',
+    price: 49, interval: 'monat', stripeLink: null, note: 'Monatlich kündbar',
+    features: ['Monatlicher automatischer Check', 'Prüfung neuer Seiten & Inhalte', 'Kurzbericht pro Monat', 'Erklärung zur Barrierefreiheit aktuell halten'],
   },
 
   // ---------- Hosting & Pflege ----------

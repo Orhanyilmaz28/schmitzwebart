@@ -19,6 +19,10 @@ npm run build    # Ausgabe in dist/
 | Kundenstimmen (erscheinen erst, wenn eingetragen) | `src/data/testimonials.ts` |
 | WhatsApp-Nummer, Terminbuchungs-Link (Cal.com o. Ä.) | `src/data/site.ts` (`whatsapp`, `bookingUrl`) |
 | AGB | `src/pages/agb.astro` |
+| Navigation (Aufklappmenüs Leistungen/Branchen), Footer-Spalten folgen automatisch | `src/data/site.ts` → `nav` |
+| Branchenpakete (Handwerker, Praxen, Gastronomie, Vereine) | `src/data/branchen.ts` + Pakete in `packages.ts` |
+| Empfehlungsprogramm (Prozent, Höchstbetrag) | `src/data/site.ts` → `referral` |
+| BFSG-Hinweisleiste oben | `src/components/AnnouncementBar.astro` |
 | Leistungstexte (Webdesign/Logo/SEO/SEA) | `src/data/services.ts` |
 | Städte-Seiten (`/webdesign-<stadt>`) | `src/data/cities.ts` |
 | FAQ | `src/data/faq.ts` |
@@ -57,6 +61,8 @@ Erst auf `'verfuegbar'` stellen, wenn das Programm wirklich auslieferbar ist.
 - [ ] Software-Demos bereitstellen, bevor Demo-Anfragen kommen
 - [ ] Terminbuchung: Cal.com/Calendly-Link in `site.ts` → `bookingUrl` eintragen
 - [ ] Kundenstimmen einholen und in `testimonials.ts` eintragen
+- [ ] BFSG-Texte und Selbsttest (`/barrierefreiheit`) rechtlich gegenlesen lassen
+- [ ] Empfehlungsbedingungen (`/empfehlen`) und Branchenpaket-Leistungen bestätigen
 - [ ] USt-IdNr. oder Kleinunternehmer-Hinweis (§ 19 UStG) im Impressum
 - [ ] Datenschutzerklärung: Hosting-Anbieter und Formular-Dienst ergänzen, rechtlich prüfen lassen
 - [ ] Portfolio-Konzeptentwürfe durch echte Projekte ersetzen

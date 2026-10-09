@@ -1,0 +1,34 @@
+---
+const path = Astro.url.pathname;
+const hide = path.startsWith('/barrierefreiheit');
+---
+{!hide && (
+  <div class="ann" data-ann>
+    <div class="container ann-in">
+      <a href="/barrierefreiheit#selbsttest"><strong>BFSG:</strong> Seit 28. Juni 2025 müssen viele Online-Shops barrierefrei sein. <span>Betrifft es Sie? Jetzt in 1 Minute prüfen →</span></a>
+      <button type="button" aria-label="Hinweis schließen">×</button>
+    </div>
+  </div>
+)}
+<style>
+  .ann[hidden] { display: none; }
+  .ann { background: linear-gradient(90deg, rgba(255,154,77,.18), rgba(255,79,139,.18) 50%, rgba(164,91,255,.18)); border-bottom: 1px solid var(--line); font-size: .88rem; }
+  .ann-in { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .5rem 0; }
+  .ann a { color: var(--text); }
+  .ann a span { color: #ffcf7a; font-weight: 600; white-space: nowrap; }
+  .ann button { background: none; border: 0; color: var(--muted); font-size: 1.3rem; line-height: 1; cursor: pointer; padding: .2rem .4rem; }
+  .ann button:hover { color: #fff; }
+  @media (max-width: 600px) { .ann a span { white-space: normal; } }
+</style>
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-ann]');
+  if (bar) {
+    let closed = false;
+    try { closed = sessionStorage.getItem('ann-bfsg') === '1'; } catch { /* ohne Speicher einfach anzeigen */ }
+    if (closed) bar.hidden = true;
+    bar.querySelector('button')?.addEventListener('click', () => {
+      bar.hidden = true;
+      try { sessionStorage.setItem('ann-bfsg', '1'); } catch { /* egal */ }
+    });
+  }
+</script>

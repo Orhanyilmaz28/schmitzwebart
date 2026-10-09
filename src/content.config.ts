@@ -8,7 +8,7 @@ const ratgeber = defineCollection({
     seoTitle: z.string().max(49).optional(),
     description: z.string().max(165),
     date: z.coerce.date(),
-    category: z.enum(['Websites', 'SEO & Google', 'Software', 'Recht & Organisation']),
+    category: z.enum(['Websites', 'SEO & Google', 'Software', 'Recht & Organisation', 'Barrierefreiheit']),
     cta: z.object({ label: z.string(), href: z.string() }),
     draft: z.boolean().default(false),
   }),

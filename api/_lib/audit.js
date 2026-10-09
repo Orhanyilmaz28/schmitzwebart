@@ -135,11 +135,6 @@ export async function audit(input) {
   checks.push(check('technik', 'size', 'Seitengröße (HTML)', kb < 300 ? 'ok' : kb < 1000 ? 'warn' : 'fail', `${kb} KB HTML-Code.`,
     kb < 300 ? '' : 'Sehr viel Code verlangsamt den Aufbau, besonders mobil. Oft stecken Baukasten-Ballast oder eingebettete Daten dahinter.', 1));
 
-  const lang = root.querySelector('html')?.getAttribute('lang');
-  checks.push(lang
-    ? check('technik', 'lang', 'Sprache ausgezeichnet', 'ok', `Sprache: ${lang}.`, '', 1)
-    : check('technik', 'lang', 'Sprache ausgezeichnet', 'warn', 'Die Sprache der Seite ist nicht angegeben.', 'Ein lang-Attribut hilft Suchmaschinen und Vorleseprogrammen.', 1));
-
   const hasIcon = !!root.querySelector('link[rel~="icon"]') || !!(await exists(new URL('/favicon.ico', finalUrl)));
   checks.push(check('technik', 'favicon', 'Favicon', hasIcon ? 'ok' : 'warn', hasIcon ? 'Ein Favicon ist vorhanden.' : 'Kein Favicon gefunden.', hasIcon ? '' : 'Das kleine Symbol im Browser-Tab und in Google-Ergebnissen sorgt für Wiedererkennung.', 1));
 
@@ -215,6 +210,47 @@ export async function audit(input) {
     : check('vertrauen', 'datenschutz', 'Datenschutzerklärung verlinkt', 'fail', 'Kein Link zur Datenschutzerklärung gefunden.', 'Nach DSGVO ist eine Datenschutzerklärung Pflicht. Fehlt sie, drohen Abmahnungen.', 3));
   const contact = has(/^tel:|^mailto:|kontakt|contact/);
   checks.push(check('vertrauen', 'kontakt', 'Kontaktmöglichkeit', contact ? 'ok' : 'warn', contact ? 'Telefon, E-Mail oder Kontaktseite ist verlinkt.' : 'Keine direkte Kontaktmöglichkeit gefunden.', contact ? '' : 'Ein klickbarer Anruf- oder E-Mail-Link macht aus Besuchern Anfragen, besonders mobil.', 2));
+
+  // --- Barrierefreiheit (Basis-Prüfung, ersetzt kein Audit nach WCAG 2.1 AA) ---
+  const lang = root.querySelector('html')?.getAttribute('lang');
+  checks.push(lang
+    ? check('barriere', 'lang', 'Sprache ausgezeichnet', 'ok', `Sprache: ${lang}.`, '', 1)
+    : check('barriere', 'lang', 'Sprache ausgezeichnet', 'warn', 'Die Sprache der Seite ist nicht angegeben.', 'Ohne Sprachangabe lesen Screenreader Texte womöglich in der falschen Sprache vor. Ein lang-Attribut ist eine Grundanforderung der WCAG.', 1));
+
+
+  const zoomBlocked = /user-scalable\s*=\s*(no|0)/i.test(viewport) || (() => { const m = viewport.match(/maximum-scale\s*=\s*([\d.]+)/i); return m ? parseFloat(m[1]) < 2 : false; })();
+  checks.push(zoomBlocked
+    ? check('barriere', 'zoom', 'Zoomen erlaubt', 'fail', 'Die Seite verhindert das Vergrößern auf Smartphones.', 'Menschen mit Sehschwäche müssen Inhalte vergrößern können. Das Sperren des Zooms verstößt gegen die WCAG.', 2)
+    : check('barriere', 'zoom', 'Zoomen erlaubt', 'ok', 'Besucher können die Seite vergrößern.', '', 2));
+
+  const fields = root.querySelectorAll('input, select, textarea').filter((el) => !/^(hidden|submit|button|reset|image)$/i.test(el.getAttribute('type') || ''));
+  const labelFor = new Set(root.querySelectorAll('label[for]').map((l) => l.getAttribute('for')));
+  const unlabeled = fields.filter((el) => {
+    if (el.getAttribute('aria-label') || el.getAttribute('aria-labelledby') || el.getAttribute('title')) return false;
+    if (el.id && labelFor.has(el.id)) return false;
+    let p = el.parentNode; while (p) { if (p.rawTagName && p.rawTagName.toLowerCase() === 'label') return false; p = p.parentNode; }
+    return true;
+  }).length;
+  checks.push(check('barriere', 'labels', 'Formularfelder beschriftet', !fields.length || unlabeled === 0 ? 'ok' : unlabeled <= 1 ? 'warn' : 'fail',
+    fields.length ? `${unlabeled} von ${fields.length} Feldern ohne Beschriftung.` : 'Keine Formularfelder auf dieser Seite.',
+    unlabeled ? 'Felder ohne Beschriftung sind für Screenreader-Nutzer kaum ausfüllbar, besonders im Checkout ein Problem.' : '', 2));
+
+  const named = (el) => el.text.trim() || el.getAttribute('aria-label') || el.getAttribute('aria-labelledby') || el.getAttribute('title') || el.querySelectorAll('img').some((i) => (i.getAttribute('alt') || '').trim());
+  const controls = [...root.querySelectorAll('button'), ...root.querySelectorAll('a[href]')];
+  const nameless = controls.filter((el) => !named(el)).length;
+  checks.push(check('barriere', 'names', 'Buttons & Links verständlich benannt', nameless === 0 ? 'ok' : nameless <= 2 ? 'warn' : 'fail',
+    nameless ? `${nameless} Buttons oder Links ohne erkennbaren Namen.` : 'Alle Buttons und Links haben einen Namen.',
+    nameless ? 'Icons ohne Beschriftung (z. B. Lupe, Warenkorb, Social Media) werden von Screenreadern nur als „Link“ vorgelesen.' : '', 2));
+
+  const levels = root.querySelectorAll('h1, h2, h3, h4, h5, h6').map((h) => Number(h.rawTagName[1]));
+  const jumps = levels.filter((l, i) => i > 0 && l - levels[i - 1] > 1).length;
+  checks.push(check('barriere', 'headings', 'Logische Überschriften-Struktur', levels.length && levels[0] <= 2 && jumps === 0 ? 'ok' : 'warn',
+    levels.length ? (jumps ? `${jumps} Sprünge in der Überschriften-Hierarchie (z. B. H2 → H4).` : 'Die Überschriften sind sauber gegliedert.') : 'Keine Überschriften gefunden.',
+    jumps || !levels.length ? 'Screenreader-Nutzer springen über Überschriften durch die Seite. Eine lückenlose Hierarchie macht das möglich.' : '', 1));
+
+  const statement = has(/barrierefrei|accessibility|zugänglichkeit/);
+  checks.push(check('barriere', 'statement', 'Erklärung zur Barrierefreiheit', statement ? 'ok' : 'warn', statement ? 'Ein Hinweis zur Barrierefreiheit ist verlinkt.' : 'Keine Erklärung zur Barrierefreiheit gefunden.',
+    statement ? '' : 'Für Online-Shops und andere Angebote, die unter das BFSG fallen, ist eine Erklärung zur Barrierefreiheit vorgeschrieben.', 1));
 
   return {
     url: finalUrl.toString(),

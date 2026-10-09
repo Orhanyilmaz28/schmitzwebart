@@ -1,0 +1,110 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site } from '../data/site';
+import { euro } from '../data/packages';
+const { percent, maxCredit } = site.referral;
+const steps = [
+  { t: 'Link erstellen', d: 'Geben Sie unten Ihren Namen ein. Sie erhalten Ihren persönlichen Empfehlungslink.' },
+  { t: 'Weitergeben', d: 'Teilen Sie den Link per WhatsApp, E-Mail oder persönlich, an alle, die eine Website, ein Logo oder Software brauchen.' },
+  { t: 'Gutschrift erhalten', d: `Beauftragt Ihr Kontakt ein Projekt, erhalten Sie ${percent} % des Netto-Auftragswerts als Gutschrift, bis zu ${euro(maxCredit)}.` },
+];
+const faq = [
+  { q: 'Wofür kann ich die Gutschrift nutzen?', a: 'Für alle meine Leistungen: Pflege, Änderungen, SEO, Logo, Software und mehr. Die Gutschrift wird mit Ihren nächsten Rechnungen verrechnet. Eine Barauszahlung ist nicht möglich.' },
+  { q: 'Ich bin noch kein Kunde. Kann ich trotzdem empfehlen?', a: 'Ja. Ihre Gutschrift bleibt 12 Monate gültig und wird mit Ihrem eigenen Projekt verrechnet, wenn Sie in dieser Zeit etwas beauftragen.' },
+  { q: 'Wann wird die Gutschrift gutgeschrieben?', a: 'Sobald der neue Kunde seine erste Rechnung vollständig bezahlt hat. Sie erhalten dann eine kurze Bestätigung per E-Mail.' },
+  { q: 'Muss mein Kontakt etwas angeben?', a: 'Wenn er über Ihren Link kommt, steht Ihr Name automatisch im Kontaktformular. Alternativ nennt er Ihren Namen bei der Anfrage.' },
+];
+---
+<Base title={`Empfehlen & ${percent} % Gutschrift sichern`} description={`Empfehlen Sie die Webmanufaktur Schmitz weiter und erhalten Sie ${percent} % des Auftragswerts als Gutschrift, bis zu ${euro(maxCredit)} pro Empfehlung.`}>
+  <PageHero eyebrow="Empfehlungsprogramm" title={`Weiterempfehlen lohnt sich: ${percent} % Gutschrift.`} text={`Sie kennen jemanden, der eine Website, ein Logo, mehr Sichtbarkeit oder Software braucht? Empfehlen Sie mich weiter und erhalten Sie ${percent} % des Netto-Auftragswerts als Gutschrift, bis zu ${euro(maxCredit)} pro Empfehlung.`}>
+    <div style="margin-top:1.8rem"><a class="btn btn--primary" href="#link">Jetzt Empfehlungslink erstellen</a></div>
+  </PageHero>
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">So funktioniert's</span><h2>In drei Schritten zur Gutschrift</h2></div>
+      <ol class="rsteps">{steps.map((s, i) => <li class="card"><span class="rn">{i + 1}</span><h3>{s.t}</h3><p>{s.d}</p></li>)}</ol>
+      <p class="rex">Beispiel: Ihr Kontakt bucht eine Business-Website für 1.990 € netto. Ihre Gutschrift: <strong>199 €</strong>.</p>
+    </div>
+  </section>
+
+  <section class="section" id="link">
+    <div class="container rl">
+      <div>
+        <span class="eyebrow">Ihr persönlicher Link</span>
+        <h2>Empfehlungslink erstellen</h2>
+        <p class="lead">Ihr Name erscheint auf der Seite, die Ihr Kontakt sieht, und automatisch in seiner Anfrage. So ordne ich die Empfehlung Ihnen zu.</p>
+        <p class="small">Bitte geben Sie den Link nur an Personen weiter, die damit einverstanden sind. Ich kontaktiere niemanden ungefragt.</p>
+      </div>
+      <form class="card form ref-gen" onsubmit="return false">
+        <label>Ihr Name<input name="von" maxlength="60" placeholder="z. B. Max Muster" autocomplete="name" /></label>
+        <label>Ihre Firma (optional)<input name="firma" maxlength="60" autocomplete="organization" /></label>
+        <div class="ref-out" hidden>
+          <label>Ihr Link<input class="ref-url" readonly /></label>
+          <div class="ref-btns">
+            <button type="button" class="btn btn--primary btn--sm ref-copy">Link kopieren</button>
+            <a class="btn btn--ghost btn--sm ref-wa" href="https://wa.me/" target="_blank" rel="noopener">Per WhatsApp teilen</a>
+            <a class="btn btn--ghost btn--sm ref-mail" href="mailto:">Per E-Mail teilen</a>
+          </div>
+          <p class="ref-status" role="status"></p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container prose">
+      <h2>Bedingungen</h2>
+      <ul>
+        <li>Die Gutschrift beträgt {percent} % des Netto-Auftragswerts der ersten Beauftragung des neuen Kunden, höchstens {euro(maxCredit)} pro Empfehlung.</li>
+        <li>Sie gilt für Neukunden, die bei ihrer Anfrage den Empfehlungsgeber nennen bzw. über dessen Link kommen. Selbstempfehlungen sind ausgeschlossen.</li>
+        <li>Die Gutschrift entsteht, wenn der neue Kunde seine erste Rechnung vollständig bezahlt hat. Sie wird mit künftigen Leistungen verrechnet und ist 12 Monate gültig. Eine Barauszahlung ist ausgeschlossen.</li>
+        <li>Ich kann das Programm jederzeit ändern oder beenden. Bereits entstandene Gutschriften bleiben erhalten.</li>
+      </ul>
+    </div>
+  </section>
+
+  <Faq items={faq} title="Fragen zum Empfehlungsprogramm" />
+  <CtaBand title="Selbst ein Projekt im Kopf?" />
+</Base>
+<style>
+  .rsteps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+  .rn { width: 2.6rem; height: 2.6rem; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; background: var(--grad); color: #fff; margin-bottom: .8rem; }
+  .rex { margin-top: 1.6rem; }
+  .rex strong { color: #5fe3a4; }
+  .rl { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  .small { font-size: .88rem; }
+  .ref-out { display: grid; gap: .8rem; }
+  .ref-url { font-size: .9rem !important; }
+  .ref-btns { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .ref-status { margin: 0; font-size: .88rem; color: #5fe3a4; min-height: 1.2em; }
+  @media (max-width: 860px) { .rsteps, .rl { grid-template-columns: 1fr; } }
+</style>
+<script>
+  const form = document.querySelector<HTMLFormElement>('.ref-gen')!;
+  const out = form.querySelector<HTMLElement>('.ref-out')!;
+  const urlField = form.querySelector<HTMLInputElement>('.ref-url')!;
+  const status = form.querySelector<HTMLElement>('.ref-status')!;
+  function update() {
+    const fd = new FormData(form);
+    const name = String(fd.get('von') || '').trim();
+    const firma = String(fd.get('firma') || '').trim();
+    out.hidden = name.length < 2;
+    if (out.hidden) return;
+    const who = firma ? `${name} (${firma})` : name;
+    const url = `${location.origin}/empfohlen?von=${encodeURIComponent(who)}`;
+    urlField.value = url;
+    const text = `Ich kann dir Phillip Schmitz von der Webmanufaktur Schmitz empfehlen: Websites, Logos, SEO und Software zum Festpreis. Schau mal hier: ${url}`;
+    form.querySelector<HTMLAnchorElement>('.ref-wa')!.href = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    form.querySelector<HTMLAnchorElement>('.ref-mail')!.href = `mailto:?subject=${encodeURIComponent('Empfehlung: Webmanufaktur Schmitz')}&body=${encodeURIComponent(text)}`;
+    status.textContent = '';
+  }
+  form.addEventListener('input', update);
+  form.querySelector('.ref-copy')!.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(urlField.value); status.textContent = 'Link kopiert!'; }
+    catch { urlField.select(); status.textContent = 'Bitte markierten Link kopieren (Strg+C).'; }
+  });
+</script>

@@ -29,6 +29,7 @@ const subject = variant === 'check' ? 'Anfrage: Kostenloser Website-Check' : 'An
       </label>
     )}
   </div>
+  {variant === 'kontakt' && <label>Empfohlen von (optional)<input type="text" name="empfohlen" maxlength="120" autocomplete="off" /></label>}
   <label>{variant === 'check' ? 'Was möchten Sie verbessern? (optional)' : 'Ihre Nachricht *'}
     <textarea name="nachricht" required={variant !== 'check'}></textarea>
   </label>
@@ -53,6 +54,9 @@ const subject = variant === 'check' ? 'Anfrage: Kostenloser Website-Check' : 'An
     const msg = params.get('nachricht');
     const ta = form.querySelector<HTMLTextAreaElement>('textarea[name=nachricht]');
     if (ta && msg) ta.value = msg.slice(0, 2000);
+    const von = params.get('von');
+    const ref = form.querySelector<HTMLInputElement>('input[name=empfohlen]');
+    if (ref && von) ref.value = von.slice(0, 120);
 
     const show = (cls: string, msg: string) => { status.className = `form-status ${cls}`; status.textContent = msg; };
 
@@ -78,7 +82,7 @@ const subject = variant === 'check' ? 'Anfrage: Kostenloser Website-Check' : 'An
       }
 
       // Fallback ohne Formular-Dienst: E-Mail-Programm öffnen
-      const lines = ['name', 'email', 'firma', 'website', 'paket', 'nachricht']
+      const lines = ['name', 'email', 'firma', 'website', 'paket', 'empfohlen', 'nachricht']
         .filter((k) => data.get(k))
         .map((k) => `${k.charAt(0).toUpperCase() + k.slice(1)}: ${data.get(k)}`);
       location.href = `mailto:${mailto}?subject=${encodeURIComponent(subject!)}&body=${encodeURIComponent(lines.join('\n'))}`;

@@ -10,6 +10,8 @@ const groups = [
   { id: 'logo', label: 'Logo & Branding', options: [P('logo-express'), P('logo-basic'), P('logo-pro'), P('branding-komplett'), P('corporate-design')] },
   { id: 'seo', label: 'Bei Google gefunden werden (SEO)', options: [P('seo-audit'), P('seo-start'), P('seo-lokal'), P('seo-wachstum'), P('seo-premium')] },
   { id: 'ads', label: 'Google-Anzeigen', options: [P('ads-start'), P('ads-basis'), P('ads-pro'), P('ads-performance')] },
+  { id: 'bfsg', label: 'Barrierefreiheit (BFSG)', options: [P('bfsg-schnellcheck'), P('bfsg-audit'), P('bfsg-umsetzung'), P('bfsg-monitoring')] },
+  { id: 'review', label: 'Google-Bewertungskarten', options: [P('bewertung-start'), P('bewertung-plus'), P('bewertung-pro')] },
   { id: 'care', label: 'Hosting & Pflege', options: [P('pflege-basic'), P('pflege-plus'), P('pflege-pro')] },
 ];
 // Website-Abo als Alternative zum Kauf
@@ -148,7 +150,7 @@ const fmt = (n: number) => new Intl.NumberFormat('de-DE').format(n);
       let once = lines.filter((l) => !l.monthly).reduce((s, l) => s + l.price, 0);
       const month = lines.filter((l) => l.monthly).reduce((s, l) => s + l.price, 0);
       // Kombi-Rabatt auf einmalige Leistungen aus mehreren Bereichen
-      const areas = new Set(groups.filter((g) => { const v = data.get(g.id) as string; if (!v) return false; const o = g.id === 'web' && pay === 'abo' ? abo[v] : g.options.find((x) => x.slug === v)!; return !o.monthly; }).map((g) => g.id));
+      const areas = new Set(groups.filter((g) => g.id !== 'review').filter((g) => { const v = data.get(g.id) as string; if (!v) return false; const o = g.id === 'web' && pay === 'abo' ? abo[v] : g.options.find((x) => x.slug === v)!; return !o.monthly; }).map((g) => g.id));
       const rate = areas.size >= 3 ? 0.1 : areas.size === 2 ? 0.05 : 0;
       const discount = Math.round(once * rate);
       once -= discount;

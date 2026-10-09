@@ -1,0 +1,41 @@
+---
+import ServicePage from '../components/ServicePage.astro';
+import BfsgQuiz from '../components/BfsgQuiz.astro';
+const facts = [
+  { n: '28.06.2025', l: 'Seitdem gilt das BFSG' },
+  { n: 'WCAG 2.1 AA', l: 'Technischer Maßstab' },
+  { n: '100.000 €', l: 'Bußgeld bis zu' },
+  { n: '< 10', l: 'Beschäftigte & ≤ 2 Mio. €: Ausnahme für Dienstleistungen' },
+];
+const checks = ['Kontraste von Text und Bedienelementen', 'Bedienung komplett per Tastatur, inklusive Warenkorb & Checkout', 'Sichtbarer Fokus beim Navigieren', 'Alternativtexte für Bilder und Icons', 'Beschriftete Formularfelder & verständliche Fehlermeldungen', 'Logische Überschriften & Seitenstruktur', 'Zoom bis 200 % ohne Inhaltsverlust', 'Bedienbarkeit mit Screenreader (Stichproben)', 'Erklärung zur Barrierefreiheit vorhanden'];
+---
+<ServicePage slug="barrierefreiheit">
+  <section class="section" id="selbsttest">
+    <div class="container">
+      <div class="facts">{facts.map((f) => <div class="fact"><b>{f.n}</b><span>{f.l}</span></div>)}</div>
+      <div class="quiz-wrap">
+        <div class="section-head"><span class="eyebrow">Selbsttest · 1 Minute</span><h2>Betrifft mich das BFSG?</h2><p class="lead">Fünf kurze Fragen, sofortige Einschätzung. Anonym, ohne Anmeldung.</p></div>
+        <BfsgQuiz />
+      </div>
+    </div>
+  </section>
+  <section class="section section--alt">
+    <div class="container two">
+      <div>
+        <span class="eyebrow">Prüfumfang</span>
+        <h2>Das prüfe ich im Audit</h2>
+        <p class="lead">Grundlage sind die Erfolgskriterien der WCAG 2.1 auf Stufe AA. Automatische Tests finden nur einen Teil der Barrieren, deshalb prüfe ich die wichtigen Abläufe zusätzlich von Hand.</p>
+        <a class="btn btn--ghost" href="/seo-check">Erst kostenlos automatisch prüfen</a>
+      </div>
+      <ul class="check-list card">{checks.map((c) => <li>{c}</li>)}</ul>
+    </div>
+  </section>
+</ServicePage>
+<style>
+  .facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 4rem; }
+  .fact { padding: 1.3rem; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface); }
+  .fact b { display: block; font-family: var(--font-display); font-size: 1.6rem; background: linear-gradient(120deg, #ffc24d, #ff4f8b); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .fact span { color: var(--muted); font-size: .9rem; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: center; }
+  @media (max-width: 860px) { .facts { grid-template-columns: 1fr 1fr; } .two { grid-template-columns: 1fr; } }
+</style>

@@ -9,16 +9,17 @@ const points = [
   { icon: 'seo', t: 'SEO-Grundlagen', d: 'Titel, Beschreibung, Überschriften, Texte, Sitemap und strukturierte Daten.' },
   { icon: 'mobile', t: 'Technik & Mobil', d: 'HTTPS, mobile Darstellung, Server-Antwortzeit und Seitengröße.' },
   { icon: 'shield', t: 'Vertrauen & Recht', d: 'Impressum, Datenschutzerklärung und Kontaktmöglichkeiten.' },
+  { icon: 'access', t: 'Barrierefreiheit', d: 'Zoom, Beschriftungen, Überschriften und Erklärung, mit Blick auf das BFSG.' },
 ];
 ---
 <Base title="Kostenloser Website-Check: SEO, Speed & Technik" description="Kostenloser Website-Check: Domain eingeben und in 30 Sekunden Ladezeit, SEO, Technik und Rechtliches Ihrer Website prüfen lassen.">
-  <PageHero art={false} eyebrow="Kostenloser Website-Check" title="Wie gut ist Ihre Website wirklich?" text="Geben Sie Ihre Domain ein. Ich prüfe über 20 Punkte zu Geschwindigkeit, SEO, Technik und Rechtlichem und zeigen Ihnen sofort, wo Potenzial liegt.">
+  <PageHero art={false} eyebrow="Kostenloser Website-Check" title="Wie gut ist Ihre Website wirklich?" text="Geben Sie Ihre Domain ein. Ich prüfe über 25 Punkte zu Geschwindigkeit, SEO, Technik, Rechtlichem und Barrierefreiheit und zeigen Ihnen sofort, wo Potenzial liegt.">
     <div style="margin-top:2rem"><SiteChecker /></div>
   </PageHero>
   <section class="section section--alt">
     <div class="container">
-      <div class="section-head"><span class="eyebrow">Was ich prüfe</span><h2>Vier Bereiche, die über Anfragen entscheiden</h2></div>
-      <div class="grid grid--4">
+      <div class="section-head"><span class="eyebrow">Was ich prüfe</span><h2>Fünf Bereiche, die über Anfragen entscheiden</h2></div>
+      <div class="grid grid--5">
         {points.map((p) => (
           <div class="card"><div class="icon-badge"><svg viewBox="0 0 24 24" set:html={icons[p.icon]} /></div><h3>{p.t}</h3><p>{p.d}</p></div>
         ))}

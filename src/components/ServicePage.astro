@@ -9,9 +9,9 @@ import { services, icons, type ServiceKey } from '../data/services';
 import { byCategory, categories, type Category } from '../data/packages';
 interface Props { slug: ServiceKey }
 const s = services[Astro.props.slug];
-const catMap: Record<string, Category[]> = { webdesign: ['webdesign', 'abo', 'pflege'], logodesign: ['logodesign', 'bundle'], seo: ['seo'], sea: ['sea'], software: ['software'] };
+const catMap: Record<string, Category[]> = { webdesign: ['webdesign', 'abo', 'pflege'], logodesign: ['logodesign', 'bundle'], seo: ['seo', 'bewertung'], sea: ['sea'], software: ['software'], barrierefreiheit: ['bfsg'], bewertungskarten: ['bewertung'] };
 const pkgGroups = catMap[Astro.props.slug].map((c) => ({ cat: categories.find((x) => x.id === c)!, items: byCategory(c) }));
-const refFilter = ({ webdesign: ['webdesign', 'shop'], logodesign: ['logodesign'], seo: ['seo'], sea: ['sea'], software: ['software'] } as const)[Astro.props.slug];
+const refFilter = ({ webdesign: ['webdesign', 'shop'], logodesign: ['logodesign'], seo: ['seo'], sea: ['sea'], software: ['software'], barrierefreiheit: [], bewertungskarten: [] } as const)[Astro.props.slug];
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Service',

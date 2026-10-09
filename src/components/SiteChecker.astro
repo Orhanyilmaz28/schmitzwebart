@@ -16,7 +16,7 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
     <ol class="sc-steps">
       <li data-step="0">Seite wird geladen</li>
       <li data-step="1">SEO-Grundlagen werden geprüft</li>
-      <li data-step="2">Rechtliches & Vertrauen werden geprüft</li>
+      <li data-step="2">Rechtliches & Barrierefreiheit werden geprüft</li>
       <li data-step="3">Ladezeit wird bei Google gemessen (bis 30 s)</li>
     </ol>
   </div>
@@ -37,11 +37,16 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
     <h3 class="sc-h">Die wichtigsten Baustellen</h3>
     <div class="sc-issues"></div>
 
+    <a class="sc-bfsg card" href="/barrierefreiheit#selbsttest" hidden>
+      <strong>Barrierefreiheit ausbaufähig: Betrifft Sie das BFSG?</strong>
+      <span>Seit dem 28. Juni 2025 müssen viele Online-Shops barrierefrei sein. Prüfen Sie in einer Minute, ob das für Sie gilt →</span>
+    </a>
+
     <div class="sc-full">
       <div class="sc-full-inner" aria-hidden="true"></div>
       <div class="sc-gate card">
         <h3>Vollständigen Bericht freischalten</h3>
-        <p>Alle Prüfpunkte mit Erklärungen, Google-Messwerte zur Ladezeit und konkrete Empfehlungen, kostenlos. Auf Wunsch bespreche ich die Ergebnisse mit Ihnen.</p>
+        <p>Alle Prüfpunkte inklusive Barrierefreiheit, Google-Messwerte zur Ladezeit und konkrete Empfehlungen, kostenlos. Auf Wunsch bespreche ich die Ergebnisse mit Ihnen.</p>
         <form class="form sc-lead" novalidate>
           <label class="hp" aria-hidden="true">Nicht ausfüllen<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
           <div class="grid grid--2">
@@ -111,6 +116,10 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
   :global(.sc-metric) { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: .9rem 1rem; }
   :global(.sc-metric b) { display: block; font-family: var(--font-display); font-size: 1.4rem; color: var(--text); }
   :global(.sc-metric span) { font-size: .82rem; color: var(--muted); }
+  .sc-bfsg { display: grid; gap: .3rem; margin-top: 1.2rem; border-color: rgba(255, 181, 71, .5); background: linear-gradient(140deg, rgba(255,181,71,.1), var(--surface)); }
+  .sc-bfsg[hidden] { display: none; }
+  .sc-bfsg strong { color: #ffcf7a; }
+  .sc-bfsg span { color: var(--text); font-size: .95rem; }
   .sc-full { position: relative; margin-top: 2.5rem; }
   .sc-full-inner { filter: blur(6px); opacity: .5; pointer-events: none; user-select: none; max-height: 520px; overflow: hidden; }
   .sc-full.open .sc-full-inner { filter: none; opacity: 1; pointer-events: auto; user-select: auto; max-height: none; }
@@ -143,7 +152,7 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
   const color = (v: number) => (v >= 80 ? '#3ecf8e' : v >= 50 ? '#ffb547' : '#ff5c6c');
   const statusColor = { ok: '#3ecf8e', warn: '#ffb547', fail: '#ff5c6c' };
   const statusLabel = { ok: 'In Ordnung', warn: 'Verbesserungswürdig', fail: 'Kritisch' };
-  const groupLabel: Record<string, string> = { seo: 'SEO-Grundlagen', technik: 'Technik & Mobil', vertrauen: 'Vertrauen & Recht' };
+  const groupLabel: Record<string, string> = { seo: 'SEO-Grundlagen', technik: 'Technik & Mobil', vertrauen: 'Vertrauen & Recht', barriere: 'Barrierefreiheit' };
 
   let audit: Audit | null = null;
   let psi: Psi | null = null;
@@ -163,6 +172,7 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
       { label: 'SEO-Grundlagen', value: psi?.seo != null ? Math.round(seoOwn * 0.7 + psi.seo * 0.3) : seoOwn },
       { label: 'Technik & Mobil', value: psi?.bestPractices != null ? Math.round(groupScore('technik') * 0.7 + psi.bestPractices * 0.3) : groupScore('technik') },
       { label: 'Vertrauen & Recht', value: groupScore('vertrauen') },
+      { label: 'Barrierefreiheit', value: psi?.accessibility != null ? Math.round(groupScore('barriere') * 0.5 + psi.accessibility * 0.5) : groupScore('barriere') },
     ];
     return cats;
   }
@@ -195,6 +205,8 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
       ? problems.slice(0, 3).map(item).join('')
       : '<p>Stark! Bei den Grundlagen habe ich keine Baustellen gefunden. Spannend wird es jetzt bei Inhalten, Rankings und Anzeigen. Sprechen Sie mich an.</p>';
 
+    const bfsg = cats.find((c) => c.label === 'Barrierefreiheit')?.value ?? 100;
+    $('.sc-bfsg').hidden = bfsg >= 85;
     renderFull();
   }
 
@@ -220,7 +232,7 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
     } else if (psiState === 'failed') {
       html += '<div class="sc-group"><h4 class="g">Google-Messwerte</h4><p>Die Geschwindigkeitsmessung bei Google war gerade nicht möglich. Ich hole sie im persönlichen Gespräch nach.</p></div>';
     }
-    for (const g of ['seo', 'technik', 'vertrauen']) {
+    for (const g of ['seo', 'technik', 'vertrauen', 'barriere']) {
       const list = audit.checks.filter((c) => c.group === g);
       html += `<div class="sc-group"><h4 class="g">${groupLabel[g]} · ${groupScore(g)}/100</h4><div class="sc-list">${list.map(item).join('')}</div></div>`;
     }

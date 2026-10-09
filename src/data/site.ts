@@ -1,3 +1,6 @@
+export type NavLink = { href: string; label: string; desc?: string };
+export type NavItem = NavLink | { label: string; children: NavLink[] };
+
 export const site = {
   name: 'Webmanufaktur Schmitz',
   brand: 'schmitzwebart',
@@ -9,6 +12,8 @@ export const site = {
   // Link zu Cal.com, Calendly o. Ä. (z. B. 'https://cal.com/schmitzwebart/erstgespraech').
   // Leer = Button führt zum Kontaktformular mit vorausgefüllter Terminanfrage.
   bookingUrl: '',
+  // Empfehlungsprogramm
+  referral: { percent: 10, maxCredit: 500 },
   address: {
     street: 'Richrather Straße 69',
     zip: '40723',
@@ -20,16 +25,35 @@ export const site = {
   tagline: 'Websites, Logos und Sichtbarkeit, die Kunden bringen.',
   description:
     'Webmanufaktur Schmitz aus Hilden: Webdesign, Logos, SEO, Google Ads und Windows-Software. Für jedes Budget, persönlich und zum Festpreis.',
+  // Hauptnavigation: Einträge mit "children" werden zu Aufklappmenüs
   nav: [
-    { href: '/webdesign', label: 'Webdesign' },
-    { href: '/logodesign', label: 'Logodesign' },
-    { href: '/seo', label: 'SEO' },
-    { href: '/sea', label: 'Google Ads' },
-    { href: '/software', label: 'Software' },
-    { href: '/pakete', label: 'Pakete' },
+    {
+      label: 'Leistungen',
+      children: [
+        { href: '/webdesign', label: 'Webdesign & Shops', desc: 'Websites ab 390 €, Abo ab 49 €/Monat' },
+        { href: '/logodesign', label: 'Logo & Branding', desc: 'Vom Express-Logo bis Corporate Design' },
+        { href: '/seo', label: 'SEO', desc: 'Bei Google gefunden werden' },
+        { href: '/sea', label: 'Google Ads', desc: 'Anzeigen, die sich rechnen' },
+        { href: '/software', label: 'Software', desc: 'Fertige Programme oder nach Maß' },
+        { href: '/barrierefreiheit', label: 'Barrierefreiheit (BFSG)', desc: 'Check, Audit & Umsetzung' },
+        { href: '/bewertungskarten', label: 'Bewertungskarten', desc: 'Mehr Google-Bewertungen, ab 49 €' },
+        { href: '/seo-check', label: 'Kostenloser Website-Check', desc: 'Ergebnis in 30 Sekunden' },
+      ],
+    },
+    {
+      label: 'Branchen',
+      children: [
+        { href: '/branchen/handwerker', label: 'Handwerker', desc: 'Website, Google-Profil & Bewertungen' },
+        { href: '/branchen/praxen', label: 'Praxen', desc: 'Für Ärzte, Therapeuten & Heilberufe' },
+        { href: '/branchen/gastronomie', label: 'Gastronomie', desc: 'Speisekarte, Reservierung & QR-Codes' },
+        { href: '/branchen/vereine', label: 'Vereine', desc: 'Vereins-Website & Mitgliederverwaltung' },
+      ],
+    },
+    { href: '/pakete', label: 'Preise' },
     { href: '/portfolio', label: 'Portfolio' },
+    { href: '/ratgeber', label: 'Ratgeber' },
     { href: '/ueber-mich', label: 'Über mich' },
-  ],
+  ] as NavItem[],
 };
 
 export const contactLinks = {

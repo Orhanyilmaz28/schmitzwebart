@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+---
+<Base title="Erklärung zur Barrierefreiheit" description="Erklärung zur Barrierefreiheit der Website schmitzwebart.de der Webmanufaktur Schmitz." noindex>
+  <section class="section">
+    <div class="container prose">
+      <h1>Erklärung zur Barrierefreiheit</h1>
+      <p>Diese Website richtet sich an Unternehmen, Selbstständige und Vereine. Sie fällt daher nicht unter die Pflichten des Barrierefreiheitsstärkungsgesetzes. Barrierefreiheit ist mir trotzdem wichtig, und ich setze sie freiwillig um.</p>
+      <h2>Stand der Barrierefreiheit</h2>
+      <p>Die Website orientiert sich an den Web Content Accessibility Guidelines (WCAG) 2.1, Stufe AA. Umgesetzt sind unter anderem:</p>
+      <ul>
+        <li>ausreichende Kontraste und gut lesbare Schriftgrößen,</li>
+        <li>vollständige Bedienbarkeit per Tastatur mit sichtbarem Fokus,</li>
+        <li>Alternativtexte für Bilder und beschriftete Formularfelder,</li>
+        <li>eine logische Überschriften-Struktur und eine Sprungmarke zum Inhalt,</li>
+        <li>Vergrößern ohne Einschränkung sowie reduzierte Animationen, wenn Ihr Gerät „Bewegung reduzieren“ meldet.</li>
+      </ul>
+      <h2>Bekannte Einschränkungen</h2>
+      <ul>
+        <li>Die Vorschaubilder von Kundenprojekten im Portfolio sind Screenshots. Die Inhalte der Kundenseiten sind darin nicht als Text verfügbar. Eine Beschreibung steht jeweils daneben.</li>
+        <li>Verlinkte externe Angebote (z. B. WhatsApp oder Kundenwebsites) liegen nicht in meinem Verantwortungsbereich.</li>
+      </ul>
+      <h2>Barriere melden</h2>
+      <p>Ist Ihnen eine Barriere aufgefallen? Schreiben Sie mir an <a href={`mailto:${site.email}`}>{site.email}</a> oder rufen Sie an unter {site.phone}. Ich kümmere mich zeitnah darum.</p>
+      <p><em>Stand: Oktober 2026</em></p>
+    </div>
+  </section>
+</Base>

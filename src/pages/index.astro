@@ -14,6 +14,7 @@ import { getArticles } from '../lib/ratgeber';
 const latest = (await getArticles()).slice(0, 3);
 import References from '../components/References.astro';
 import Marquee from '../components/Marquee.astro';
+import BranchenGrid from '../components/BranchenGrid.astro';
 import ProductShowcase from '../components/ProductShowcase.astro';
 import { Image } from 'astro:assets';
 import photo from '../assets/phillip-schmitz.jpg';
@@ -63,7 +64,7 @@ const why = [
     <div class="container">
       <div class="section-head"><span class="eyebrow">Leistungen</span><h2>Alles, was Ihr Auftritt braucht</h2><p class="lead">Leistungen, die ineinandergreifen: eine Marke, die auffällt, eine Seite, die überzeugt, Kunden, die Sie finden, und Software, die Ihnen Arbeit abnimmt.</p></div>
       <div class="grid services-grid">
-        {Object.values(services).map((s) => (
+        {Object.entries(services).filter(([k]) => k !== 'bewertungskarten').map(([, s]) => (
           <a class="card" href={s.path}>
             <div class="icon-badge"><svg viewBox="0 0 24 24" set:html={icons[s.icon]} /></div>
             <h3>{s.name}</h3>
@@ -76,6 +77,13 @@ const why = [
   </section>
 
   <section class="section section--alt">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">Branchenpakete</span><h2>Fertig geschnürt für Ihre Branche</h2><p class="lead">Handwerker, Praxen, Gastronomie und Vereine brauchen Unterschiedliches. Diese Pakete enthalten genau das, was in Ihrer Branche Kunden bringt.</p></div>
+      <BranchenGrid />
+    </div>
+  </section>
+
+  <section class="section">
     <div class="container">
       <div class="section-head center"><span class="eyebrow">Für jedes Budget</span><h2>Vom kleinen Start bis zur großen Lösung</h2><p class="lead">Sie entscheiden, wie groß Sie einsteigen. Jedes Paket lässt sich später erweitern, ohne von vorn anzufangen.</p></div>
       <ol class="ladder">
@@ -94,17 +102,17 @@ const why = [
     </div>
   </section>
 
-  <References />
+  <References alt />
   <Testimonials alt={false} />
 
-  <section class="section section--alt">
+  <section class="section">
     <div class="container">
       <div class="section-head"><span class="eyebrow">Fertige Software</span><h2>Programme, die man einmal kauft</h2><p class="lead">Vereinsverwaltung, Callcenter, Kundenverwaltung und Zeiterfassung: lokal auf Ihren Windows-Rechnern, ohne Abo. Oder Software nach Maß zum Festpreis.</p></div>
       <ProductShowcase compact />
     </div>
   </section>
 
-  <section class="section">
+  <section class="section section--alt">
     <div class="container">
       <div class="section-head center"><span class="eyebrow">Warum Webmanufaktur Schmitz</span><h2>Handwerk statt Massenware</h2></div>
       <div class="grid grid--4">
@@ -118,9 +126,9 @@ const why = [
     </div>
   </section>
 
-  <Founder />
+  <Founder alt={false} />
 
-  <section class="section">
+  <section class="section section--alt">
     <div class="container">
       <div class="section-head"><span class="eyebrow">Kombi-Pakete</span><h2>Alles aus einer Hand, günstiger als einzeln</h2><p class="lead">Drei Kombinationen von klein bis groß, alle Preise netto zzgl. MwSt. Weitere Pakete finden Sie in der Übersicht.</p></div>
       <div class="grid grid--3">{featured.map((p) => <PackageCard pkg={p} />)}</div>
@@ -128,7 +136,7 @@ const why = [
     </div>
   </section>
 
-  <section class="section section--alt">
+  <section class="section">
     <div class="container check-box">
       <div>
         <span class="eyebrow">Kostenloser Website-Check</span>
@@ -151,7 +159,7 @@ const why = [
     </div>
   </section>
 
-  <section class="section">
+  <section class="section section--alt">
     <div class="container">
       <div class="section-head"><span class="eyebrow">Ratgeber</span><h2>Wissen, das Ihnen Geld und Zeit spart</h2></div>
       <div class="grid grid--3">{latest.map((a) => <ArticleCard a={a} />)}</div>
@@ -194,7 +202,9 @@ const why = [
   .b3 { right: 4%; bottom: 2%; padding: .5rem .9rem .5rem .5rem; }
   .b3 :global(.b3-img) { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: 50% 15%; border: 2px solid rgba(255,255,255,.2); }
   .b3 span { font-size: .75rem; } .b3 b { color: var(--text); font-size: .85rem; }
-  .services-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); }
+  .services-grid { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 900px) { .services-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .services-grid { grid-template-columns: 1fr; } }
   .more { color: var(--blue); font-weight: 600; font-size: .95rem; }
   .quick-check { display: flex; gap: .5rem; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: .4rem; max-width: 520px; margin-top: 1.5rem; }
   .quick-check input { flex: 1; min-width: 0; background: transparent; border: 0; color: var(--text); font: inherit; padding: .5rem 1rem; }

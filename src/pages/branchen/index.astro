@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import BranchenGrid from '../../components/BranchenGrid.astro';
+import CtaBand from '../../components/CtaBand.astro';
+---
+<Base title="Branchenpakete: Handwerk, Praxis, Gastro, Verein" description="Fertig geschnürte Pakete für Handwerker, Arztpraxen, Gastronomie und Vereine: Website, Google-Profil und passende Software zum Festpreis.">
+  <PageHero eyebrow="Branchenpakete" title="Pakete, die Ihre Branche verstehen." text="Ein Handwerker braucht etwas anderes als eine Arztpraxis oder ein Restaurant. Deshalb gibt es fertig geschnürte Pakete mit genau den Funktionen, die in Ihrer Branche Kunden bringen." />
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">Wählen Sie Ihre Branche</span><h2>Vier Pakete, ein Ziel: mehr Kunden</h2></div>
+      <BranchenGrid />
+      <p style="margin-top:2rem">Ihre Branche ist nicht dabei? <a href="/kontakt?paket=beratung" style="color:var(--blue);font-weight:600">Fragen Sie mich</a>, ich stelle Ihnen ein passendes Paket zusammen.</p>
+    </div>
+  </section>
+  <CtaBand />
+</Base>

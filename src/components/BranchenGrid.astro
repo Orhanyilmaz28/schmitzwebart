@@ -1,0 +1,30 @@
+---
+import { branchen } from '../data/branchen';
+import { packages, priceLabel } from '../data/packages';
+import { icons } from '../data/services';
+---
+<div class="bgrid">
+  {branchen.map((b) => {
+    const p = packages.find((x) => x.slug === b.pkg)!;
+    return (
+      <a class="card bcard" href={`/branchen/${b.slug}`} style={`--h:${b.hue}`}>
+        <span class="bicon"><svg viewBox="0 0 24 24" set:html={icons[b.icon]} aria-hidden="true" /></span>
+        <h3>{b.name}</h3>
+        <p>{b.short}</p>
+        <span class="bprice">{p.name} · {priceLabel(p)}</span>
+      </a>
+    );
+  })}
+</div>
+<style>
+  .bgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
+  .bcard { display: flex; flex-direction: column; gap: .5rem; }
+  .bcard h3 { margin: .3rem 0 0; font-size: 1.3rem; font-weight: 700; }
+  .bcard p { flex: 1; margin: 0; }
+  .bicon { width: 52px; height: 52px; border-radius: 15px; display: grid; place-items: center; background: hsl(var(--h) 75% 55% / .16); border: 1px solid hsl(var(--h) 75% 60% / .45); color: hsl(var(--h) 85% 70%); }
+  .bicon svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .bprice { font-size: .88rem; font-weight: 600; color: hsl(var(--h) 85% 72%); }
+  .bcard:hover { border-color: hsl(var(--h) 80% 60% / .6); }
+  @media (max-width: 980px) { .bgrid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .bgrid { grid-template-columns: 1fr; } }
+</style>

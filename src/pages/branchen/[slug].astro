@@ -1,0 +1,110 @@
+---
+import Base from '../../layouts/Base.astro';
+import PackageCard from '../../components/PackageCard.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { branchen } from '../../data/branchen';
+import { packages } from '../../data/packages';
+import { products } from '../../data/products';
+import { euro } from '../../data/packages';
+import { icons } from '../../data/services';
+import { site, contactLinks } from '../../data/site';
+export function getStaticPaths() {
+  return branchen.map((b) => ({ params: { slug: b.slug }, props: { b } }));
+}
+const { b } = Astro.props;
+const main = packages.find((p) => p.slug === b.pkg)!;
+const addons = b.addons.map((s) => packages.find((p) => p.slug === s)!).filter(Boolean);
+const soft = b.software.map((s) => products.find((p) => p.slug === s)!).filter(Boolean);
+const others = branchen.filter((x) => x.slug !== b.slug);
+const schema = { '@context': 'https://schema.org', '@type': 'Service', name: `${main.name}: Website für ${b.name}`, provider: { '@id': `${site.url}/#business` }, areaServed: 'DE', offers: { '@type': 'Offer', price: main.price, priceCurrency: 'EUR' } };
+const ext = contactLinks.bookingExternal ? { target: '_blank', rel: 'noopener' } : {};
+---
+<Base title={b.metaTitle} description={b.metaDescription} schema={schema}>
+  <section class="bh" style={`--h:${b.hue}`}>
+    <div class="glow"></div>
+    <div class="container relative bh-grid">
+      <div>
+        <nav class="crumbs" aria-label="Brotkrumen"><a href="/branchen">Branchen</a> / <span>{b.name}</span></nav>
+        <span class="eyebrow">Für {b.name}</span>
+        <h1>{b.heroTitle}</h1>
+        <p class="lead">{b.heroText}</p>
+        <div class="acts"><a class="btn btn--primary" href="#paket">{main.name} ansehen</a><a class="btn btn--ghost" href={contactLinks.booking} {...ext}>Kostenloses Erstgespräch</a></div>
+      </div>
+      <div class="pains card">
+        <span class="bicon"><svg viewBox="0 0 24 24" set:html={icons[b.icon]} aria-hidden="true" /></span>
+        <h2>Kennen Sie das?</h2>
+        <ul>{b.pains.map((p) => <li>{p}</li>)}</ul>
+        <p class="pains-sol">Das {main.name} löst genau das, zum Festpreis von <strong>{euro(main.price ?? 0)}</strong>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">Die Lösung</span><h2>Was im {main.name} steckt</h2></div>
+      <div class="grid grid--3">{b.features.map((f, i) => <div class="card feat" style={`--h:${b.hue}`}><span class="fn">0{i + 1}</span><h3>{f.t}</h3><p>{f.d}</p></div>)}</div>
+    </div>
+  </section>
+
+  <section class="section" id="paket">
+    <div class="container pk">
+      <div class="pk-main">
+        <span class="eyebrow">Ihr Paket</span>
+        <h2>{main.name}</h2>
+        <p class="lead">{main.teaser} Alle Preise netto zzgl. MwSt.</p>
+        <PackageCard pkg={{ ...main, highlight: true }} />
+      </div>
+      <div class="pk-addons">
+        <h3>Passende Ergänzungen</h3>
+        <div class="grid">{addons.map((p) => <PackageCard pkg={p} />)}</div>
+      </div>
+    </div>
+  </section>
+
+  {soft.length > 0 && (
+    <section class="section section--alt">
+      <div class="container">
+        <div class="section-head"><span class="eyebrow">Software dazu</span><h2>Weniger Verwaltung, mehr Zeit für Ihr Geschäft</h2><p class="lead">Fertige Windows-Programme, einmal gekauft, ohne Abo.</p></div>
+        <div class="grid grid--3">
+          {soft.map((p) => <a class="card" href={`/software/${p.slug}`} style={`--h:${p.hue}`}><h3>{p.name}</h3><p>{p.tagline}</p><span class="more">Ab {euro(Math.min(...p.tiers.map((t) => t.price)))} einmalig →</span></a>)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <Faq items={b.faq} title={`Fragen von ${b.name === 'Praxen' ? 'Praxen' : b.name}`} />
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">Weitere Branchen</span><h2>Auch interessant</h2></div>
+      <div class="grid grid--3">{others.map((o) => <a class="card" href={`/branchen/${o.slug}`}><h3>{o.name}</h3><p>{o.short}</p><span class="more">Ansehen →</span></a>)}</div>
+    </div>
+  </section>
+
+  <CtaBand title={`Website für ${b.name}? Sprechen wir darüber.`} href={`/kontakt?paket=${main.slug}`} label={`${main.name} anfragen`} />
+</Base>
+<style>
+  .bh { position: relative; overflow: hidden; padding: clamp(3rem, 7vw, 5rem) 0; }
+  .bh-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  .crumbs { font-size: .85rem; color: var(--muted); margin-bottom: 1rem; }
+  .crumbs a { color: var(--blue); }
+  .bh h1 { font-size: clamp(2.1rem, 4.6vw, 3.3rem); }
+  .acts { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.6rem; }
+  .pains { border-color: hsl(var(--h) 80% 60% / .5); background: linear-gradient(160deg, hsl(var(--h) 60% 25% / .35), var(--surface)); }
+  .pains h2 { font-size: 1.5rem; margin: 1rem 0 .8rem; }
+  .pains ul { display: grid; gap: .6rem; margin-bottom: 1.2rem; }
+  .pains li { position: relative; padding-left: 1.8rem; color: var(--text); }
+  .pains li::before { content: '✕'; position: absolute; left: 0; top: 0; color: #ff7a8a; font-weight: 700; }
+  .pains-sol { margin: 0; padding-top: 1rem; border-top: 1px solid var(--line); }
+  .pains-sol strong { color: #5fe3a4; }
+  .bicon { width: 52px; height: 52px; border-radius: 15px; display: grid; place-items: center; background: hsl(var(--h) 75% 55% / .16); border: 1px solid hsl(var(--h) 75% 60% / .45); color: hsl(var(--h) 85% 70%); }
+  .bicon svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .fn { font-family: var(--font-display); font-weight: 700; font-size: 1.6rem; color: hsl(var(--h) 85% 70%); }
+  .feat h3 { margin-top: .4rem; }
+  .pk { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+  .pk-addons h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 1.4rem; }
+  .pk-addons .grid { grid-template-columns: 1fr; gap: 1.6rem; }
+  .more { color: var(--blue); font-weight: 600; }
+  @media (max-width: 900px) { .bh-grid, .pk { grid-template-columns: 1fr; } }
+</style>

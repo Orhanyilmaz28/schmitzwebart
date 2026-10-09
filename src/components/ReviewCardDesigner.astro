@@ -1,0 +1,141 @@
+---
+// Live-Vorschau für Bewertungskarten. Logos bleiben im Browser (FileReader), es wird nichts hochgeladen.
+const colors = [['#1d2466', 'Nachtblau'], ['#0f5132', 'Tannengrün'], ['#7a1f1f', 'Weinrot'], ['#1f1f1f', 'Schwarz'], ['#b45309', 'Kupfer']];
+const texts = ['Zufrieden? Wir freuen uns über Ihre Bewertung!', 'Wie war Ihr Besuch? Bewerten Sie uns bei Google.', 'Danke für Ihren Auftrag! Erzählen Sie anderen davon.', 'Ihre Meinung zählt: 1 Minute für eine Bewertung.'];
+---
+<div class="rcd" data-rcd>
+  <form class="rcd-form" onsubmit="return false">
+    <label>Firmenname<input name="name" maxlength="40" value="Malerbetrieb Muster" autocomplete="organization" /></label>
+    <fieldset>
+      <legend>Farbe</legend>
+      <div class="rcd-colors">
+        {colors.map(([c, l], i) => <label class="sw" title={l}><input type="radio" name="color" value={c} checked={i === 0} /><span style={`background:${c}`}></span><em class="sr-only">{l}</em></label>)}
+        <label class="sw sw-custom" title="Eigene Farbe"><input type="color" name="custom" value="#5b21b6" aria-label="Eigene Farbe wählen" /></label>
+      </div>
+    </fieldset>
+    <label>Spruch
+      <select name="text">{texts.map((t) => <option>{t}</option>)}</select>
+    </label>
+    <fieldset>
+      <legend>Format</legend>
+      <div class="rcd-format">
+        <label><input type="radio" name="format" value="karte" checked /><span>Karte (85 × 55 mm)</span></label>
+        <label><input type="radio" name="format" value="aufsteller" /><span>Aufsteller (A6)</span></label>
+      </div>
+    </fieldset>
+    <label>Ihr Logo (optional, nur für die Vorschau)<input type="file" name="logo" accept="image/png,image/jpeg,image/svg+xml,image/webp" /></label>
+    <p class="rcd-hint">Das Logo bleibt in Ihrem Browser und wird nicht hochgeladen. Für den Druck schicken Sie es mir einfach per E-Mail.</p>
+    <a class="btn btn--primary btn--block rcd-order" href="/kontakt?paket=bewertung-plus">Diese Karten anfragen</a>
+  </form>
+
+  <div class="rcd-stage">
+    <button type="button" class="rcd-card" aria-label="Karte umdrehen (Vorder- und Rückseite)">
+      <div class="rcd-face rcd-front">
+        <img class="rcd-logo" alt="" width="160" height="64" hidden />
+        <strong class="rcd-name">Malerbetrieb Muster</strong>
+        <span class="rcd-stars" aria-hidden="true">★★★★★</span>
+        <span class="rcd-text">Zufrieden? Wir freuen uns über Ihre Bewertung!</span>
+      </div>
+      <div class="rcd-face rcd-back">
+        <svg class="rcd-qr" viewBox="0 0 29 29" aria-hidden="true"></svg>
+        <span class="rcd-scan">Code scannen<br /><small>und in 1 Minute bewerten</small></span>
+        <span class="rcd-g" aria-hidden="true"><b style="color:#4285f4">G</b>oogle</span>
+      </div>
+    </button>
+    <p class="rcd-flip">Klicken zum Umdrehen · QR-Code in der Vorschau ist ein Platzhalter</p>
+  </div>
+</div>
+<style>
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .rcd { display: grid; grid-template-columns: 380px 1fr; gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; }
+  .rcd-form { display: grid; gap: 1.1rem; min-width: 0; }
+  .rcd > * { min-width: 0; }
+  .rcd-form select { width: 100%; max-width: 100%; text-overflow: ellipsis; }
+  .rcd-form fieldset { min-width: 0; }
+  .rcd-form > label, .rcd-form fieldset { display: grid; gap: .45rem; font-weight: 600; font-size: .92rem; color: var(--text); border: 0; padding: 0; margin: 0; }
+  .rcd-form legend { font-weight: 600; font-size: .92rem; margin-bottom: .45rem; }
+  .rcd-form input:not([type=radio]):not([type=color]):not([type=file]), .rcd-form select { padding: .75rem 1rem; border-radius: 12px; border: 1px solid var(--line); background: var(--bg-2); color: var(--text); font: inherit; font-weight: 400; }
+  .rcd-form input[type=file] { font: inherit; font-weight: 400; font-size: .85rem; color: var(--muted); }
+  .rcd-colors { display: flex; gap: .55rem; flex-wrap: wrap; }
+  .sw input[type=radio] { position: absolute; opacity: 0; }
+  .sw span { display: block; width: 38px; height: 38px; border-radius: 50%; border: 3px solid rgba(255,255,255,.15); cursor: pointer; transition: transform .2s; }
+  .sw input:checked + span { border-color: #fff; transform: scale(1.1); }
+  .sw input:focus-visible + span { outline: 2px solid var(--blue); outline-offset: 2px; }
+  .sw-custom input { width: 38px; height: 38px; border-radius: 50%; border: 3px solid rgba(255,255,255,.15); padding: 0; background: none; cursor: pointer; }
+  .rcd-format { display: flex; gap: .5rem; flex-wrap: wrap; }
+  .rcd-format input { position: absolute; opacity: 0; }
+  .rcd-format span { display: inline-block; padding: .55rem .95rem; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); font-weight: 600; cursor: pointer; }
+  .rcd-format input:checked + span { background: var(--grad); color: #fff; border-color: transparent; }
+  .rcd-format input:focus-visible + span { outline: 2px solid var(--blue); outline-offset: 2px; }
+  .rcd-hint { font-size: .8rem; margin: -.4rem 0 0; }
+  .rcd-stage { display: grid; justify-items: center; gap: 1rem; perspective: 1400px; }
+  .rcd-card { --c: #1d2466; position: relative; width: min(100%, 440px); aspect-ratio: 85 / 55; border: 0; padding: 0; background: none; cursor: pointer; transform-style: preserve-3d; transition: transform .8s cubic-bezier(.3, .7, .2, 1), aspect-ratio .4s; }
+  .rcd-card.flip { transform: rotateY(180deg); }
+  .rcd-card.tall { width: min(100%, 320px); aspect-ratio: 105 / 148; }
+  .rcd-face { position: absolute; inset: 0; border-radius: 16px; backface-visibility: hidden; display: grid; place-content: center; justify-items: center; gap: .55rem; padding: 1.4rem; text-align: center; box-shadow: 0 40px 80px -30px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.08); }
+  .rcd-front { background: radial-gradient(circle at 20% 10%, rgba(255,255,255,.18), transparent 55%), var(--c); color: #fff; }
+  .rcd-back { background: #fff; color: #111; transform: rotateY(180deg); grid-template-columns: auto auto; place-content: center; align-items: center; gap: 1.2rem; }
+  .rcd-card.tall .rcd-back { grid-template-columns: 1fr; }
+  .rcd-logo { max-width: 46%; max-height: 64px; object-fit: contain; }
+  .rcd-name { font-family: var(--font-display); font-size: clamp(1.1rem, 3vw, 1.6rem); line-height: 1.15; }
+  .rcd-stars { color: #ffc24d; font-size: 1.5rem; letter-spacing: .15em; }
+  .rcd-text { font-size: .95rem; opacity: .92; max-width: 30ch; }
+  .rcd-qr { width: 120px; height: 120px; }
+  .rcd-card.tall .rcd-qr { width: 150px; height: 150px; }
+  .rcd-scan { font-weight: 700; font-size: 1.05rem; text-align: left; }
+  .rcd-card.tall .rcd-scan { text-align: center; }
+  .rcd-scan small { font-weight: 400; color: #555; }
+  .rcd-g { position: absolute; right: 1rem; bottom: .7rem; font-size: .8rem; color: #555; }
+  .rcd-flip { font-size: .82rem; margin: 0; }
+  @media (max-width: 900px) { .rcd { grid-template-columns: 1fr; } .rcd-stage { order: -1; } }
+  @media (prefers-reduced-motion: reduce) { .rcd-card { transition: none; } }
+</style>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-rcd]').forEach((root) => {
+    const form = root.querySelector('form')!;
+    const card = root.querySelector<HTMLElement>('.rcd-card')!;
+    const qr = root.querySelector<SVGElement>('.rcd-qr')!;
+    const logo = root.querySelector<HTMLImageElement>('.rcd-logo')!;
+    let color = '#1d2466';
+
+    // Platzhalter-QR: Muster aus dem Firmennamen (kein echter Code)
+    function drawQr(seed: string) {
+      let h = 2166136261;
+      for (const ch of seed) h = Math.imul(h ^ ch.charCodeAt(0), 16777619);
+      const rnd = () => ((h = Math.imul(h ^ (h >>> 13), 1274126177)) >>> 0) / 4294967296;
+      const finder = (x: number, y: number) => `<rect x="${x}" y="${y}" width="7" height="7" fill="#111"/><rect x="${x + 1}" y="${y + 1}" width="5" height="5" fill="#fff"/><rect x="${x + 2}" y="${y + 2}" width="3" height="3" fill="#111"/>`;
+      const inF = (x: number, y: number) => (x < 8 && y < 8) || (x > 20 && y < 8) || (x < 8 && y > 20);
+      let cells = '';
+      for (let y = 0; y < 29; y++) for (let x = 0; x < 29; x++) if (!inF(x, y) && rnd() > 0.52) cells += `<rect x="${x}" y="${y}" width="1" height="1"/>`;
+      qr.innerHTML = `<rect width="29" height="29" fill="#fff"/><g fill="#111">${cells}</g>${finder(0, 0)}${finder(22, 0)}${finder(0, 22)}`;
+    }
+
+    function update(e?: Event) {
+      const fd = new FormData(form);
+      const t = e?.target as HTMLInputElement | undefined;
+      if (t?.name === 'custom') { color = t.value; form.querySelectorAll<HTMLInputElement>('input[name=color]').forEach((r) => (r.checked = false)); }
+      else if (fd.get('color')) color = String(fd.get('color'));
+      const name = String(fd.get('name') || '').trim() || 'Ihr Firmenname';
+      card.style.setProperty('--c', color);
+      root.querySelector('.rcd-name')!.textContent = name;
+      root.querySelector('.rcd-text')!.textContent = String(fd.get('text'));
+      card.classList.toggle('tall', fd.get('format') === 'aufsteller');
+      drawQr(name);
+      const pkg = fd.get('format') === 'aufsteller' ? 'bewertung-plus' : 'bewertung-start';
+      const msg = `Ich möchte Bewertungskarten bestellen.\nFirmenname: ${name}\nFarbe: ${color}\nSpruch: ${fd.get('text')}\nFormat: ${fd.get('format') === 'aufsteller' ? 'Aufsteller (A6)' : 'Karte (85 × 55 mm)'}\nMein Logo schicke ich per E-Mail.`;
+      root.querySelector<HTMLAnchorElement>('.rcd-order')!.href = `/kontakt?paket=${pkg}&nachricht=${encodeURIComponent(msg)}`;
+    }
+
+    form.addEventListener('input', update);
+    form.addEventListener('change', update);
+    form.querySelector<HTMLInputElement>('input[name=logo]')!.addEventListener('change', (e) => {
+      const f = (e.target as HTMLInputElement).files?.[0];
+      if (!f || f.size > 5_000_000) { logo.hidden = true; return; }
+      const r = new FileReader();
+      r.onload = () => { logo.src = String(r.result); logo.hidden = false; };
+      r.readAsDataURL(f);
+    });
+    card.addEventListener('click', () => card.classList.toggle('flip'));
+    update();
+  });
+</script>

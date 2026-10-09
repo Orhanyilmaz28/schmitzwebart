@@ -6,7 +6,7 @@ export default defineConfig({
   trailingSlash: 'never',
   integrations: [
     sitemap({
-      filter: (page) => !/\/(danke|impressum|datenschutz|agb|404)/.test(page),
+      filter: (page) => !/\/(danke|impressum|datenschutz|agb|barrierefreiheit-erklaerung|empfohlen|404)/.test(page),
     }),
   ],
 });
