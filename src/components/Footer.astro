@@ -10,7 +10,7 @@ const year = new Date().getFullYear();
       <p class="ftr-about">{site.name}: Webdesign, Logodesign, SEO, Google Ads und individuelle Software aus einer Hand. Persönlich, schnell und mit festen Preisen.</p>
     </div>
     <div>
-      <h4>Leistungen</h4>
+      <h2 class="ftr-h">Leistungen</h2>
       <ul>
         <li><a href="/webdesign">Webdesign</a></li>
         <li><a href="/logodesign">Logodesign</a></li>
@@ -22,7 +22,7 @@ const year = new Date().getFullYear();
       </ul>
     </div>
     <div>
-      <h4>Webdesign in Ihrer Nähe</h4>
+      <h2 class="ftr-h">Webdesign in Ihrer Nähe</h2>
       <ul>
         <li><a href="/webdesign-hilden">Webdesign Hilden</a></li>
         <li><a href="/webdesign-duesseldorf">Webdesign Düsseldorf</a></li>
@@ -31,7 +31,7 @@ const year = new Date().getFullYear();
       </ul>
     </div>
     <div>
-      <h4>Kontakt</h4>
+      <h2 class="ftr-h">Kontakt</h2>
       <address>
         {site.name}<br />
         {site.address.street}<br />
@@ -51,7 +51,7 @@ const year = new Date().getFullYear();
   .ftr { border-top: 1px solid var(--line); background: var(--bg-2); padding-top: 4rem; margin-top: 2rem; }
   .ftr-grid { display: grid; gap: 2.5rem; grid-template-columns: 1.4fr 1fr 1fr 1.2fr; padding-bottom: 3rem; }
   .ftr-about { margin-top: 1rem; font-size: .95rem; max-width: 34ch; }
-  .ftr h4 { font-size: .85rem; letter-spacing: .12em; text-transform: uppercase; color: var(--text); margin-bottom: 1rem; }
+  .ftr .ftr-h { font-size: .85rem; letter-spacing: .12em; text-transform: uppercase; color: var(--text); margin-bottom: 1rem; }
   .ftr li { margin-bottom: .5rem; }
   .ftr li a, .ftr address a { color: var(--muted); transition: color .2s; }
   .ftr li a:hover, .ftr address a:hover { color: #fff; }

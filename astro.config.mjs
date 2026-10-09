@@ -7,7 +7,7 @@ export default defineConfig({
   build: { format: 'file' },
   integrations: [
     sitemap({
-      filter: (page) => !page.includes('/danke'),
+      filter: (page) => !/\/(danke|impressum|datenschutz|404)/.test(page),
     }),
   ],
 });

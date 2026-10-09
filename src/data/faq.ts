@@ -1,11 +1,11 @@
 export const faqGeneral = [
   {
     q: 'Was kostet eine professionelle Website?',
-    a: 'Das hängt vom Umfang ab. Deshalb arbeiten wir mit klaren Paketen: Vom One-Pager bis zur Business-Website mit mehreren Leistungsseiten. Nach einem kurzen Gespräch erhalten Sie ein Festpreis-Angebot ohne versteckte Kosten.',
+    a: 'Das hängt vom Umfang ab, deshalb gibt es feste Pakete für jedes Budget: von der Visitenkarte für 390 € bis zur Premium-Website, oder ohne Anzahlung im Website-Abo ab 49 € im Monat. Mit dem Preisrechner sehen Sie Ihren Richtpreis sofort.',
   },
   {
     q: 'Wie lange dauert es bis zur fertigen Website?',
-    a: 'Ein One-Pager ist meist in 1–2 Wochen online, eine Business-Website in 3–5 Wochen. Entscheidend ist, wie schnell Texte und Bilder vorliegen. Auf Wunsch unterstützen wir bei beidem.',
+    a: 'Eine Visitenkarte ist in rund 5 Werktagen online, ein One-Pager in 1–2 Wochen, eine Business-Website in 3–5 Wochen. Entscheidend ist, wie schnell Texte und Bilder vorliegen. Auf Wunsch unterstützen wir bei beidem.',
   },
   {
     q: 'Bekomme ich auch Texte und Bilder von Ihnen?',

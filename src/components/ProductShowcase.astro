@@ -8,14 +8,14 @@ const { compact = false } = Astro.props;
 <div class:list={['ps', { 'ps--compact': compact }]}>
   <div class="ps-tabs" role="tablist" aria-label="Software-Lösungen">
     {products.map((p, i) => (
-      <button class="ps-tab" role="tab" id={`tab-${p.slug}`} aria-controls={`panel-${p.slug}`} aria-selected={i === 0 ? 'true' : 'false'} style={`--h:${p.hue}`}>
+      <button class="ps-tab" role="tab" id={`tab-${p.slug}`} aria-controls={p.slug} aria-selected={i === 0 ? 'true' : 'false'} style={`--h:${p.hue}`}>
         <svg viewBox="0 0 24 24" set:html={icons[p.icon]} aria-hidden="true" />{p.name}
       </button>
     ))}
   </div>
 
   {products.map((p, i) => (
-    <section class="ps-panel" role="tabpanel" id={`panel-${p.slug}`} aria-labelledby={`tab-${p.slug}`} data-active={i === 0 ? 'true' : 'false'} style={`--h:${p.hue}`}>
+    <section class="ps-panel" role="tabpanel" id={p.slug} aria-labelledby={`tab-${p.slug}`} data-active={i === 0 ? 'true' : 'false'} style={`--h:${p.hue}`}>
       <div class="ps-grid">
         <div class="ps-info">
           <span class="ps-status">{p.status === 'demo' ? 'Kostenlose Demo auf Anfrage' : 'Sofort verfügbar'}</span>
@@ -71,6 +71,7 @@ const { compact = false } = Astro.props;
   .ps-panel[data-active='false'] { display: none; }
   :global(html:not(.js)) .ps-panel { display: block !important; margin-bottom: 3rem; }
   .ps-panel { animation: psIn .45s ease; }
+  .ps { scroll-margin-top: 90px; }
   @keyframes psIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
   .ps-grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; }
   .ps-status { display: inline-block; font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: hsl(var(--h) 85% 70%); background: hsl(var(--h) 70% 50% / .15); border: 1px solid hsl(var(--h) 70% 60% / .4); padding: .25rem .7rem; border-radius: 999px; }
@@ -131,7 +132,7 @@ const { compact = false } = Astro.props;
         t.tabIndex = on ? 0 : -1;
         if (on && focus) t.focus();
       });
-      ps.querySelectorAll<HTMLElement>('.ps-panel').forEach((p) => (p.dataset.active = String(p.id === `panel-${slug}`)));
+      ps.querySelectorAll<HTMLElement>('.ps-panel').forEach((p) => (p.dataset.active = String(p.id === slug)));
     };
     tabs.forEach((t, i) => {
       t.addEventListener('click', () => show(t.id.slice(4)));
@@ -142,6 +143,6 @@ const { compact = false } = Astro.props;
       });
     });
     const hash = location.hash.slice(1);
-    if (hash && tabs.some((t) => t.id === `tab-${hash}`)) show(hash);
+    if (hash && tabs.some((t) => t.id === `tab-${hash}`)) { show(hash); requestAnimationFrame(() => ps.scrollIntoView({ block: 'start' })); }
   });
 </script>

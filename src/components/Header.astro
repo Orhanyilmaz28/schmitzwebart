@@ -39,4 +39,7 @@ const path = Astro.url.pathname.replace(/\.html$/, '');
     btn.setAttribute('aria-expanded', String(open));
     btn.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
   });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && nav?.classList.contains('open')) { nav.classList.remove('open'); btn?.setAttribute('aria-expanded', 'false'); btn?.focus(); }
+  });
 </script>
