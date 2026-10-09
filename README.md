@@ -38,3 +38,5 @@ Ohne Stripe-Link zeigt der Button „Anfragen“, mit Link „Jetzt buchen“.
 ## Deployment (Vercel)
 Projekt auf vercel.com importieren: Framework „Astro“ wird erkannt, Build `npm run build`, Output `dist`.
 `vercel.json` setzt saubere URLs ohne `.html` und Sicherheits-Header. Danach Domain `schmitzwebart.de` in den Projekt-Einstellungen verbinden und die Umgebungsvariablen aus `.env.example` setzen.
+
+> Auf `*.vercel.app` wird per Header `noindex` gesetzt (siehe `vercel.json`), damit nur `schmitzwebart.de` bei Google erscheint. Der Header gilt nicht für die eigene Domain.
