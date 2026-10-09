@@ -137,7 +137,7 @@ export const services = {
     heroText: 'Statt Excel-Chaos oder teurer Standardlösung: Ich entwickle Windows-Programme, die exakt das tun, was Sie brauchen. Vereinssoftware, Mitgliederverwaltung, Callcenter- oder Adress-Software, persönlich und mit festem Preis.',
     short: 'Individuelle Windows-Programme zum Festpreis, z. B. für Vereine oder Callcenter.',
     benefits: [
-      { icon: 'tag', t: 'Festpreis', d: 'Sie wissen vorher, was es kostet. Moderne, KI-gestützte Entwicklung macht Preise möglich, die bei Individualsoftware sonst kaum machbar sind.' },
+      { icon: 'tag', t: 'Festpreis', d: 'Sie wissen vorher, was es kostet. Funktionsumfang, Preis und Termin stehen schriftlich fest, ohne Überraschungen bei der Rechnung.' },
       { icon: 'software', t: 'Passgenau', d: 'Keine Funktion zu viel, keine zu wenig. Die Software bildet Ihren Ablauf ab, nicht umgekehrt.' },
       { icon: 'shield', t: 'Ihre Daten bleiben bei Ihnen', d: 'Läuft lokal auf Ihren Windows-Rechnern oder im eigenen Netzwerk. Es gibt kein Abo und keine fremde Cloud.' },
       { icon: 'chat', t: 'Persönlicher Support', d: 'Sie haben einen festen Ansprechpartner, der Ihre Software kennt. Jede Funktion wird von mir geprüft und getestet.' },
