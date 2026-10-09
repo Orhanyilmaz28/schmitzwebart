@@ -20,7 +20,7 @@ const why = [
   { icon: 'pin', t: 'Aus der Region', d: 'Sitz in Hilden, aktiv in Düsseldorf, im Kreis Mettmann und bundesweit.' },
 ];
 ---
-<Base title="Webdesign, Logodesign, SEO & Google Ads aus Hilden | schmitzwebart" description={site.description}>
+<Base title="Webdesign, Logodesign & SEO in Hilden | schmitzwebart" description={site.description}>
   <section class="hero">
     <div class="glow"></div>
     <div class="container relative hero-grid">
@@ -93,14 +93,19 @@ const why = [
       <div>
         <span class="eyebrow">Kostenloser Website-Check</span>
         <h2>Wie gut ist Ihre Website wirklich?</h2>
-        <p class="lead">Wir prüfen Ihre Seite auf Ladezeit, mobile Darstellung, SEO und Vertrauen. Sie erhalten eine verständliche Auswertung mit den wichtigsten Verbesserungen. Kostenlos und unverbindlich.</p>
-        <a class="btn btn--primary" href="/seo-check">Jetzt Check anfordern</a>
+        <p class="lead">Über 20 Prüfpunkte zu Ladezeit, mobiler Darstellung, SEO und Rechtlichem. Das Ergebnis sehen Sie sofort, kostenlos und ohne Anmeldung.</p>
+        <form class="quick-check" action="/seo-check" method="get">
+          <label for="qc-url" class="sr-only">Ihre Website</label>
+          <input id="qc-url" name="url" type="text" inputmode="url" placeholder="ihre-website.de" required />
+          <button class="btn btn--primary" type="submit">Jetzt prüfen</button>
+        </form>
       </div>
       <ul class="check-list">
         <li>Ladezeit und Core Web Vitals</li>
         <li>Darstellung auf Smartphone & Tablet</li>
         <li>Grundlagen für Google (SEO)</li>
         <li>Vertrauenssignale & Rechtliches</li>
+        <li>Rechtliches: Impressum & Datenschutz</li>
         <li>Konkrete Verbesserungsvorschläge</li>
       </ul>
     </div>
@@ -127,6 +132,11 @@ const why = [
   .b3 :global(.b3-img) { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: 50% 15%; border: 2px solid rgba(255,255,255,.2); }
   .b3 span { font-size: .75rem; } .b3 b { color: var(--text); font-size: .85rem; }
   .more { color: var(--blue); font-weight: 600; font-size: .95rem; }
+  .quick-check { display: flex; gap: .5rem; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: .4rem; max-width: 520px; margin-top: 1.5rem; }
+  .quick-check input { flex: 1; min-width: 0; background: transparent; border: 0; color: var(--text); font: inherit; padding: .5rem 1rem; }
+  .quick-check input:focus { outline: none; }
+  .quick-check:focus-within { border-color: var(--blue); }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   .check-box { display: grid; gap: 2.5rem; grid-template-columns: 1.2fr 1fr; align-items: center; }
   .check-box .check-list { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.8rem; }
   @media (max-width: 900px) {

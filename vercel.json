@@ -47,5 +47,13 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/check.js": {
+      "maxDuration": 30
+    },
+    "api/pagespeed.js": {
+      "maxDuration": 60
+    }
+  }
 }

@@ -13,6 +13,7 @@
     "@astrojs/sitemap": "^3.2.1",
     "@fontsource-variable/inter": "^5.1.0",
     "@fontsource/space-grotesk": "^5.1.0",
-    "astro": "^5.1.0"
+    "astro": "^5.1.0",
+    "node-html-parser": "^9.0.4"
   }
 }

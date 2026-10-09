@@ -1,11 +1,11 @@
 ---
-interface Props { eyebrow?: string; title: string; text?: string }
-const { eyebrow, title, text } = Astro.props;
+interface Props { eyebrow?: string; title: string; text?: string; art?: boolean }
+const { eyebrow, title, text, art = true } = Astro.props;
 ---
 <section class="phero">
   <div class="glow"></div>
   <div class="container relative">
-    <img class="phero-art" src="/logo-mark.svg" width="300" height="300" alt="" aria-hidden="true" />
+    {art && <img class="phero-art" src="/logo-mark.svg" width="300" height="300" alt="" aria-hidden="true" />}
     {eyebrow && <span class="eyebrow">{eyebrow}</span>}
     <h1 class="reveal">{title}</h1>
     {text && <p class="lead reveal">{text}</p>}
@@ -16,6 +16,7 @@ const { eyebrow, title, text } = Astro.props;
   .phero { position: relative; overflow: hidden; padding: clamp(3.5rem, 8vw, 6rem) 0 clamp(2rem, 5vw, 3.5rem); }
   .phero-art { position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: clamp(220px, 24vw, 300px); height: auto; filter: drop-shadow(0 30px 60px rgba(110, 90, 255, .35)); pointer-events: none; }
   .phero .lead, .phero h1 { position: relative; }
+  .phero :global(.sc) { position: relative; z-index: 2; }
   @media (max-width: 980px) { .phero-art { display: none; } }
   @media (prefers-reduced-motion: no-preference) { .phero-art { animation: floaty 7s ease-in-out infinite; } @keyframes floaty { 50% { transform: translateY(calc(-50% - 10px)); } } }
   .phero h1 { font-size: clamp(2.1rem, 4.8vw, 3.4rem); max-width: 20ch; }

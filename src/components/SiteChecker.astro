@@ -1,0 +1,313 @@
+---
+import { site } from '../data/site';
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
+---
+<div class="sc" data-endpoint={endpoint} data-mailto={site.email}>
+  <form class="sc-form" novalidate>
+    <label for="sc-url" class="sr-only">Ihre Website</label>
+    <input id="sc-url" name="url" type="text" inputmode="url" autocomplete="url" placeholder="ihre-website.de" required />
+    <button class="btn btn--primary" type="submit">Jetzt prüfen</button>
+  </form>
+  <p class="sc-note">Kostenlos, ohne Anmeldung, Ergebnis in etwa 30 Sekunden.</p>
+  <p class="sc-error" role="alert" hidden></p>
+
+  <div class="sc-loading card" hidden>
+    <div class="sc-spinner" aria-hidden="true"></div>
+    <ol class="sc-steps">
+      <li data-step="0">Seite wird geladen</li>
+      <li data-step="1">SEO-Grundlagen werden geprüft</li>
+      <li data-step="2">Rechtliches & Vertrauen werden geprüft</li>
+      <li data-step="3">Ladezeit wird bei Google gemessen (bis 30 s)</li>
+    </ol>
+  </div>
+
+  <div class="sc-result" hidden>
+    <div class="sc-top card">
+      <div class="sc-ring">
+        <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" class="track" /><circle cx="60" cy="60" r="52" class="bar" /></svg>
+        <div class="sc-ring-txt"><strong class="sc-score">–</strong><span class="sc-verdict"></span></div>
+      </div>
+      <div class="sc-summary">
+        <span class="eyebrow">Ergebnis für</span>
+        <h2 class="sc-host"></h2>
+        <div class="sc-cats"></div>
+      </div>
+    </div>
+
+    <h3 class="sc-h">Die wichtigsten Baustellen</h3>
+    <div class="sc-issues"></div>
+
+    <div class="sc-full">
+      <div class="sc-full-inner" aria-hidden="true"></div>
+      <div class="sc-gate card">
+        <h3>Vollständigen Bericht freischalten</h3>
+        <p>Alle Prüfpunkte mit Erklärungen, Google-Messwerte zur Ladezeit und konkrete Empfehlungen, kostenlos. Auf Wunsch besprechen wir die Ergebnisse mit Ihnen.</p>
+        <form class="form sc-lead" novalidate>
+          <label class="hp" aria-hidden="true">Nicht ausfüllen<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
+          <div class="grid grid--2">
+            <label>Name *<input name="name" required autocomplete="name" /></label>
+            <label>E-Mail *<input name="email" type="email" required autocomplete="email" /></label>
+          </div>
+          <label>Telefon (optional, für Rückfragen)<input name="telefon" type="tel" autocomplete="tel" /></label>
+          <label class="check"><input type="checkbox" name="einwilligung" required /><span>Ich bin einverstanden, dass die Webmanufaktur Schmitz meine Angaben und das Prüfergebnis speichert und mich dazu kontaktiert. Details in der <a href="/datenschutz" target="_blank">Datenschutzerklärung</a>. *</span></label>
+          <button class="btn btn--primary" type="submit">Bericht freischalten</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="sc-after" hidden>
+      <div class="sc-actions">
+        <button class="btn btn--ghost" type="button" data-print>Als PDF speichern</button>
+        <a class="btn btn--primary" href="/kontakt?paket=beratung">Ergebnis kostenlos besprechen</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .sc-form { display: flex; gap: .6rem; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: .45rem; max-width: 640px; }
+  .sc-form input { flex: 1; min-width: 0; background: transparent; border: 0; color: var(--text); font: inherit; font-size: 1.1rem; padding: .6rem 1rem; }
+  .sc-form input:focus { outline: none; }
+  .sc-form:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(79,140,255,.2); }
+  .sc-note { font-size: .9rem; margin-top: .8rem; }
+  .sc-error { color: #ffb0b0; background: rgba(255,90,90,.1); border: 1px solid rgba(255,90,90,.35); padding: .8rem 1rem; border-radius: 12px; max-width: 640px; }
+  .sc-loading { display: flex; gap: 1.5rem; align-items: center; margin-top: 2rem; max-width: 640px; }
+  .sc-spinner { width: 54px; height: 54px; border-radius: 50%; border: 4px solid rgba(255,255,255,.1); border-top-color: var(--blue); border-right-color: var(--violet); animation: spin 1s linear infinite; flex: none; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .sc-steps { margin: 0; padding-left: 1.2rem; color: var(--muted); }
+  .sc-steps li { margin: .2rem 0; transition: color .3s; }
+  .sc-steps li.done { color: var(--text); }
+  .sc-steps li.done::marker { content: '✓  '; color: #5fd49a; }
+  .sc-result { margin-top: 2.5rem; }
+  .sc-top { display: grid; grid-template-columns: auto 1fr; gap: 2rem; align-items: center; }
+  .sc-ring { position: relative; width: 170px; height: 170px; }
+  .sc-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .sc-ring circle { fill: none; stroke-width: 10; }
+  .sc-ring .track { stroke: rgba(255,255,255,.08); }
+  .sc-ring .bar { stroke: var(--c, #4f8cff); stroke-linecap: round; stroke-dasharray: 326.7; stroke-dashoffset: 326.7; transition: stroke-dashoffset 1.2s ease, stroke .3s; }
+  .sc-ring-txt { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; }
+  .sc-score { font-family: var(--font-display); font-size: 3rem; line-height: 1; }
+  .sc-verdict { font-size: .85rem; color: var(--muted); margin-top: .3rem; }
+  .sc-host { word-break: break-all; font-size: 1.6rem; margin-bottom: 1rem; }
+  :global(.sc-cats) { display: grid; gap: .7rem; }
+  :global(.sc-cat) { display: grid; grid-template-columns: 170px 1fr 44px; gap: .8rem; align-items: center; font-size: .92rem; }
+  :global(.sc-cat .lbl) { color: var(--text); }
+  :global(.sc-cat .track) { display: block; height: 8px; border-radius: 99px; background: rgba(255,255,255,.08); overflow: hidden; }
+  :global(.sc-cat .fill) { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--c); transition: width 1s ease; }
+  :global(.sc-cat .val) { text-align: right; font-weight: 600; color: var(--text); }
+  :global(.sc-cat.pending .val) { color: var(--muted); font-weight: 400; font-size: .8rem; }
+  .sc-h { margin: 2.5rem 0 1rem; font-size: 1.35rem; font-weight: 700; }
+  .sc-issues { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+  :global(.sc-item) { border: 1px solid var(--line); border-left: 4px solid var(--c); border-radius: 14px; padding: 1rem 1.2rem; background: var(--surface); }
+  :global(.sc-item h4) { font-size: 1.02rem; margin: 0 0 .3rem; display: flex; gap: .5rem; align-items: center; }
+  :global(.sc-item .detail) { font-size: .9rem; margin: 0 0 .4rem; word-break: break-word; }
+  :global(.sc-item .tip) { font-size: .9rem; margin: 0; color: var(--text); opacity: .9; }
+  :global(.sc-dot) { width: 10px; height: 10px; border-radius: 50%; background: var(--c); flex: none; }
+  :global(.sc-group) { margin-bottom: 2rem; }
+  :global(.sc-group h4.g) { font-size: 1.1rem; margin-bottom: .8rem; }
+  :global(.sc-list) { display: grid; gap: .7rem; }
+  :global(.sc-metrics) { display: grid; gap: .8rem; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin-bottom: 2rem; }
+  :global(.sc-metric) { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: .9rem 1rem; }
+  :global(.sc-metric b) { display: block; font-family: var(--font-display); font-size: 1.4rem; color: var(--text); }
+  :global(.sc-metric span) { font-size: .82rem; color: var(--muted); }
+  .sc-full { position: relative; margin-top: 2.5rem; }
+  .sc-full-inner { filter: blur(6px); opacity: .5; pointer-events: none; user-select: none; max-height: 520px; overflow: hidden; }
+  .sc-full.open .sc-full-inner { filter: none; opacity: 1; pointer-events: auto; user-select: auto; max-height: none; }
+  .sc-gate { position: absolute; left: 50%; top: 2rem; transform: translateX(-50%); width: min(100%, 620px); box-shadow: 0 30px 80px rgba(0,0,0,.6); background: var(--surface-2); }
+  .sc-full.open .sc-gate { display: none; }
+  .sc-gate p { font-size: .95rem; }
+  .sc-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1rem; }
+  @media (max-width: 700px) {
+    .sc-top { grid-template-columns: 1fr; justify-items: center; }
+    .sc-summary { width: 100%; } .sc-summary .eyebrow, .sc-host { display: block; text-align: center; }
+    :global(.sc-cat) { grid-template-columns: 1fr 44px; } :global(.sc-cat .track) { grid-column: 1 / -1; grid-row: 2; }
+    .sc-form { border-radius: 18px; flex-direction: column; }
+    .sc-gate { position: relative; left: auto; transform: none; top: auto; margin-top: -380px; }
+  }
+  @media print {
+    :global(header), :global(footer), :global(.phero), .sc-form, .sc-note, .sc-gate, .sc-actions, :global(.cta) { display: none !important; }
+    :global(body) { background: #fff; color: #000; }
+    .sc-full-inner { filter: none !important; opacity: 1 !important; max-height: none !important; }
+  }
+</style>
+
+<script>
+  type Check = { group: string; id: string; label: string; status: 'ok' | 'warn' | 'fail'; detail: string; tip: string; weight: number };
+  type Audit = { url: string; host: string; title: string; checks: Check[] };
+  type Psi = { performance: number | null; seo: number | null; accessibility: number | null; bestPractices: number | null; metrics: Record<string, { value: string; score: number } | null> };
+
+  const root = document.querySelector<HTMLElement>('.sc')!;
+  const $ = <T extends HTMLElement>(s: string) => root.querySelector<T>(s)!;
+  const esc = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+  const color = (v: number) => (v >= 80 ? '#3ecf8e' : v >= 50 ? '#ffb547' : '#ff5c6c');
+  const statusColor = { ok: '#3ecf8e', warn: '#ffb547', fail: '#ff5c6c' };
+  const statusLabel = { ok: 'In Ordnung', warn: 'Verbesserungswürdig', fail: 'Kritisch' };
+  const groupLabel: Record<string, string> = { seo: 'SEO-Grundlagen', technik: 'Technik & Mobil', vertrauen: 'Vertrauen & Recht' };
+
+  let audit: Audit | null = null;
+  let psi: Psi | null = null;
+  let psiState: 'pending' | 'done' | 'failed' = 'pending';
+  let unlocked = false;
+
+  const groupScore = (g: string) => {
+    const list = audit!.checks.filter((c) => c.group === g);
+    const w = list.reduce((s, c) => s + c.weight, 0);
+    return Math.round((list.reduce((s, c) => s + c.weight * (c.status === 'ok' ? 1 : c.status === 'warn' ? 0.5 : 0), 0) / w) * 100);
+  };
+
+  function categories() {
+    const seoOwn = groupScore('seo');
+    const cats: { label: string; value: number | null; pending?: boolean }[] = [
+      { label: 'Geschwindigkeit', value: psi?.performance ?? null, pending: psiState === 'pending' },
+      { label: 'SEO-Grundlagen', value: psi?.seo != null ? Math.round(seoOwn * 0.7 + psi.seo * 0.3) : seoOwn },
+      { label: 'Technik & Mobil', value: psi?.bestPractices != null ? Math.round(groupScore('technik') * 0.7 + psi.bestPractices * 0.3) : groupScore('technik') },
+      { label: 'Vertrauen & Recht', value: groupScore('vertrauen') },
+    ];
+    return cats;
+  }
+
+  function render() {
+    if (!audit) return;
+    const cats = categories();
+    const vals = cats.map((c) => c.value).filter((v): v is number => v != null);
+    const total = Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
+    $('.sc-score').textContent = String(total);
+    $('.sc-verdict').textContent = total >= 80 ? 'Gut aufgestellt' : total >= 50 ? 'Ausbaufähig' : 'Kritisch';
+    const bar = $<HTMLElement>('.sc-ring .bar');
+    bar.style.setProperty('--c', color(total));
+    requestAnimationFrame(() => (bar.style.strokeDashoffset = String(326.7 * (1 - total / 100))));
+    $('.sc-host').textContent = audit.host;
+
+    $('.sc-cats').innerHTML = cats.map((c) => `
+      <div class="sc-cat ${c.value == null ? 'pending' : ''}" style="--c:${c.value == null ? '#555' : color(c.value)}">
+        <span class="lbl">${esc(c.label)}</span>
+        <span class="track"><span class="fill" style="width:${c.value ?? 0}%"></span></span>
+        <span class="val">${c.value == null ? (c.pending ? 'misst…' : 'n. v.') : c.value}</span>
+      </div>`).join('');
+
+    const order = { fail: 0, warn: 1, ok: 2 };
+    const problems = audit.checks.filter((c) => c.status !== 'ok').sort((a, b) => order[a.status] - order[b.status] || b.weight - a.weight);
+    if (psi?.performance != null && psi.performance < 50) {
+      problems.unshift({ group: 'technik', id: 'speed', label: 'Ladezeit auf dem Smartphone', status: 'fail', detail: `Google bewertet die mobile Geschwindigkeit mit ${psi.performance} von 100.`, tip: 'Langsame Seiten verlieren Besucher und Rankings. Bilder optimieren, Code verschlanken und gutes Hosting bringen hier am meisten.', weight: 3 });
+    }
+    $('.sc-issues').innerHTML = problems.length
+      ? problems.slice(0, 3).map(item).join('')
+      : '<p>Stark! Bei den Grundlagen haben wir keine Baustellen gefunden. Spannend wird es jetzt bei Inhalten, Rankings und Anzeigen. Sprechen Sie uns an.</p>';
+
+    renderFull();
+  }
+
+  const item = (c: Check) => `
+    <div class="sc-item" style="--c:${statusColor[c.status]}">
+      <h4><span class="sc-dot"></span>${esc(c.label)}<small style="margin-left:auto;color:var(--muted);font-weight:400">${statusLabel[c.status]}</small></h4>
+      <p class="detail">${esc(c.detail)}</p>
+      ${c.tip ? `<p class="tip">${esc(c.tip)}</p>` : ''}
+    </div>`;
+
+  function renderFull() {
+    if (!audit) return;
+    let html = '';
+    if (psi) {
+      const m = psi.metrics;
+      const metric = (k: string, l: string) => m[k] ? `<div class="sc-metric"><b>${esc(m[k]!.value)}</b><span>${l}</span></div>` : '';
+      html += `<div class="sc-group"><h4 class="g">Google-Messwerte (Smartphone)</h4><div class="sc-metrics">
+        <div class="sc-metric"><b>${psi.performance ?? '–'}</b><span>Performance-Score</span></div>
+        <div class="sc-metric"><b>${psi.seo ?? '–'}</b><span>Google SEO-Score</span></div>
+        <div class="sc-metric"><b>${psi.accessibility ?? '–'}</b><span>Barrierefreiheit</span></div>
+        ${metric('lcp', 'Größtes Element sichtbar (LCP)')}${metric('fcp', 'Erster Inhalt sichtbar')}${metric('cls', 'Layout-Verschiebung (CLS)')}${metric('tbt', 'Blockierzeit')}
+      </div></div>`;
+    } else if (psiState === 'failed') {
+      html += '<div class="sc-group"><h4 class="g">Google-Messwerte</h4><p>Die Geschwindigkeitsmessung bei Google war gerade nicht möglich. Wir holen sie im persönlichen Gespräch nach.</p></div>';
+    }
+    for (const g of ['seo', 'technik', 'vertrauen']) {
+      const list = audit.checks.filter((c) => c.group === g);
+      html += `<div class="sc-group"><h4 class="g">${groupLabel[g]} · ${groupScore(g)}/100</h4><div class="sc-list">${list.map(item).join('')}</div></div>`;
+    }
+    $('.sc-full-inner').innerHTML = html;
+  }
+
+  async function post(url: string, body: unknown) {
+    const r = await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(data.error || 'Die Prüfung ist fehlgeschlagen.');
+    return data;
+  }
+
+  const steps = () => [...root.querySelectorAll<HTMLElement>('.sc-steps li')];
+  function markStep(n: number) { steps().forEach((li) => li.classList.toggle('done', Number(li.dataset.step) < n)); }
+
+  $<HTMLFormElement>('.sc-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const input = $<HTMLInputElement>('#sc-url');
+    const url = input.value.trim();
+    const err = $('.sc-error');
+    err.hidden = true;
+    if (!url) { err.textContent = 'Bitte geben Sie Ihre Website-Adresse ein.'; err.hidden = false; return; }
+    const btn = root.querySelector<HTMLButtonElement>('.sc-form button')!;
+    btn.disabled = true;
+    audit = null; psi = null; psiState = 'pending'; unlocked = false;
+    $('.sc-full').classList.remove('open'); $('.sc-after').hidden = true;
+    $('.sc-result').hidden = true; $('.sc-loading').hidden = false; markStep(0);
+    const t1 = setTimeout(() => markStep(1), 1200), t2 = setTimeout(() => markStep(2), 2600);
+
+    const psiReq = post('/api/pagespeed', { url })
+      .then((d) => { psi = d; psiState = 'done'; })
+      .catch(() => { psiState = 'failed'; })
+      .finally(() => { if (audit) render(); });
+
+    try {
+      audit = await post('/api/check', { url });
+      clearTimeout(t1); clearTimeout(t2); markStep(3);
+      // Kurz auf Google warten, danach Ergebnis zeigen und Messwerte nachladen
+      await Promise.race([psiReq, new Promise((r) => setTimeout(r, 12000))]);
+      $('.sc-loading').hidden = true; $('.sc-result').hidden = false;
+      render();
+      $('.sc-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (ex) {
+      clearTimeout(t1); clearTimeout(t2);
+      $('.sc-loading').hidden = true;
+      err.textContent = (ex as Error).message; err.hidden = false;
+    } finally { btn.disabled = false; }
+  });
+
+  $<HTMLFormElement>('.sc-lead').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.currentTarget as HTMLFormElement;
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    const fd = new FormData(form);
+    if (fd.get('_gotcha') || !audit) return;
+    const cats = categories().map((c) => `${c.label}: ${c.value ?? 'n. v.'}`).join(' | ');
+    const issues = audit.checks.filter((c) => c.status !== 'ok').map((c) => `- [${statusLabel[c.status]}] ${c.label}: ${c.detail}`).join('\n');
+    const payload = {
+      _subject: `Website-Check: ${audit.host} (${$('.sc-score').textContent}/100)`,
+      formular: 'website-check', name: fd.get('name'), email: fd.get('email'), telefon: fd.get('telefon') || '',
+      website: audit.url, score: $('.sc-score').textContent, kategorien: cats, baustellen: issues,
+    };
+    const { endpoint, mailto } = root.dataset;
+    const btn = form.querySelector<HTMLButtonElement>('button')!;
+    btn.disabled = true;
+    try {
+      if (endpoint) {
+        await fetch(endpoint, { method: 'POST', headers: { 'content-type': 'application/json', accept: 'application/json' }, body: JSON.stringify(payload) });
+      } else {
+        const body = `Name: ${payload.name}\nE-Mail: ${payload.email}\nTelefon: ${payload.telefon}\nWebsite: ${payload.website}\nScore: ${payload.score}/100\n${cats}\n\nBaustellen:\n${issues}`;
+        window.open(`mailto:${mailto}?subject=${encodeURIComponent(payload._subject)}&body=${encodeURIComponent(body.slice(0, 1800))}`, '_self');
+      }
+    } catch { /* Bericht trotzdem freischalten */ }
+    unlocked = true;
+    $('.sc-full').classList.add('open');
+    $('.sc-full-inner').removeAttribute('aria-hidden');
+    $('.sc-after').hidden = false;
+    btn.disabled = false;
+  });
+
+  root.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+
+  // Start über die Startseite: /seo-check?url=...
+  const preset = new URLSearchParams(location.search).get('url');
+  if (preset) {
+    $<HTMLInputElement>('#sc-url').value = preset.slice(0, 300);
+    $<HTMLFormElement>('.sc-form').requestSubmit();
+  }
+</script>

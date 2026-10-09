@@ -28,6 +28,20 @@ Ohne Stripe-Link zeigt der Button „Anfragen“, mit Link „Jetzt buchen“.
 - `PUBLIC_FORM_ENDPOINT` – Formular-Dienst (z. B. Formspree/Web3Forms). Ohne Wert öffnet das Formular das E-Mail-Programm.
 - `PUBLIC_GTM_ID` – Google Tag Manager. Erst dann erscheint der Cookie-Banner; GTM lädt nur nach Einwilligung.
 
+## Website-Check (`/seo-check`)
+Zwei Vercel-Funktionen in `api/`:
+- `api/check.js` lädt die eingegebene Seite und prüft 21 Punkte (SEO, Technik, Vertrauen/Recht). Logik in `api/_lib/audit.js`.
+- `api/pagespeed.js` fragt serverseitig Google PageSpeed Insights ab (Ladezeit, Core Web Vitals).
+
+Schutz: nur öffentliche Adressen (keine internen IPs, Weiterleitungen werden einzeln geprüft), Timeouts, Größenlimit, Begrenzung pro IP.
+Leads: Beim Freischalten des Berichts gehen Name, E-Mail, Telefon und Ergebnis an `PUBLIC_FORM_ENDPOINT` (ohne Endpunkt per E-Mail-Programm).
+
+Einrichtung in Vercel → Settings → Environment Variables:
+- `PAGESPEED_API_KEY` – Google Cloud Console → „PageSpeed Insights API“ aktivieren → API-Schlüssel erstellen (kostenlos).
+- `PUBLIC_FORM_ENDPOINT` – z. B. Formspree, damit Leads ankommen.
+
+Lokal testen: `CHECK_ALLOW_PRIVATE=1` erlaubt Prüfungen von `127.0.0.1` (nur für Tests, nie in Vercel setzen).
+
 ## Vor dem Livegang prüfen
 - [ ] USt-IdNr. oder Kleinunternehmer-Hinweis (§ 19 UStG) im Impressum
 - [ ] Datenschutzerklärung: Hosting-Anbieter und Formular-Dienst ergänzen, rechtlich prüfen lassen
