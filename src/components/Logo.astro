@@ -1,6 +1,6 @@
 ---
 interface Props { size?: number; wordmark?: boolean }
-const { size = 46, wordmark = true } = Astro.props;
+const { size = 58, wordmark = true } = Astro.props;
 ---
 <span class="logo">
   <img src="/logo-mark.svg" width={size} height={size} alt="" aria-hidden="true" />
@@ -11,7 +11,7 @@ const { size = 46, wordmark = true } = Astro.props;
   )}
 </span>
 <style>
-  .logo { display: inline-flex; align-items: center; gap: .7rem; }
+  .logo { display: inline-flex; align-items: center; gap: .55rem; }
   .logo-text { display: grid; }
   .logo-name { font-family: var(--font-display); font-weight: 700; font-size: 1.45rem; line-height: 1; letter-spacing: -0.03em; color: #fff; }
   .logo-web { background: linear-gradient(120deg, #ff9a4d, #ff4f8b); -webkit-background-clip: text; background-clip: text; color: transparent; }
