@@ -35,7 +35,7 @@ Ohne Stripe-Link zeigt der Button „Anfragen“, mit Link „Jetzt buchen“.
 
 ### Formular & Tracking (`.env`, siehe `.env.example`)
 - `PUBLIC_FORM_ENDPOINT` – Formular-Dienst (z. B. Formspree/Web3Forms). Ohne Wert öffnet das Formular das E-Mail-Programm.
-- `PUBLIC_GTM_ID` – Google Tag Manager. Erst dann erscheint der Cookie-Banner; GTM lädt nur nach Einwilligung.
+- `PUBLIC_GTM_ID` – Google Tag Manager. Ohne ID zeigt der Datenschutz-Dialog beim ersten Besuch nur einen Hinweis („Verstanden“). Mit ID wird daraus automatisch eine echte Einwilligung („Alle akzeptieren“ / „Nur notwendige“ / Einstellungen), GTM lädt erst danach (Consent Mode v2). Wer vorher nur den Hinweis bestätigt hat, wird neu gefragt.
 
 ## Website-Check (`/seo-check`)
 Zwei Vercel-Funktionen in `api/`:
@@ -58,6 +58,7 @@ Erst auf `'verfuegbar'` stellen, wenn das Programm wirklich auslieferbar ist.
 ## Vor dem Livegang prüfen
 - [ ] **AGB anwaltlich prüfen lassen** (`/agb`, Entwurf für Geschäftskunden)
 - [ ] Datenschutz: Angaben zu Vercel (Adresse, Data Privacy Framework) prüfen
+- [ ] Datenschutz-Dialog und Abschnitt 5 der Datenschutzerklärung rechtlich prüfen lassen (vor allem, sobald Google Tag Manager aktiv ist)
 - [ ] Software-Demos bereitstellen, bevor Demo-Anfragen kommen
 - [ ] Terminbuchung: Cal.com/Calendly-Link in `site.ts` → `bookingUrl` eintragen
 - [ ] Kundenstimmen einholen und in `testimonials.ts` eintragen

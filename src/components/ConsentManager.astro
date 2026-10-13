@@ -1,0 +1,156 @@
+---
+// Datenschutz-Hinweis beim ersten Besuch.
+// Ohne PUBLIC_GTM_ID: reiner Hinweis („Verstanden“), denn es gibt nichts, wofür eine Einwilligung nötig wäre.
+// Mit PUBLIC_GTM_ID: echte Einwilligung mit „Alle akzeptieren“ / „Nur notwendige“ / Einstellungen.
+//   Google Tag Manager wird erst nach Einwilligung geladen (Consent Mode v2 standardmäßig „denied“).
+const gtm = import.meta.env.PUBLIC_GTM_ID || '';
+const mode = gtm ? 'consent' : 'info';
+---
+<dialog class="cm" data-cm data-mode={mode} data-gtm={gtm} aria-labelledby="cm-title" aria-describedby="cm-text">
+  <div class="cm-head">
+    <img src="/logo-mark.svg" width="44" height="44" alt="" />
+    <h2 id="cm-title">{mode === 'info' ? 'Ihre Privatsphäre ist mir wichtig' : 'Datenschutz-Einstellungen'}</h2>
+  </div>
+
+  {mode === 'info' ? (
+    <div id="cm-text" class="cm-text">
+      <p>Diese Website verwendet <strong>keine Tracking- oder Werbe-Cookies</strong> und keine Analyse-Dienste. Schriften werden lokal geladen, es gehen keine Daten an Google Fonts.</p>
+      <p>Externe Dienste wie WhatsApp oder die Terminbuchung werden erst aufgerufen, wenn Sie den jeweiligen Link anklicken. Ihre Bestätigung wird nur in Ihrem Browser gespeichert.</p>
+    </div>
+  ) : (
+    <div id="cm-text" class="cm-text">
+      <p>Für den Betrieb der Website nutze ich nur technisch notwendige Speicherung. <strong>Mit Ihrer Einwilligung</strong> setze ich außerdem den Google Tag Manager ein, um Besuche statistisch auszuwerten und den Erfolg von Werbung zu messen. Dabei können Daten in die USA übermittelt werden.</p>
+      <p>Sie können Ihre Auswahl jederzeit über „Datenschutz-Einstellungen“ im Footer ändern.</p>
+    </div>
+  )}
+
+  {mode === 'consent' && (
+    <div class="cm-settings" hidden>
+      <label class="cm-opt"><input type="checkbox" checked disabled /><span><strong>Notwendig</strong>Speichert Ihre Datenschutz-Auswahl. Immer aktiv.</span></label>
+      <label class="cm-opt"><input type="checkbox" name="stats" /><span><strong>Statistik</strong>Auswertung, welche Seiten wie oft besucht werden (Google Tag Manager / Analytics).</span></label>
+      <label class="cm-opt"><input type="checkbox" name="marketing" /><span><strong>Marketing</strong>Messung, ob Anzeigen zu Anfragen führen (Google Ads Conversion-Tracking).</span></label>
+    </div>
+  )}
+
+  <div class="cm-actions">
+    {mode === 'info' ? (
+      <button type="button" class="btn btn--primary cm-btn" data-cm-action="ok">Verstanden</button>
+    ) : (
+      <>
+        <button type="button" class="btn cm-btn cm-equal" data-cm-action="all">Alle akzeptieren</button>
+        <button type="button" class="btn cm-btn cm-equal" data-cm-action="none">Nur notwendige</button>
+        <button type="button" class="btn btn--ghost cm-btn cm-more" data-cm-action="settings" aria-expanded="false">Einstellungen</button>
+        <button type="button" class="btn btn--primary cm-btn cm-save" data-cm-action="save" hidden>Auswahl speichern</button>
+      </>
+    )}
+  </div>
+  <p class="cm-links"><a href="/datenschutz">Datenschutzerklärung</a> · <a href="/impressum">Impressum</a></p>
+</dialog>
+
+<style>
+  .cm { width: min(540px, calc(100vw - 2rem)); max-height: calc(100vh - 2rem); overflow-y: auto; padding: clamp(1.3rem, 4vw, 1.9rem); border-radius: 22px; border: 1px solid rgba(140, 120, 255, .45); background: linear-gradient(180deg, #181c3f, #11142a); color: var(--text); box-shadow: 0 40px 120px rgba(0, 0, 0, .7); }
+  .cm::backdrop { background: rgba(4, 5, 12, .62); backdrop-filter: blur(3px); }
+  .cm:not([open]) { display: none; }
+  /* Auf Impressum/Datenschutz nicht blockierend unten einblenden */
+  .cm.cm--inline { position: fixed; inset: auto 1rem 1rem auto; margin: 0; z-index: 90; }
+  .cm-head { display: flex; align-items: center; gap: .8rem; margin-bottom: .9rem; }
+  .cm-head h2 { font-size: 1.3rem; margin: 0; }
+  .cm-text p { font-size: .95rem; margin: 0 0 .7rem; }
+  .cm-text strong { color: var(--text); }
+  .cm-settings { display: grid; gap: .6rem; margin: .4rem 0 1rem; }
+  .cm-opt { display: flex; gap: .8rem; align-items: flex-start; padding: .8rem .9rem; border-radius: 12px; border: 1px solid var(--line); background: rgba(255, 255, 255, .03); cursor: pointer; }
+  .cm-opt input { margin-top: .25rem; width: 18px; height: 18px; accent-color: #8b6cff; flex: none; }
+  .cm-opt span { display: grid; gap: .15rem; font-size: .85rem; color: var(--muted); }
+  .cm-opt strong { color: var(--text); font-size: .95rem; }
+  .cm-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: .6rem; }
+  .cm-btn { flex: 1 1 auto; }
+  /* Akzeptieren und Ablehnen gleichwertig gestaltet */
+  .cm-equal { background: #f2f1ff; color: #14163a; border-color: transparent; }
+  .cm-equal:hover { background: #fff; }
+  .cm-links { margin: 1rem 0 0; font-size: .82rem; text-align: center; }
+  .cm-links a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  .cm-links a:hover { color: #fff; }
+  @media (max-width: 560px) { .cm.cm--inline { inset: auto .5rem calc(72px + env(safe-area-inset-bottom)) .5rem; width: auto; } .cm-btn { flex: 1 1 100%; } }
+</style>
+
+<script>
+  const KEY = 'sw-consent';
+  const MAX_AGE = 365 * 24 * 3600 * 1000; // nach 12 Monaten erneut fragen
+  type Consent = { v: 1; mode: string; ts: number; stats: boolean; marketing: boolean };
+
+  const dlg = document.querySelector<HTMLDialogElement>('[data-cm]');
+  if (dlg) {
+    const mode = dlg.dataset.mode!;
+    const gtmId = dlg.dataset.gtm || '';
+    const read = (): Consent | null => { try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch { return null; } };
+    const write = (c: Consent) => { try { localStorage.setItem(KEY, JSON.stringify(c)); } catch { /* ohne Speicher: Hinweis erscheint beim nächsten Besuch erneut */ } };
+    const legal = /^\/(datenschutz|impressum)(\/|$)/.test(location.pathname);
+
+    const w = window as any;
+    function loadGtm(c: Consent) {
+      if (!gtmId || !(c.stats || c.marketing)) return;
+      w.dataLayer = w.dataLayer || [];
+      const gtag = (...args: unknown[]) => w.dataLayer.push(args);
+      if (!w.__gtmLoaded) {
+        gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied' });
+      }
+      gtag('consent', 'update', {
+        analytics_storage: c.stats ? 'granted' : 'denied',
+        ad_storage: c.marketing ? 'granted' : 'denied',
+        ad_user_data: c.marketing ? 'granted' : 'denied',
+        ad_personalization: c.marketing ? 'granted' : 'denied',
+      });
+      if (w.__gtmLoaded) return;
+      w.__gtmLoaded = true;
+      w.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
+      const s = document.createElement('script');
+      s.async = true;
+      s.src = `https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(gtmId)}`;
+      document.head.appendChild(s);
+    }
+
+    function open() {
+      if (dlg!.open) return;
+      const c = read();
+      dlg!.querySelectorAll<HTMLInputElement>('.cm-settings input[name]').forEach((i) => (i.checked = !!c?.[i.name as 'stats' | 'marketing']));
+      if (legal) { dlg!.classList.add('cm--inline'); dlg!.show(); }
+      else { dlg!.classList.remove('cm--inline'); dlg!.showModal(); }
+      dlg!.querySelector<HTMLButtonElement>('.cm-btn')?.focus();
+    }
+
+    function decide(stats: boolean, marketing: boolean) {
+      const c: Consent = { v: 1, mode, ts: Date.now(), stats, marketing };
+      write(c);
+      dlg!.close();
+      if (c.stats || c.marketing) loadGtm(c);
+      else if (w.__gtmLoaded) location.reload(); // Widerruf: geladene Dienste sauber entfernen
+    }
+
+    dlg.addEventListener('click', (e) => {
+      const a = (e.target as HTMLElement).closest<HTMLElement>('[data-cm-action]')?.dataset.cmAction;
+      if (!a) return;
+      if (a === 'ok') decide(false, false);
+      if (a === 'all') decide(true, true);
+      if (a === 'none') decide(false, false);
+      if (a === 'save') {
+        const val = (n: string) => !!dlg.querySelector<HTMLInputElement>(`.cm-settings input[name=${n}]`)?.checked;
+        decide(val('stats'), val('marketing'));
+      }
+      if (a === 'settings') {
+        const set = dlg.querySelector<HTMLElement>('.cm-settings')!;
+        set.hidden = !set.hidden;
+        dlg.querySelector('.cm-more')!.setAttribute('aria-expanded', String(!set.hidden));
+        dlg.querySelector<HTMLElement>('.cm-save')!.hidden = set.hidden;
+      }
+    });
+    // Escape = keine Einwilligung (datenschutzfreundliche Voreinstellung)
+    dlg.addEventListener('cancel', (e) => { e.preventDefault(); decide(false, false); });
+
+    document.querySelectorAll<HTMLElement>('[data-cookie-settings]').forEach((b) => b.addEventListener('click', open));
+
+    const saved = read();
+    const valid = saved && saved.v === 1 && saved.mode === mode && Date.now() - saved.ts < MAX_AGE;
+    if (valid) loadGtm(saved!);
+    else open();
+  }
+</script>

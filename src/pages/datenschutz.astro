@@ -7,7 +7,7 @@ const form = import.meta.env.PUBLIC_FORM_ENDPOINT;
 <Base title="Datenschutzerklärung" description="Datenschutzerklärung der Webmanufaktur Schmitz." noindex>
   <section class="section">
     <div class="container prose">
-      <h1>Datenschutzerklärung</h1>
+      <h1>Datenschutz&shy;erklärung</h1>
       <h2>1. Verantwortlicher</h2>
       <p>
         {site.name}, Inhaber {site.owner}<br />
@@ -27,13 +27,15 @@ const form = import.meta.env.PUBLIC_FORM_ENDPOINT;
 
       {gtm ? (
         <>
-          <h2>5. Google Tag Manager / Analyse</h2>
-          <p>Mit Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 TDDDG) lade ich den Google Tag Manager, um Besuche und den Erfolg von Werbung zu messen. Anbieter ist Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Dabei können Daten in die USA übermittelt werden. Ihre Einwilligung können Sie jederzeit über die „Cookie-Einstellungen“ im Footer widerrufen.</p>
+          <h2>5. Datenschutz-Einstellungen und Google Tag Manager</h2>
+          <p>Beim ersten Besuch frage ich Sie in einem Dialog, ob Sie statistischen Auswertungen und Marketing-Messungen zustimmen. Ihre Auswahl und der Zeitpunkt werden im lokalen Speicher Ihres Browsers (localStorage, Eintrag „sw-consent“) abgelegt, damit der Dialog nicht bei jedem Seitenaufruf erneut erscheint. Diese Speicherung ist unbedingt erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG, Art. 6 Abs. 1 lit. c und f DSGVO). Nach 12 Monaten frage ich erneut.</p>
+          <p>Nur mit Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG) lade ich den Google Tag Manager, um Besuche und den Erfolg von Werbung zu messen. Anbieter ist Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Dabei können Daten in die USA übermittelt werden. Google ist nach dem EU-US Data Privacy Framework zertifiziert. Ohne Einwilligung wird der Google Tag Manager nicht geladen. Ihre Einwilligung können Sie jederzeit über die „Datenschutz-Einstellungen“ im Footer widerrufen.</p>
         </>
       ) : (
         <>
-          <h2>5. Cookies und Tracking</h2>
+          <h2>5. Cookies, lokaler Speicher und Tracking</h2>
           <p>Diese Website verwendet keine Tracking- oder Marketing-Cookies und keine Analyse-Dienste.</p>
+          <p>Beim ersten Besuch weise ich Sie in einem kurzen Dialog darauf hin. Dass Sie den Hinweis bestätigt haben, wird mit Datum im lokalen Speicher Ihres Browsers (localStorage, Eintrag „sw-consent“) abgelegt, damit er nicht bei jedem Seitenaufruf erneut erscheint. Wenn Sie den Hinweis zur Barrierefreiheit oben auf der Seite schließen, wird das bis zum Schließen des Browser-Tabs im Sitzungsspeicher (sessionStorage) vermerkt. Diese Speicherungen sind unbedingt erforderlich, um die von Ihnen gewünschte Darstellung bereitzustellen (§ 25 Abs. 2 Nr. 2 TDDDG). Es werden dabei keine Daten an mich oder Dritte übertragen. Sie können die Einträge jederzeit über die Einstellungen Ihres Browsers löschen.</p>
         </>
       )}
 
